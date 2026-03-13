@@ -1043,17 +1043,24 @@ footer{
     <p class="lead" style="color:rgba(255,255,255,.45);margin-bottom:36px"><em style="font-style:italic">v</em><em style="color:var(--coral);font-style:italic">O</em><em style="font-style:italic">x</em><em style="color:white;font-style:italic">O</em><em style="font-style:italic">l</em> est encore en construction. On prépare un premier test du concept — si ça vous intrigue, laissez votre email.</p>
 
     <div id="cta-form" class="input-group">
-      <input type="email" class="inp" id="email-inp" placeholder="Votre adresse email" autocomplete="email" style="width:100%;margin-bottom:10px">
+
+      <!-- EMAIL — bloc principal mis en évidence -->
+      <div style="background:rgba(255,255,255,.06);border:1.5px solid rgba(224,90,58,.4);border-radius:12px;padding:18px 18px 14px;margin-bottom:20px">
+        <label class="inp-label" style="color:rgba(255,255,255,.8);font-weight:600;margin-bottom:8px;display:block;font-size:13px;letter-spacing:.04em">VOTRE EMAIL <span style="color:var(--coral)">*</span></label>
+        <input type="email" class="inp" id="email-inp" placeholder="vous@email.com" autocomplete="email" style="width:100%;margin-bottom:0;font-size:16px">
+      </div>
+
+      <!-- QUESTION — optionnel -->
       <label class="inp-label">Quel débat vous intrigue — pas pour savoir qui a raison, mais pourquoi les gens pensent ce qu'ils pensent ? — <em>optionnel</em></label>
       <textarea class="inp inp-textarea" id="question-inp" placeholder="Acheter bio c'est bien ou c'est pour se donner bonne conscience ?" rows="2" style="margin-bottom:14px"></textarea>
-      <button class="btn btn-coral" onclick="submitForm('tester')" style="width:100%;justify-content:center">Entrer dans la boucle →</button>
-      <p style="font-size:11px;color:rgba(255,255,255,.28);margin:8px 0 20px">Vous serez prévenus quand le test est lancé.</p>
 
-      <div style="border-top:1px solid rgba(255,255,255,.08);padding-top:18px">
-        <label class="inp-label">Un commentaire, un doute, une critique — <em>optionnel</em></label>
-        <textarea class="inp inp-textarea" id="comment-inp" placeholder="Un commentaire, une question, une critique…" rows="2" style="margin-bottom:10px"></textarea>
-        <button onclick="submitForm('avis')" class="btn" style="width:100%;justify-content:center;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7)">Partager mon commentaire →</button>
-      </div>
+      <!-- COMMENTAIRE — optionnel -->
+      <label class="inp-label">Un commentaire, un doute, une critique — <em>optionnel</em></label>
+      <textarea class="inp inp-textarea" id="comment-inp" placeholder="Un commentaire, une question, une critique…" rows="2" style="margin-bottom:18px"></textarea>
+
+      <!-- BOUTON UNIQUE -->
+      <button class="btn btn-coral" onclick="submitForm('tester')" style="width:100%;justify-content:center">Entrer dans la boucle →</button>
+      <p style="font-size:11px;color:rgba(255,255,255,.28);margin:8px 0 0">Vous serez prévenus quand le test est lancé.</p>
     </div>
     <div class="inp-ok" id="cta-ok">✓ Merci ! On reviendra vers vous dès que le produit avance.</div>
     <p class="cta-note">Pas de spam. Juste des nouvelles quand ça évolue.</p>

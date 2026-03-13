@@ -1291,29 +1291,63 @@ window.addEventListener('resize', function(){
   }
 });
 
-/* ═══ Formulaire CTA ═══ */
-function submitForm(intent){
+/* ═══ Formulaire CTA — Supabase ═══ */
+var SUPA_URL = 'https://xroahvbcaljnqiyomhml.supabase.co';
+var SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhyb2FodmJjYWxqbnFpeW9taG1sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMTk3MTgsImV4cCI6MjA4ODg5NTcxOH0.O8VLdGgR6K831UV0Xoqzje_cwoAVDr_HIKyXlGZniLQ';
+
+async function submitForm(intent){
   var email = document.getElementById('email-inp').value.trim();
   var question = document.getElementById('question-inp') ? document.getElementById('question-inp').value.trim() : '';
   var comment = document.getElementById('comment-inp') ? document.getElementById('comment-inp').value.trim() : '';
+
   if(!email || !email.includes('@')){
-    document.getElementById('email-inp').focus();
-    document.getElementById('email-inp').style.borderColor='var(--coral)';
+    var inp = document.getElementById('email-inp');
+    inp.focus();
+    inp.style.borderColor='var(--coral)';
     return;
   }
-  var entry = { email: email, question: question, comment: comment, intent: intent || 'tester', date: new Date().toISOString() };
+
+  // Disable buttons
+  document.querySelectorAll('#cta-form button').forEach(function(b){ b.disabled=true; b.style.opacity='.6'; });
+
   try {
-    var existing = JSON.parse(localStorage.getItem('voxol_leads') || '[]');
-    existing.push(entry);
-    localStorage.setItem('voxol_leads', JSON.stringify(existing));
-  } catch(e){}
-  document.getElementById('cta-form').style.display='none';
-  var ok = document.getElementById('cta-ok');
-  ok.style.display='block';
-  if(intent === 'avis'){
-    ok.textContent = '✓ Merci pour votre retour ! On vous contacte rapidement.';
-  } else {
-    ok.textContent = '✓ Parfait ! On vous prévient dès que le test est lancé.';
+    var res = await fetch(SUPA_URL + '/rest/v1/contacts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPA_KEY,
+        'Authorization': 'Bearer ' + SUPA_KEY,
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        email: email,
+        question: question || null,
+        comment: comment || null,
+        intent: intent || 'tester'
+      })
+    });
+
+    if(res.ok || res.status === 201){
+      document.getElementById('cta-form').style.display='none';
+      var ok = document.getElementById('cta-ok');
+      ok.style.display='block';
+      ok.textContent = intent === 'avis'
+        ? '✓ Merci pour votre retour ! On vous contacte rapidement.'
+        : '✓ Parfait ! On vous prévient dès que le test est lancé.';
+    } else {
+      throw new Error('Status ' + res.status);
+    }
+  } catch(e) {
+    // Fallback localStorage si réseau KO
+    try {
+      var existing = JSON.parse(localStorage.getItem('voxol_contacts') || '[]');
+      existing.push({ email:email, question:question, comment:comment, intent:intent, date:new Date().toISOString() });
+      localStorage.setItem('voxol_contacts', JSON.stringify(existing));
+    } catch(e2){}
+    document.getElementById('cta-form').style.display='none';
+    var ok = document.getElementById('cta-ok');
+    ok.style.display='block';
+    ok.textContent = '✓ Merci ! On vous recontacte bientôt.';
   }
 }
 </script>

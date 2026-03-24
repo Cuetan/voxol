@@ -64,12 +64,6 @@ export default async function handler(req, res) {
       }),
     });
 
-    // Doublon — email déjà inscrit (contrainte unique Supabase)
-    if (response.status === 409) {
-      // On retourne 200 : l'utilisateur n'a pas besoin de savoir si l'email existait déjà
-      return res.status(200).json({ ok: true });
-    }
-
     if (!response.ok) {
       return res.status(502).json({ error: 'Erreur base de données' });
     }

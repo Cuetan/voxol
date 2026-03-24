@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vOxOl — Dans les débats de société, on voit les positions. Beaucoup moins les raisons derrière.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { background: #0e1628; }
+    /* ── GLOBAL SPACING SYSTEM ── */
+    .section-std { padding: 80px 0; }
+    .section-std .inner { max-width: 900px; margin: 0 auto; padding: 0 32px; }
+    /* Section alternées */
+    .sec-alt { background: rgba(255,255,255,0.018); }
+
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.6)} }
+    .pulse { animation: pulse-dot 2s ease infinite; }
+
+    /* Step flow */
+    .step-block {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity .3s ease, transform .3s ease;
+      pointer-events: none;
+      max-height: 0;
+      overflow: hidden;
+    }
+    .step-block.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+      max-height: 600px;
+    }
+    .step-trigger {
+      cursor: pointer;
+      transition: background .2s ease, border-color .2s ease;
+    }
+    .step-trigger:hover { background: rgba(255,255,255,0.06) !important; }
+    .step-trigger.active { border-color: rgba(251,146,60,0.4) !important; background: rgba(251,146,60,0.05) !important; }
+    .step-num { transition: color .2s ease; }
+    .step-trigger.active .step-num { color: #fdba74 !important; }
+
+    /* Tabs */
+    .tab-btn { cursor: pointer; transition: all .2s ease; }
+    .tab-btn.active { background: rgba(255,255,255,0.10) !important; color: white !important; border-color: rgba(255,255,255,0.2) !important; }
+    .tab-panel { display: none; animation: fadeIn .25s ease; }
+    .tab-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(6px) } to { opacity:1; transform:none } }
+
+    /* Cards collapsable */
+    .card-body {
+      max-height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height .3s ease, opacity .25s ease;
+    }
+    .card-body.open {
+      max-height: 300px;
+      opacity: 1;
+    }
+    .step-block.visible.glow-step {
+      animation: fadeGlow .45s ease;
+    }
+    .reveal-card {
+      cursor: pointer;
+      transition: background .2s, border-color .2s, box-shadow .2s;
+    }
+    .reveal-card:hover {
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.12), 0 4px 20px rgba(0,0,0,0.3);
+    }
+  @media (max-width: 640px) {
+    /* NAV */
+    nav { padding: 14px 16px; }
+    nav a { font-size: 0.72rem; padding: 6px 12px; }
+
+    /* HERO */
+    .hero-section { padding: 40px 18px 56px; }
+    .hero-pct { font-size: clamp(3.5rem, 14vw, 7rem) !important; }
+    .hero-tension { font-size: clamp(1.1rem, 5vw, 1.75rem) !important; }
+    .hero-ctas { flex-direction: column; gap: 10px; }
+    .hero-ctas a { width: 100%; text-align: center; }
+
+    /* DÉMO TABS */
+    .vx-tab { font-size: 0.52rem; padding: 8px 2px; }
+    .vx-tab-num { font-size: 0.85rem; }
+    #vxDemo { padding: 0 12px 12px; }
+
+    /* DEMO FULL WIDTH MOBILE */
+    #demo { padding-left: 0 !important; padding-right: 0 !important; }
+    #demo > div:first-child { padding-left: 16px !important; padding-right: 16px !important; }
+    .vx-tabs { border-radius: 0; border-left: none; border-right: none; margin-left: -0px; margin-right: -0px; }
+    .vx-pane { width: 100%; }
+    .vx-pane > div { border-radius: 0 !important; border-left: none !important; border-right: none !important; width: 100% !important; box-sizing: border-box; }
+    .vx-pane .rounded-2xl { border-radius: 0 !important; border-left: none !important; border-right: none !important; }
+    .vx-pane .space-y-3 > div { border-radius: 0 !important; border-left: none !important; border-right: none !important; }
+    
+    /* Nav buttons full width */
+    .vx-nav-btn { font-size: 0.72rem; padding: 8px 12px; }
+    .flex.justify-between { gap: 8px; }
+
+    /* PANES */
+    .vx-pane > div { padding: 20px 16px !important; }
+
+    /* PANE 2 — frag grid → 2 colonnes sur mobile */
+    #vxp1 .grid { grid-template-columns: repeat(2, 1fr) !important; }
+    #vxp1 .frag-item { margin-top: 0 !important; opacity: 1 !important; }
+
+    /* ACCORDION ⑤ */
+    .flow-step { padding: 14px 14px 12px; }
+    .acc-body-inner { padding: 4px 10px 14px 36px; }
+    .result-card { padding: 8px 6px; }
+    .result-pct { font-size: 1.3rem; }
+    .result-label { font-size: 0.60rem; }
+
+    /* SECTIONS */
+    section > div, .max-w-4xl { padding-left: 16px !important; padding-right: 16px !important; }
+
+    /* CTA */
+    .cta-inner { padding: 56px 16px 64px !important; }
+    .cta-box { padding: 20px 16px 18px; }
+    .cta-title { font-size: clamp(1.3rem, 6.5vw, 2.2rem) !important; }
+    .cta-field { font-size: 0.9rem; }
+    .cta-btn { font-size: 0.9rem; padding: 14px 20px; }
+
+    /* GRILLES GÉNÉRALES → 1 colonne */
+    .grid.sm\:grid-cols-3,
+    .grid.sm\:grid-cols-4 { grid-template-columns: 1fr !important; }
+    .grid.sm\:grid-cols-2 { grid-template-columns: 1fr !important; }
+
+    /* BANDEAUX */
+    .py-14 { padding-top: 40px; padding-bottom: 40px; }
+
+    /* SIGNATURE HERO */
+    .hero-section p[style*="white-space:nowrap"] { white-space: normal !important; }
+
+    /* DÉMO — panes padding */
+    .vx-pane > div > .space-y-3 { padding: 0 !important; }
+    .vx-pane .rounded-2xl { padding: 18px 14px !important; }
+    .vx-pane .px-8 { padding-left: 14px !important; padding-right: 14px !important; }
+    .vx-pane .py-10 { padding-top: 20px !important; padding-bottom: 20px !important; }
+
+    /* FRACTURE — pane ④ */
+    #fracture-wrap { max-width: 100%; }
+    .blk-frags { height: 80px; }
+    .blk-frag-pct { font-size: 1.1rem; }
+    .blk-frag-name { font-size: 0.55rem; }
+    .blk-pct { font-size: 2.6rem; }
+
+    /* PANE ② — 2 colonnes */
+    #vxp1 .grid { grid-template-columns: repeat(2, 1fr) !important; }
+
+    /* RÉSULTATS ⑤ — 1 colonne sur mobile */
+    #vxp4 .grid-cols-3 { grid-template-columns: 1fr !important; }
+
+    /* INSIGHT block */
+    #vxp4 [style*="border-radius:14px"] { padding: 14px 14px !important; }
+
+    /* BANDEAU PHRASE CLÉ */
+    [style*="font-size:clamp(1.2rem,3vw,1.8rem)"] { font-size: clamp(1.1rem, 5.5vw, 1.5rem) !important; }
+
+    /* CTA accroche */
+    .cta-inner > p, .cta-inner > h2 { text-align: left; }
+
+    /* AVANT/APRÈS */
+    .grid.sm\:grid-cols-2 { grid-template-columns: 1fr !important; }
+
+    /* FLOW accordion nav */
+    .flow-wrap .flex.justify-between { flex-direction: column; gap: 8px; }
+    .flow-wrap .flex.justify-between button { width: 100%; }
+
+    /* Section usages — 1 col */
+    #vxp5 .grid { grid-template-columns: 1fr !important; }
+
+    /* Tags ⑤ */
+    #vx5tags { gap: 6px; }
+    .otag { font-size: 0.68rem; padding: 4px 10px; }
+  }
+  </style>
+</head>
+<body class="bg-[#0C1324] text-white min-h-screen overflow-x-hidden">
+
+  <div class="pointer-events-none fixed inset-0" style="background:radial-gradient(ellipse 80% 50% at 10% -10%,rgba(255,100,60,0.11),transparent),radial-gradient(ellipse 60% 40% at 90% 110%,rgba(80,130,255,0.07),transparent);z-index:0"></div>
+
+  <!-- NAV -->
+  <nav class="relative z-10 flex items-center justify-between px-6 py-5 max-w-4xl mx-auto">
+    <span class="text-lg font-semibold tracking-tight">vOxOl</span>
+    <a href="#cta" class="rounded-full border px-4 py-2 text-sm transition hover:bg-white/10" style="background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.12);color:rgba(255,255,255,0.75)">Rejoindre l'expérience →</a>
+  </nav>
+
+  <!-- ① HERO -->
+  <style>
+    .hero-section {
+      position: relative; z-index: 10;
+      max-width: 860px; margin: 0 auto;
+      padding: 56px 20px 72px;
+    }
+    /* Subtle radial light behind the 80% */
+    .hero-glow {
+      position: absolute; top: 40px; left: 20px;
+      width: 480px; height: 280px;
+      background: radial-gradient(ellipse at 30% 50%, rgba(249,115,22,0.10), transparent 70%);
+      pointer-events: none; z-index: 0;
+    }
+    .hero-inner { position: relative; z-index: 1; }
+
+    /* Badge */
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      border-radius: 100px; padding: 4px 13px;
+      font-size: 0.68rem; color: rgba(255,255,255,0.38);
+      letter-spacing: 0.12em; text-transform: uppercase;
+      margin-bottom: 44px;
+    }
+
+    /* Hook — the dominant element */
+    .hero-hook {
+      margin-bottom: 32px;
+    }
+    .hero-pct {
+      font-size: clamp(4rem, 10vw, 7rem);
+      font-weight: 800;
+      color: white;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .hero-tension {
+      font-size: clamp(1.25rem, 2.8vw, 1.75rem);
+      font-weight: 500;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      max-width: 520px;
+    }
+    .hero-tension em {
+      font-style: normal;
+      color: rgba(255,255,255,0.80);
+    }
+
+    /* Divider */
+    .hero-divider {
+      width: 40px; height: 1px;
+      background: rgba(255,255,255,0.12);
+      margin: 36px 0;
+    }
+
+    /* Explanation */
+    .hero-explain {
+      max-width: 480px;
+      margin-bottom: 28px;
+    }
+    .hero-explain p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.48);
+      margin-bottom: 6px;
+    }
+    .hero-explain p.dim {
+      color: rgba(255,255,255,0.32);
+    }
+
+    /* Promise */
+    .hero-promise {
+      margin-bottom: 40px;
+      max-width: 500px;
+    }
+    .hero-promise p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,0.75);
+    }
+    .hero-promise strong {
+      color: #fdba74;
+      font-weight: 600;
+    }
+
+    /* CTAs */
+    .hero-ctas {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      margin-bottom: 36px;
+    }
+    .cta-primary {
+      background: white; color: #0c1324;
+      padding: 13px 24px; border-radius: 12px;
+      font-size: 0.875rem; font-weight: 700;
+      text-decoration: none;
+      transition: opacity .2s;
+      letter-spacing: 0.01em;
+    }
+    .cta-primary:hover { opacity: 0.88; }
+    .cta-secondary {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.16);
+      color: rgba(255,255,255,0.55);
+      padding: 13px 24px; border-radius: 12px;
+      font-size: 0.875rem; font-weight: 500;
+      text-decoration: none;
+      transition: all .2s;
+    }
+    .cta-secondary:hover {
+      border-color: rgba(255,255,255,0.30);
+      color: rgba(255,255,255,0.80);
+    }
+
+    /* Credibility line */
+    .hero-credibility {
+      max-width: 440px;
+      font-size: 0.75rem;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.22);
+    }
+  </style>
+
+  <section class="hero-section">
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+
+      <!-- Badge -->
+      <div class="hero-badge">
+        <span class="h-1.5 w-1.5 rounded-full pulse" style="background:#f97316;display:inline-block"></span>
+        Concept en exploration · 2026
+      </div>
+
+      <!-- HOOK — élément dominant -->
+      <div class="hero-hook">
+        <span class="hero-pct">80% "pour".</span>
+        <p class="hero-tension">
+          Mais pour des raisons<br>
+          <em>que personne ne mesure.</em>
+        </p>
+      </div>
+
+      <div class="hero-divider"></div>
+
+      <!-- EXPLICATION + PROMESSE -->
+      <div class="hero-explain" style="margin-bottom:36px">
+        <p>Un même "oui" peut vouloir dire des choses très différentes.</p>
+        <p class="dim">Mais aujourd'hui, on ne voit que des positions.</p>
+        <p style="margin-top:14px;color:rgba(255,255,255,0.75);line-height:1.75">Avec vOxOl, vous exprimez votre opinion — et les logiques derrière deviennent <strong style="color:#fdba74">visibles, mesurées et comparables</strong>.</p>
+      </div>
+
+      <!-- CTAs -->
+      <div class="hero-ctas">
+        <a href="#demo" class="cta-primary">Voir la démonstration</a>
+        <a href="#cta" class="cta-secondary">Rejoindre l'expérience</a>
+      </div>
+
+      <!-- PHRASE SIGNATURE -->
+      <p style="margin-top:32px;font-size:0.82rem;font-weight:400;color:rgba(255,255,255,0.38);line-height:1.4;text-align:left;max-width:100%;margin-bottom:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">vOxOl — comprendre pourquoi nous pensons comme nous pensons.</p>
+
+      <!-- CRÉDIBILITÉ -->
+
+    </div>
+  </section>
+
+  <!-- BANDEAU RUPTURE 1 -->
+  <div class="w-full border-t border-b py-12 text-center" style="border-color:rgba(251,146,60,0.20);background:linear-gradient(to right,rgba(251,146,60,0.04),rgba(251,146,60,0.12),rgba(251,146,60,0.04))">
+    <p style="font-size:1.2rem;font-weight:700;color:white;margin-bottom:6px">On voit 80% "pour".</p>
+    <p style="font-size:1rem;color:rgba(255,255,255,0.50);margin-bottom:6px">On ne voit ni pourquoi, ni les nuances derrière.</p>
+    <p style="font-size:0.88rem;color:rgba(255,255,255,0.35);font-style:italic">vOxOl ajoute ce qui manque : la structure du débat.</p>
+  </div>
+
+  <!-- ② DÉMO — NARRATION EN 5 ÉTAPES -->
+  <style>
+    /* ── STEPPER TABS ── */
+    .vx-tabs {
+      display: flex; gap: 0; border-radius: 16px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.10); margin-bottom: 3px;
+      background: rgba(255,255,255,0.015);
+    }
+    .vx-tab {
+      flex: 1; padding: 13px 6px; text-align: center;
+      background: transparent; cursor: pointer;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      transition: background .2s, color .2s, border-bottom .2s;
+      font-size: 0.70rem; color: rgba(255,255,255,0.30);
+      line-height: 1.35; border-bottom: 3px solid transparent;
+      font-weight: 500;
+    }
+    .vx-tab:last-child { border-right: none; }
+    .vx-tab:hover:not(.vx-on) { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.60); }
+
+    /* per-tab active — beaucoup plus contrasté */
+    #vxt0.vx-on { background: rgba(255,255,255,0.06); color: white; border-bottom-color: rgba(255,255,255,0.50); }
+    #vxt1.vx-on { background: rgba(255,255,255,0.06); color: white; border-bottom-color: rgba(255,255,255,0.50); }
+    #vxt2.vx-on { background: rgba(255,255,255,0.07); color: white; border-bottom-color: white; }
+    #vxt3.vx-on { background: rgba(251,146,60,0.14); color: #fdba74; border-bottom-color: rgba(251,146,60,0.80); }
+    #vxt4.vx-on { background: rgba(251,146,60,0.10); color: #fdba74; border-bottom-color: rgba(251,146,60,0.60); }
+    #vxt5.vx-on { background: rgba(110,231,183,0.10); color: rgba(110,231,183,0.95); border-bottom-color: rgba(110,231,183,0.65); }
+
+    .vx-tab-num { display: block; font-size: 1.1rem; margin-bottom: 4px; line-height: 1; }
+
+    /* nav buttons stronger */
+    .vx-nav-btn {
+      padding: 10px 18px; border-radius: 10px; font-size: 0.80rem; font-weight: 600;
+      cursor: pointer; transition: all .2s; border: none;
+    }
+    .vx-nav-prev { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.55); }
+    .vx-nav-prev:hover { background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.80); }
+    .vx-nav-next { background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.80); }
+    .vx-nav-next:hover { background: rgba(255,255,255,0.16); color: white; }
+    .vx-nav-next-orange { background: rgba(251,146,60,0.14); border: 1px solid rgba(251,146,60,0.30); color: #fdba74; }
+    .vx-nav-next-orange:hover { background: rgba(251,146,60,0.22); color: white; }
+    .vx-nav-next-green { background: rgba(110,231,183,0.10); border: 1px solid rgba(110,231,183,0.25); color: rgba(110,231,183,0.85); }
+    .vx-nav-next-green:hover { background: rgba(110,231,183,0.16); color: white; }
+
+    .vx-pane { display: none; }
+    .vx-pane.vx-on { display: block; animation: paneIn .22s ease; }
+    @keyframes paneIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:none; } }
+
+    /* ── FRACTURE VIZ ── */
+    #fracture-wrap { cursor: pointer; max-width: 480px; margin: 0 auto; }
+
+    .blk-unified {
+      border-radius: 16px; height: 100px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+      transition: opacity .35s ease, filter .35s ease;
+    }
+    .blk-unified::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.06), transparent 55%);
+    }
+    .blk-pct { font-size: 3.4rem; font-weight: 800; letter-spacing: -0.05em; color: white; }
+    .blk-sub { font-size: 0.68rem; color: rgba(255,255,255,0.38); margin-top: 3px; }
+    .blk-hint { text-align: center; font-size: 0.75rem; color: rgba(255,255,255,0.38); margin-top: 12px; letter-spacing: 0.04em; font-style: italic; }
+
+    .blk-frags { display: flex; gap: 8px; align-items: flex-end; height: 100px; }
+    .blk-frag {
+      flex: 1; border-radius: 11px; position: relative;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 9px 9px 10px; border: 1px solid transparent;
+      transform: scaleY(0); transform-origin: bottom;
+      opacity: 0; transition: transform .5s cubic-bezier(.34,1.48,.64,1), opacity .3s ease;
+    }
+    .blk-frag.fin { transform: scaleY(1); opacity: 1; }
+    .blk-frag:nth-child(1){ transition-delay:.00s; height:100%; background:rgba(249,115,22,0.17); border-color:rgba(249,115,22,0.30); }
+    .blk-frag:nth-child(2){ transition-delay:.07s; height: 92%; background:rgba(139,92,246,0.15); border-color:rgba(139,92,246,0.26); }
+    .blk-frag:nth-child(3){ transition-delay:.14s; height: 85%; background:rgba(59,130,246,0.14); border-color:rgba(59,130,246,0.24); }
+    .blk-frag-pct { font-size: 1.45rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1; }
+    .blk-frag-name { font-size: 0.68rem; color: rgba(255,255,255,0.75); margin-top: 4px; line-height: 1.3; font-weight: 500; }
+    .blk-frag:nth-child(1) .blk-frag-pct { color: #fb923c; }
+    .blk-frag:nth-child(2) .blk-frag-pct { color: #a78bfa; }
+    .blk-frag:nth-child(3) .blk-frag-pct { color: #93c5fd; }
+
+    .blk-conn { display: flex; gap: 6px; margin-top: 7px; opacity: 0; transition: opacity .3s ease .45s; }
+    .blk-conn.fin { opacity: 1; }
+    .blk-conn-seg { flex:1; height:2px; border-radius:2px; }
+    .blk-conn-seg:nth-child(1){ background:linear-gradient(90deg,rgba(249,115,22,.6),rgba(249,115,22,.1)); }
+    .blk-conn-seg:nth-child(2){ background:linear-gradient(90deg,rgba(139,92,246,.6),rgba(139,92,246,.1)); }
+    .blk-conn-seg:nth-child(3){ background:linear-gradient(90deg,rgba(59,130,246,.6),rgba(59,130,246,.1)); }
+
+    .blk-descs { display: flex; gap: 6px; margin-top: 5px; opacity: 0; transition: opacity .3s ease .58s; }
+    .blk-descs.fin { opacity: 1; }
+    .blk-desc-item { flex:1; font-size: 0.60rem; color: rgba(255,255,255,0.28); text-align:center; font-style:italic; line-height:1.35; }
+
+    .blk-msg { opacity:0; transform:translateY(4px); transition: opacity .35s ease .65s, transform .35s ease .65s; margin-top:14px; text-align:center; }
+    .blk-msg.fin { opacity:1; transform:none; }
+
+    /* tag animation (step 5) */
+    .otag { font-size:0.75rem; padding:5px 13px; border-radius:100px;
+      border:1px solid rgba(251,146,60,0.28); background:rgba(251,146,60,0.08);
+      color:rgba(255,255,255,0.80); opacity:0; animation: tagp .35s ease forwards; }
+    .otag:nth-child(1){animation-delay:.04s}
+    .otag:nth-child(2){animation-delay:.17s}
+    .otag:nth-child(3){animation-delay:.30s}
+    @keyframes tagp { from{opacity:0;transform:scale(.88) translateY(3px)} to{opacity:1;transform:none} }
+  </style>
+
+  <section id="demo" class="relative z-10 max-w-4xl mx-auto px-6 pb-24 border-t border-white/10">
+    <div class="mb-10 pt-18" style="padding-top:72px">
+      <p class="text-xs uppercase tracking-[0.18em] mb-2" style="color:rgba(255,255,255,0.28)">La démonstration</p>
+      <h2 class="text-2xl font-semibold tracking-tight">Ce que vous ne voyez pas dans un débat.</h2>
+    </div>
+
+    <!-- NAV ONGLETS -->
+    <div class="vx-tabs">
+      <div class="vx-tab vx-on" id="vxt0" onclick="vxTab(0)"><span class="vx-tab-num">❓</span>Une question émerge</div>
+      <div class="vx-tab" id="vxt1" onclick="vxTab(1)"><span class="vx-tab-num">📣</span>Tout le monde en parle</div>
+      <div class="vx-tab" id="vxt2" onclick="vxTab(2)"><span class="vx-tab-num">📊</span>Un chiffre circule</div>
+      <div class="vx-tab" id="vxt3" onclick="vxTab(3)"><span class="vx-tab-num">🧩</span>Ce que ça cache</div>
+      <div class="vx-tab" id="vxt4" onclick="vxTab(4)"><span class="vx-tab-num">⚙️</span>Ce que fait vOxOl</div>
+      <div class="vx-tab" id="vxt5" onclick="vxTab(5)"><span class="vx-tab-num">✨</span>Ce que ça change</div>
+    </div>
+
+    <!-- ① UNE QUESTION ÉMERGE -->
+    <div class="vx-pane vx-on" id="vxp0">
+      <div class="rounded-2xl px-8 py-10" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07)">
+        <p class="text-xs mb-4" style="color:rgba(255,255,255,0.32);letter-spacing:0.08em;text-transform:uppercase">Une question traverse la société.</p>
+        <p style="font-size:1.6rem;font-weight:700;color:white;margin-bottom:28px;letter-spacing:-0.01em;line-height:1.2">Faut-il interdire les smartphones à l'école&nbsp;?</p>
+        <p class="text-sm mb-6" style="color:rgba(255,255,255,0.50);line-height:1.9">Des parents s'interrogent. Des enseignants témoignent. Des élus se positionnent. Le débat commence.</p>
+        <div class="rounded-xl p-4 text-center" style="background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.06)">
+          <p class="text-sm italic" style="color:rgba(255,255,255,0.42)">Chacun a ses raisons.</p>
+          <p class="text-sm italic mt-1" style="color:rgba(255,255,255,0.30)">Mais elles ne sont jamais visibles ensemble.</p>
+        </div>
+        <div class="mt-6 text-right">
+          <button onclick="vxTab(1)" class="text-xs px-4 py-2 rounded-xl" class="vx-nav-btn vx-nav-next">Tout le monde en parle →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ② TOUT LE MONDE EN PARLE -->
+    <div class="vx-pane" id="vxp1">
+      <div class="rounded-2xl px-8 py-10" style="background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.08)">
+        <p style="font-size:1rem;font-weight:700;color:white;margin-bottom:20px">Chaque acteur capte une partie du débat.</p>
+        <div class="grid sm:grid-cols-4 gap-3 mb-5">
+          <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+            <p class="text-xs font-bold uppercase tracking-[0.12em] mb-3" style="color:rgba(255,255,255,0.50)">Sondages</p>
+            <p class="text-sm font-semibold text-white mb-2">Mesurent une position.</p>
+            <p class="text-[10px] leading-4" style="color:rgba(239,68,68,0.80)">✗ pas les raisons derrière</p>
+          </div>
+          <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+            <p class="text-xs font-bold uppercase tracking-[0.12em] mb-3" style="color:rgba(255,255,255,0.50)">Médias</p>
+            <p class="text-sm font-semibold text-white mb-2">Racontent et analysent.</p>
+            <p class="text-[10px] leading-4" style="color:rgba(239,68,68,0.80)">✗ à travers un angle éditorial</p>
+          </div>
+          <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+            <p class="text-xs font-bold uppercase tracking-[0.12em] mb-3" style="color:rgba(255,255,255,0.50)">Réseaux</p>
+            <p class="text-sm font-semibold text-white mb-2">Amplifient des réactions.</p>
+            <p class="text-[10px] leading-4" style="color:rgba(239,68,68,0.80)">✗ sans structure</p>
+          </div>
+          <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+            <p class="text-xs font-bold uppercase tracking-[0.12em] mb-3" style="color:rgba(255,255,255,0.50)">Politique</p>
+            <p class="text-sm font-semibold text-white mb-2">Tranche et décide.</p>
+            <p class="text-[10px] leading-4" style="color:rgba(239,68,68,0.80)">✗ sans voir ce qui compose la majorité</p>
+          </div>
+        </div>
+        <div class="rounded-xl p-3 text-center" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05)">
+          <p class="text-sm italic" style="color:rgba(255,255,255,0.42)">On voit des arguments ici et là. Mais jamais comment ils s'organisent ensemble.</p>
+        </div>
+        <div class="mt-5 flex justify-between">
+          <button onclick="vxTab(0)" class="text-xs px-4 py-2 rounded-xl" class="vx-nav-btn vx-nav-prev">← La question</button>
+          <button onclick="vxTab(2)" class="text-xs px-4 py-2 rounded-xl" class="vx-nav-btn vx-nav-next">Un chiffre circule →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ UN CHIFFRE CIRCULE -->
+    <div class="vx-pane" id="vxp2">
+      <div class="rounded-2xl px-8 py-10" style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07)">
+        <p class="text-xs mb-3" style="color:rgba(255,255,255,0.32)">De tout ce débat, il reste une chose.</p>
+        <p class="text-5xl font-bold text-white mb-3" style="letter-spacing:-0.04em">80%</p>
+        <p class="text-base font-semibold text-white mb-2">"pour" l'interdiction.</p>
+        <p class="text-sm mb-4" style="color:rgba(255,255,255,0.40)">Ce chiffre circule partout. Il devient <em>la</em> réalité du débat.</p>
+        <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.06)">
+          <p class="text-sm font-semibold text-white mb-1">Ce qui circule, c'est le chiffre.</p>
+          <p class="text-sm" style="color:rgba(255,255,255,0.40)">Pas ce qu'il veut dire. Pas les logiques différentes qu'il agrège.</p>
+        </div>
+        <p class="text-xs mt-2" style="color:rgba(255,255,255,0.20)">Source : Ipsos Education Monitor 2024</p>
+        <div class="mt-5 flex justify-between">
+          <button onclick="vxTab(1)" class="text-xs px-4 py-2 rounded-xl" class="vx-nav-btn vx-nav-prev">← En parler</button>
+          <button onclick="vxTab(3)" class="text-xs px-4 py-2 rounded-xl" class="vx-nav-btn vx-nav-next-orange">Ce que ça cache →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ CE QUE ÇA CACHE — LA FRACTURE ★ -->
+    <div class="vx-pane" id="vxp3">
+      <div class="rounded-2xl px-8 py-10" style="background:linear-gradient(to bottom,rgba(251,146,60,0.06),rgba(251,146,60,0.01));border:1px solid rgba(251,146,60,0.16)">
+        <p style="font-size:1rem;font-weight:700;color:white;margin-bottom:20px">Ce 80% pourrait cacher des logiques très différentes.</p>
+
+        <!-- VISUALISATION FRACTURE -->
+        <div id="fracture-wrap" onclick="doFracture()">
+
+          <div id="frac-state-a">
+            <div class="blk-unified">
+              <div class="text-center">
+                <div class="blk-pct">80%</div>
+                <div class="blk-sub">"pour" — un bloc uniforme</div>
+              </div>
+            </div>
+            <p class="blk-hint">↓ cliquer pour voir ce qu'il cache</p>
+          </div>
+
+          <div id="frac-state-b" style="display:none">
+            <div class="blk-frags" id="fragRow">
+              <div class="blk-frag"><div class="blk-frag-pct">~60%</div><div class="blk-frag-name">🧠 Protéger attention & santé</div></div>
+              <div class="blk-frag"><div class="blk-frag-pct">~20%</div><div class="blk-frag-name">📏 Avoir des règles claires</div></div>
+              <div class="blk-frag"><div class="blk-frag-pct">~20%</div><div class="blk-frag-name">⚖️ Assurer l'équité</div></div>
+            </div>
+            <div class="blk-conn" id="fragConn">
+              <div class="blk-conn-seg"></div><div class="blk-conn-seg"></div><div class="blk-conn-seg"></div>
+            </div>
+            <div class="blk-descs" id="fragDescs">
+              <div class="blk-desc-item">Distraction, anxiété, cyberharcèlement</div>
+              <div class="blk-desc-item">Discipline, clarté pour l'enseignant</div>
+              <div class="blk-desc-item">Pression sociale, normes, inégalités</div>
+            </div>
+            <div class="blk-msg" id="fragMsg">
+              <p class="text-sm font-semibold text-white mb-3">Un même "oui" peut cacher des logiques différentes.</p>
+
+              <!-- INSIGHT -->
+              <div style="padding:14px 16px;border-radius:12px;background:rgba(252,211,77,0.05);border:1px solid rgba(252,211,77,0.18);text-align:left;margin-bottom:14px">
+                <p style="font-size:0.60rem;text-transform:uppercase;letter-spacing:0.12em;color:rgba(252,211,77,0.60);margin-bottom:8px;font-weight:600">⚠ Insight détecté</p>
+                <p style="font-size:0.82rem;color:white;font-weight:600;line-height:1.5;margin-bottom:6px">"Une partie des 'pour' soutiennent surtout une règle simple, plus qu'une interdiction en soi."</p>
+                <p style="font-size:0.75rem;color:rgba(255,255,255,0.42);line-height:1.5;font-style:italic">L'interdiction est parfois un moyen de créer un cadre clair.</p>
+                <p style="font-size:0.60rem;color:rgba(255,255,255,0.18);margin-top:8px">Exemple illustratif de ce que vOxOl pourrait révéler.</p>
+              </div>
+
+              <button onclick="event.stopPropagation();resetFracture()" class="mt-1 text-xs px-4 py-1.5 rounded-full" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.10);color:rgba(255,255,255,0.38)">← revenir</button>
+              <p class="mt-2 text-xs" style="color:rgba(255,255,255,0.18)">Répartition illustrative · Source 80% : Ipsos Education Monitor 2024</p>
+            </div>
+          </div>
+
+        </div>
+        <!-- END FRACTURE -->
+
+        <div class="mt-5 flex justify-between">
+          <button onclick="vxTab(2)" class="text-xs px-4 py-2 rounded-xl" class="vx-nav-btn vx-nav-prev">← Le chiffre</button>
+          <button onclick="vxTab(4)" class="text-xs px-4 py-2 rounded-xl" class="vx-nav-btn vx-nav-next-orange">Ce que fait vOxOl →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑤ CE QUE FAIT VOXOL -->
+    <style>
+      /* ── FLOW PARCOURS ── */
+      .flow-wrap {
+        border-radius: 20px;
+        border: 1px solid rgba(251,146,60,0.18);
+        background: linear-gradient(to bottom, rgba(251,146,60,0.06), rgba(251,146,60,0.01));
+        overflow: hidden;
+      }
+      .flow-header {
+        padding: 20px 24px 18px;
+        border-bottom: 1px solid rgba(251,146,60,0.10);
+      }
+      .flow-step {
+        position: relative;
+        padding: 24px 24px 22px;
+      }
+      /* Ligne verticale de connexion */
+      .flow-step::before {
+        content: '';
+        position: absolute;
+        left: 40px; top: 0; bottom: 0;
+        width: 1px;
+        background: linear-gradient(to bottom, rgba(251,146,60,0.25), rgba(251,146,60,0.08));
+      }
+      .flow-step:last-child::before { display: none; }
+
+      /* Connecteur flèche entre étapes */
+      .flow-connector {
+        display: flex; align-items: center; justify-content: center;
+        padding: 4px 0;
+        position: relative; z-index: 1;
+      }
+      .flow-connector-inner {
+        display: flex; flex-direction: column; align-items: center; gap: 2px;
+      }
+      .flow-connector-line {
+        width: 1px; height: 16px;
+        background: rgba(251,146,60,0.30);
+      }
+      .flow-connector-arrow {
+        width: 0; height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 7px solid rgba(251,146,60,0.40);
+      }
+
+      /* Numéro d'étape */
+      .step-num-badge {
+        display: inline-flex; align-items: center; justify-content: center;
+        width: 28px; height: 28px; border-radius: 50%;
+        font-size: 0.72rem; font-weight: 800;
+        flex-shrink: 0;
+      }
+      .step-num-1 { background: rgba(255,255,255,0.10); color: white; border: 1px solid rgba(255,255,255,0.20); }
+      .step-num-2 { background: rgba(251,146,60,0.15); color: #fdba74; border: 1px solid rgba(251,146,60,0.35); }
+      .step-num-3 { background: rgba(251,146,60,0.22); color: #fdba74; border: 1px solid rgba(251,146,60,0.45); }
+
+      .step-row { display: flex; gap: 16px; align-items: flex-start; }
+      .step-content { flex: 1; }
+
+      .step-title {
+        font-size: 1.0rem; font-weight: 700;
+        color: white; margin-bottom: 12px;
+        line-height: 1.25;
+        letter-spacing: -0.01em;
+      }
+      .step-title-sub {
+        font-size: 0.70rem; font-weight: 500;
+        color: rgba(255,255,255,0.38);
+        margin-left: 6px; font-weight: 400;
+      }
+
+      /* Étape 1 — citation en avant */
+      .free-text-badge {
+        display: inline-block;
+        font-size: 0.60rem; padding: 2px 9px; border-radius: 100px;
+        background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+        color: rgba(255,255,255,0.55); letter-spacing: 0.06em;
+        margin-bottom: 12px; font-weight: 600; text-transform: uppercase;
+      }
+      .user-quote {
+        font-style: italic;
+        font-size: 0.88rem; line-height: 1.75;
+        color: rgba(255,255,255,0.72);
+        padding: 14px 18px;
+        background: rgba(255,255,255,0.05);
+        border-radius: 12px;
+        border-left: 3px solid rgba(255,255,255,0.20);
+        position: relative;
+      }
+      .user-quote-src {
+        font-style: normal; font-size: 0.65rem;
+        color: rgba(255,255,255,0.25);
+        margin-top: 8px; display: block;
+      }
+
+      /* Étape 2 — transformation */
+      .transform-extract {
+        font-size: 0.75rem; font-style: italic;
+        color: rgba(255,255,255,0.42);
+        padding: 8px 12px; border-radius: 8px;
+        background: rgba(255,255,255,0.04);
+        margin-bottom: 12px;
+      }
+      .transform-arrow-row {
+        display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+      }
+      .transform-arrow-line { flex: 1; height: 1px; background: rgba(251,146,60,0.22); }
+      .transform-arrow-label {
+        font-size: 0.62rem; color: rgba(251,146,60,0.55);
+        letter-spacing: 0.08em;
+      }
+
+      /* Étape 3 — résultat */
+      .result-card {
+        border-radius: 12px; padding: 14px 12px; text-align: center;
+      }
+      .result-pct {
+        font-size: 1.9rem; font-weight: 800;
+        letter-spacing: -0.04em; line-height: 1;
+        margin-bottom: 6px;
+      }
+      .result-label {
+        font-size: 0.72rem; color: rgba(255,255,255,0.70);
+        font-weight: 500; line-height: 1.3;
+      }
+      .result-desc {
+        font-size: 0.62rem; color: rgba(255,255,255,0.30);
+        margin-top: 4px; font-style: italic;
+      }
+    </style>
+
+    <div class="vx-pane" id="vxp4">
+      <div class="space-y-3">
+
+        <div class="flow-wrap">
+
+          <!-- Header -->
+          <div class="flow-header">
+            <p style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(251,146,60,0.55);margin-bottom:6px">Ce que fait vOxOl</p>
+            <p style="font-size:0.95rem;font-weight:600;color:white;margin-bottom:6px">vOxOl rend les logiques <span style="color:#fdba74">visibles, mesurables, comparables</span>.</p>
+            <p style="font-size:0.75rem;color:rgba(255,255,255,0.32);line-height:1.55;margin-bottom:6px">À partir de réponses en texte libre, elles émergent, se structurent et deviennent lisibles.</p>
+            <p style="font-size:0.75rem;color:rgba(251,146,60,0.50);line-height:1.55">→ Vous voyez apparaître les principales logiques et leur poids.</p>
+          </div>
+
+          <!-- CSS ACCORDION -->
+          <style>
+            .acc-item { border-bottom: 1px solid rgba(255,255,255,0.06); }
+            .acc-item:last-child { border-bottom: none; }
+            .acc-trigger {
+              display: flex; align-items: center; gap: 12px;
+              padding: 16px 20px; cursor: pointer;
+              transition: background .2s;
+              user-select: none;
+            }
+            .acc-trigger:hover { background: rgba(255,255,255,0.02); }
+            .acc-trigger.open { background: rgba(251,146,60,0.04); }
+            .acc-label { flex: 1; font-size: 0.92rem; font-weight: 600; color: white; }
+            .acc-trigger.open .acc-label { color: #fdba74; }
+            .acc-chevron {
+              font-size: 0.75rem; color: rgba(255,255,255,0.28);
+              transition: transform .25s ease;
+            }
+            .acc-trigger.open .acc-chevron { transform: rotate(180deg); color: rgba(251,146,60,0.60); }
+            .acc-body {
+              max-height: 0; overflow: hidden;
+              transition: max-height .35s ease, opacity .25s ease;
+              opacity: 0;
+            }
+            .acc-body.open { max-height: 1200px; opacity: 1; }
+            .acc-body-inner { padding: 4px 20px 20px 56px; }
+          </style>
+
+          <!-- MICRO INTRO -->
+          <div style="padding:14px 20px 10px;font-size:0.68rem;color:rgba(255,255,255,0.30);letter-spacing:0.06em;text-transform:uppercase">vOxOl fonctionne en 3 étapes :</div>
+
+          <!-- ÉTAPE 1 -->
+          <div class="acc-item">
+            <div class="acc-trigger" id="acc1" onclick="vxAcc(1)">
+              <div class="step-num-badge step-num-1">1</div>
+              <span class="acc-label">Vous vous exprimez librement</span>
+              <span class="acc-chevron">▼</span>
+            </div>
+            <div class="acc-body" id="acc1-body">
+              <div class="acc-body-inner">
+                <span class="free-text-badge">texte libre</span>
+                <p style="font-size:0.72rem;color:rgba(255,255,255,0.30);margin-bottom:10px;margin-top:4px">À la question sur l'interdiction des smartphones, vous pourriez dire :</p>
+                <div class="user-quote">
+                  «&nbsp;Oui — le smartphone déconcentre les élèves, amplifie les inégalités entre ceux qui l'ont et les autres, et il manque clairement un cadre commun.&nbsp;»
+                  <span class="user-quote-src">Un répondant parmi des centaines</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ÉTAPE 2 -->
+          <div class="acc-item">
+            <div class="acc-trigger" id="acc2" onclick="vxAcc(2)">
+              <div class="step-num-badge step-num-2">2</div>
+              <span class="acc-label">vOxOl comprend votre logique</span>
+              <span class="acc-chevron">▼</span>
+            </div>
+            <div class="acc-body" id="acc2-body">
+              <div class="acc-body-inner">
+                <div class="transform-extract">"…perturbe l'attention… inégalités… manque de règles…"</div>
+                <div class="transform-arrow-row">
+                  <div class="transform-arrow-line"></div>
+                  <span class="transform-arrow-label">structuré en</span>
+                  <div class="transform-arrow-line"></div>
+                </div>
+                <div class="flex flex-wrap gap-2" id="vx5tags">
+                  <span class="otag">🧠 attention & santé</span>
+                  <span class="otag">📏 règles claires</span>
+                  <span class="otag">⚖️ équité</span>
+                </div>
+                <p style="margin-top:10px;font-size:0.67rem;color:rgba(255,255,255,0.28)">vOxOl ne simplifie pas votre réponse. Il la rend lisible.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- ÉTAPE 3 -->
+          <div class="acc-item">
+            <div class="acc-trigger" id="acc3" onclick="vxAcc(3)">
+              <div class="step-num-badge step-num-3">3</div>
+              <span class="acc-label">Les logiques deviennent visibles et comparables</span>
+              <span class="acc-chevron">▼</span>
+            </div>
+            <div class="acc-body" id="acc3-body">
+              <div class="acc-body-inner">
+                <p style="font-size:0.72rem;color:rgba(255,255,255,0.35);margin-bottom:14px">Sur des centaines de réponses, la structure émerge.</p>
+                <div class="grid grid-cols-3 gap-2 mb-3">
+                  <div class="result-card" style="background:rgba(249,115,22,0.10);border:1px solid rgba(249,115,22,0.22)">
+                    <div class="result-pct" style="color:#fb923c">~60%</div>
+                    <div class="result-label">🧠 Protéger attention & santé</div>
+                    <div class="result-desc">Distraction, anxiété, cyberharcèlement.</div>
+                  </div>
+                  <div class="result-card" style="background:rgba(139,92,246,0.10);border:1px solid rgba(139,92,246,0.22)">
+                    <div class="result-pct" style="color:#a78bfa">~20%</div>
+                    <div class="result-label">📏 Avoir des règles claires</div>
+                    <div class="result-desc">Discipline, clarté, simplicité pour l'école.</div>
+                  </div>
+                  <div class="result-card" style="background:rgba(59,130,246,0.10);border:1px solid rgba(59,130,246,0.22)">
+                    <div class="result-pct" style="color:#93c5fd">~20%</div>
+                    <div class="result-label">⚖️ Assurer l'équité</div>
+                    <div class="result-desc">Pression sociale, normes, inégalités.</div>
+                  </div>
+                </div>
+                <div style="display:flex;align-items:center;gap:10px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.06)">
+                  <p style="font-size:0.67rem;color:rgba(255,255,255,0.22)">Avant : dispersées, invisibles.</p>
+                  <div style="flex:1;height:1px;background:rgba(255,255,255,0.05)"></div>
+                  <p style="font-size:0.67rem;color:white;font-weight:600">Maintenant : visibles, mesurées, comparables.</p>
+                </div>
+                <p style="font-size:0.60rem;margin-top:8px;color:rgba(255,255,255,0.16)">Répartition illustrative · Source 80% : Ipsos Education Monitor 2024</p>
+                <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05)">
+                  <p style="font-size:0.65rem;color:rgba(255,255,255,0.28);margin-bottom:8px">Peut aussi faire apparaître :</p>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px">
+                    <span style="font-size:0.68rem;padding:3px 10px;border-radius:100px;background:rgba(110,231,183,0.07);border:1px solid rgba(110,231,183,0.18);color:rgba(110,231,183,0.70)">Paradoxes</span>
+                    <span style="font-size:0.68rem;padding:3px 10px;border-radius:100px;background:rgba(251,146,60,0.07);border:1px solid rgba(251,146,60,0.18);color:rgba(251,146,60,0.70)">Fractures</span>
+                    <span style="font-size:0.68rem;padding:3px 10px;border-radius:100px;background:rgba(252,211,77,0.06);border:1px solid rgba(252,211,77,0.15);color:rgba(252,211,77,0.60)">Angles morts</span>
+                    <span style="font-size:0.68rem;padding:3px 10px;border-radius:100px;background:rgba(147,197,253,0.06);border:1px solid rgba(147,197,253,0.15);color:rgba(147,197,253,0.60)">Évolutions</span>
+                  </div>
+                </div>
+
+                <!-- CE QUE CET EXEMPLE NE MONTRE PAS ENCORE -->
+                <div style="margin-top:20px;padding:16px 18px;border-radius:12px;background:rgba(255,255,255,0.02);border-left:2px solid rgba(255,255,255,0.10)">
+                  <p style="font-size:0.60rem;color:rgba(255,255,255,0.25);letter-spacing:0.10em;text-transform:uppercase;margin-bottom:10px">→ Ce que cet exemple ne montre pas encore</p>
+                  <p style="font-size:0.82rem;color:rgba(255,255,255,0.50);line-height:1.65;margin-bottom:4px">Ici, les raisons sont encore relativement lisibles.</p>
+                  <p style="font-size:0.82rem;color:rgba(255,255,255,0.40);line-height:1.65;margin-bottom:6px">Mais sur beaucoup d'autres sujets, elles deviennent diffuses, implicites, parfois contradictoires.</p>
+                  <p style="font-size:0.85rem;color:rgba(255,255,255,0.68);line-height:1.65;font-weight:500">C'est là que vOxOl devient indispensable.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="flex justify-between pt-1">
+          <button onclick="vxTab(3)" class="vx-nav-btn vx-nav-prev">← Ce que ça cache</button>
+          <button onclick="vxTab(5)" class="vx-nav-btn vx-nav-next-green">Ce que ça change →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑥ CE QUE ÇA CHANGE -->
+    <div class="vx-pane" id="vxp5">
+      <div class="space-y-3">
+
+        <div style="padding:28px;text-align:center;background:linear-gradient(to right,rgba(110,231,183,0.04),rgba(110,231,183,0.12),rgba(110,231,183,0.04));border:1px solid rgba(110,231,183,0.18);border-radius:16px">
+          <p style="font-size:1.1rem;font-weight:700;color:white;margin-bottom:6px">Ce n'est pas le débat qui change.</p>
+          <p style="font-size:0.95rem;color:rgba(255,255,255,0.55)">C'est la lecture qu'on en fait.</p>
+        </div>
+
+        <div class="rounded-2xl px-7 py-8" style="background:rgba(110,231,183,0.02);border:1px solid rgba(110,231,183,0.11)">
+          <div class="grid sm:grid-cols-3 gap-4 mb-6">
+            <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+              <p class="text-xl mb-3">🗳️</p>
+              <p class="text-sm font-semibold text-white mb-1">Citoyens</p>
+              <p style="font-size:0.88rem;font-weight:600;color:white;margin-bottom:4px">Votre nuance devient visible et contribue à faire apparaître les positions réelles.</p>
+            </div>
+            <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+              <p class="text-xl mb-3">📰</p>
+              <p class="text-sm font-semibold text-white mb-1">Médias</p>
+              <p style="font-size:0.88rem;font-weight:600;color:white;margin-bottom:2px">On ne raconte plus — on comprend.</p>
+            </div>
+            <div class="rounded-xl p-4" style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07)">
+              <p class="text-xl mb-3">🏛️</p>
+              <p class="text-sm font-semibold text-white mb-1">Décideurs</p>
+              <p style="font-size:0.88rem;font-weight:600;color:white;margin-bottom:2px">Vous voyez ce qui compose la majorité.</p>
+            </div>
+          </div>
+          <div class="rounded-xl p-4 text-center" style="background:rgba(110,231,183,0.04);border:1px solid rgba(110,231,183,0.12)">
+            <p class="text-sm font-semibold text-white mb-1">Le débat ne disparaît pas.</p>
+            <p class="text-sm" style="color:rgba(255,255,255,0.45)">Il devient enfin lisible.</p>
+          </div>
+        </div>
+
+        <div class="flex justify-start pt-1">
+          <button onclick="vxTab(4)" class="text-xs px-4 py-2 rounded-xl" class="vx-nav-btn vx-nav-prev">← Ce que fait vOxOl</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Avant / Après -->
+    <div class="mt-4 grid sm:grid-cols-2 gap-3">
+      <div class="rounded-2xl border p-4" style="border-color:rgba(255,255,255,0.08);background:rgba(255,255,255,0.03)">
+        <p class="text-xs uppercase tracking-[0.15em] mb-2" style="color:rgba(255,255,255,0.25)">Ce que le débat rend visible aujourd'hui</p>
+        <p class="text-sm leading-6" style="color:rgba(255,255,255,0.48)">80% "pour". Un bloc. Des logiques dispersées, non mesurées.</p>
+      </div>
+      <div class="rounded-2xl border p-4" style="border-color:rgba(251,146,60,0.25);background:rgba(251,146,60,0.05)">
+        <p class="text-xs uppercase tracking-[0.15em] mb-2" style="color:#fdba74">Ce que vOxOl rend enfin lisible</p>
+        <p class="text-sm leading-6" style="color:rgba(255,255,255,0.68)">Trois logiques distinctes, <span class="text-white font-medium">visibles, mesurées, comparables.</span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- BANDEAU PUNCHLINE -->
+  <div class="w-full border-t border-b py-14 text-center" style="border-color:rgba(255,255,255,0.10);background:rgba(255,255,255,0.03)">
+    <p style="font-size:1.4rem;font-weight:700;color:white;margin-bottom:8px">Vous avez un avis.</p>
+    <p style="font-size:1.05rem;color:rgba(255,255,255,0.45)">Mais aujourd'hui, il n'existe pas vraiment.</p>
+  </div>
+
+  <!-- SECTION USAGES CONCRETS -->
+  <section class="relative z-10 border-t border-white/10">
+    <div class="max-w-4xl mx-auto px-6 py-16">
+      <p class="text-xs uppercase tracking-[0.18em] mb-4" style="color:rgba(255,255,255,0.28);letter-spacing:0.16em">Votre place dans le débat</p>
+      <h2 style="font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:white;margin-bottom:10px;letter-spacing:-0.02em;line-height:1.15">Vous n'avez jamais vraiment pu la faire exister.</h2>
+      <p style="font-size:1rem;color:rgba(255,255,255,0.42);margin-bottom:20px;line-height:1.6">Pourtant vous avez toujours eu quelque chose à dire.</p>
+
+
+      <div class="grid sm:grid-cols-3 gap-4 mb-6">
+        <div class="rounded-2xl border border-white/10 p-6" style="background:rgba(255,255,255,0.035)">
+          <p style="font-size:1.6rem;margin-bottom:10px">🗳️</p>
+          <p class="text-xs uppercase tracking-[0.10em] mb-2" style="color:rgba(255,255,255,0.28)">Citoyens</p>
+          <p class="text-sm font-semibold text-white mb-2">Votre avis ne disparaît plus.</p>
+          <p class="text-sm" style="color:rgba(255,255,255,0.50)">Il apparaît tel qu'il est — dans toute sa nuance — et prend place dans le débat.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 p-6" style="background:rgba(255,255,255,0.035)">
+          <p style="font-size:1.6rem;margin-bottom:10px">📰</p>
+          <p class="text-xs uppercase tracking-[0.10em] mb-2" style="color:rgba(255,255,255,0.28)">Journalistes</p>
+          <p class="text-sm font-semibold text-white mb-2">Vous ne partez plus d'exemples.</p>
+          <p class="text-sm" style="color:rgba(255,255,255,0.50)">Vous voyez les logiques qui structurent réellement le débat.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 p-6" style="background:rgba(255,255,255,0.035)">
+          <p style="font-size:1.6rem;margin-bottom:10px">🏛️</p>
+          <p class="text-xs uppercase tracking-[0.10em] mb-2" style="color:rgba(255,255,255,0.28)">Élus & décideurs</p>
+          <p class="text-sm font-semibold text-white mb-2">Vous ne voyez plus seulement une majorité.</p>
+          <p class="text-sm" style="color:rgba(255,255,255,0.50)">Vous voyez ce qui la compose — et sur quoi elle repose vraiment.</p>
+        </div>
+      </div>
+      <p style="font-size:0.88rem;color:rgba(255,255,255,0.35);text-align:center;font-style:italic;padding-bottom:4px">Quand chacun voit mieux, le débat devient plus juste — pour tous.</p>
+
+
+    </div>
+  </section>
+
+  <!-- BANDEAU PUNCHLINE 2 -->
+  <div class="w-full border-t border-b py-14 text-center" style="border-color:rgba(255,255,255,0.10);background:rgba(255,255,255,0.03)">
+    <p style="font-size:1.4rem;font-weight:700;color:white;margin-bottom:8px">Votre nuance existe.</p>
+    <p style="font-size:1.05rem;color:rgba(255,255,255,0.45)">Mais aujourd'hui, elle disparaît.</p>
+  </div>
+
+  <!-- ③ POURQUOI RÉPONDRE -->
+  <section class="relative z-10 border-t border-white/10" style="background:rgba(255,255,255,0.02)">
+    <div class="max-w-4xl mx-auto px-6 py-16">
+      <p class="text-xs uppercase tracking-[0.18em] mb-4" style="color:rgba(255,255,255,0.28);letter-spacing:0.16em">Pourquoi répondre</p>
+      <h2 style="font-size:clamp(1.7rem,3.2vw,2.4rem);font-weight:700;color:white;margin-bottom:10px;letter-spacing:-0.02em">Vous y gagnez quelque chose de réel.</h2>
+      <p style="font-size:1.05rem;color:rgba(255,255,255,0.40);margin-bottom:36px;line-height:1.6">Vous avez un avis nuancé. Il mérite d'exister.</p>
+
+      <p style="font-size:0.85rem;font-style:italic;color:rgba(255,255,255,0.38);line-height:1.7;margin-bottom:24px">Sinon, votre opinion devient un chiffre. Ou un témoignage isolé. Jamais quelque chose qui compte vraiment.</p>
+
+      <div class="grid sm:grid-cols-2 gap-4 mb-0">
+        <div class="rounded-[20px] p-5" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18)">
+          <p class="text-xl mb-3">🎯</p>
+          <p class="text-sm font-semibold text-white mb-2">Votre nuance peut vraiment exister</p>
+          <p style="font-size:0.78rem;font-weight:500;color:rgba(255,255,255,0.55);line-height:1.55;margin-bottom:6px">Et votre avis ne disparaît plus dans un chiffre ou un témoignage isolé.</p>
+          <p style="font-size:0.72rem;color:rgba(255,255,255,0.32);line-height:1.6">Parce que sur vOxOl, chaque voix compte de la même manière : votre avis est considéré au même niveau que les autres — et contribue à rendre le débat plus lisible, en faisant apparaître les différentes logiques qui le composent.</p>
+        </div>
+        <div class="rounded-[20px] p-5" style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.18)">
+          <p class="text-xl mb-3">🧭</p>
+          <p class="text-sm font-semibold text-white mb-2">Vous voyez où vous vous situez — vraiment</p>
+          <p style="font-size:0.78rem;font-weight:500;color:rgba(255,255,255,0.55);line-height:1.6;margin-bottom:6px">Car aujourd'hui, on perçoit le débat à travers des filtres — algorithmes, médias, réseaux.</p>
+          <p style="font-size:0.72rem;color:rgba(255,255,255,0.32);line-height:1.6">Vous pouvez alors préciser, nuancer — ou faire évoluer votre point de vue. Car <em>"réfléchir, c'est parfois changer d'avis."</em></p>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+
+  <!-- IMPACT COLLECTIF — standalone -->
+  <section class="relative z-10 border-t border-white/10">
+    <div class="max-w-4xl mx-auto px-6 py-14">
+      <h2 class="text-xl font-semibold tracking-tight mb-2" style="color:rgba(255,255,255,0.70)">Chaque réponse éclaire une partie du débat.</h2>
+      <p class="text-sm mb-6" style="color:rgba(255,255,255,0.35)">Ensemble, elles en révèlent la structure — y compris pour ceux qui décident.</p>
+      <div class="grid sm:grid-cols-4 gap-3">
+        <div class="rounded-2xl border border-white/10 p-4 text-center" style="background:rgba(255,255,255,0.03)">
+          <p style="font-size:2rem;font-weight:800;color:white;margin-bottom:8px;opacity:0.25">1</p>
+          <p class="text-xs font-semibold text-white mb-2">Vous vous exprimez</p>
+          <p class="text-xs leading-5" style="color:rgba(255,255,255,0.38)">Librement, en détail.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 p-5 text-center" style="background:rgba(255,255,255,0.03)">
+          <p style="font-size:2rem;font-weight:800;color:white;margin-bottom:8px;opacity:0.35">2</p>
+          <p class="text-xs font-semibold text-white mb-2">vOxOl structure</p>
+          <p class="text-xs leading-5" style="color:rgba(255,255,255,0.38)">Les raisonnements deviennent comparables.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 p-5 text-center" style="background:rgba(255,255,255,0.03)">
+          <p style="font-size:2rem;font-weight:800;color:white;margin-bottom:8px;opacity:0.55">3</p>
+          <p class="text-xs font-semibold text-white mb-2">Le débat devient lisible</p>
+          <p class="text-xs leading-5" style="color:rgba(255,255,255,0.38)">Les logiques émergent clairement.</p>
+        </div>
+        <div class="rounded-2xl border border-white/10 p-5 text-center" style="background:rgba(255,255,255,0.03)">
+          <p style="font-size:2rem;font-weight:800;color:#fdba74;margin-bottom:8px">4</p>
+          <p class="text-xs font-semibold text-white mb-2">Les décisions changent</p>
+          <p class="text-xs leading-5" style="color:rgba(255,255,255,0.38)">Elles reposent sur quelque chose de réel.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+
+  <!-- BANDEAU PHRASE CLÉ -->
+  <div style="padding:64px 28px;text-align:center;border-top:1px solid rgba(255,255,255,0.08);background:rgba(255,255,255,0.01)">
+    <p style="font-size:clamp(1.2rem,3vw,1.8rem);font-weight:600;color:white;letter-spacing:-0.01em;line-height:1.3">vOxOl ne change pas le débat.</p>
+    <p style="font-size:clamp(1.2rem,3vw,1.8rem);font-weight:600;color:rgba(251,146,60,0.85);letter-spacing:-0.01em;line-height:1.3">Il change votre place dans le débat.</p>
+  </div>
+
+  <!-- ⑥ CTA FINAL -->
+  <style>
+    .cta-section {
+      position: relative; overflow: hidden;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 0%, rgba(249,115,22,0.10), transparent),
+        radial-gradient(ellipse 40% 40% at 80% 100%, rgba(80,120,255,0.06), transparent);
+      pointer-events: none;
+    }
+    .cta-inner {
+      position: relative; z-index: 1;
+      max-width: 540px; margin: 0 auto;
+      padding: 80px 20px 80px;
+      text-align: center;
+    }
+    .cta-pre {
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(255,255,255,0.28);
+      margin-bottom: 20px;
+    }
+    .cta-title {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700; color: white;
+      letter-spacing: -0.02em; line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .cta-title em { font-style: normal; color: rgba(255,255,255,0.40); }
+    .cta-tagline {
+      font-size: 1rem; color: rgba(255,255,255,0.42);
+      margin-bottom: 48px; line-height: 1.6;
+    }
+
+    /* Le bloc formulaire */
+    .cta-box {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 20px;
+      padding: 32px 28px 28px;
+      text-align: left;
+    }
+    .cta-box-title {
+      font-size: 1.05rem; font-weight: 700; color: white;
+      margin-bottom: 6px; line-height: 1.3;
+    }
+    .cta-box-sub {
+      font-size: 0.82rem; color: rgba(255,255,255,0.45);
+      margin-bottom: 24px; line-height: 1.6;
+    }
+    .cta-field {
+      width: 100%; border-radius: 12px;
+      padding: 13px 16px; font-size: 0.875rem;
+      outline: none; transition: border-color .2s;
+      display: block; box-sizing: border-box;
+      font-family: inherit;
+    }
+    .cta-field-email {
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.16);
+      color: white; margin-bottom: 10px;
+    }
+    .cta-field-email::placeholder { color: rgba(255,255,255,0.30); }
+    .cta-field-email:focus { border-color: rgba(255,255,255,0.40); }
+    .cta-field-q {
+      background: rgba(255,255,255,0.035);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: rgba(255,255,255,0.65); margin-bottom: 18px;
+    }
+    .cta-field-q::placeholder { color: rgba(255,255,255,0.22); font-style: italic; }
+    .cta-field-q:focus { border-color: rgba(255,255,255,0.20); }
+    .cta-btn {
+      width: 100%; padding: 17px;
+      border-radius: 12px; border: none;
+      background: white; color: #0e1628;
+      font-size: 1rem; font-weight: 800;
+      cursor: pointer; transition: opacity .2s, transform .15s;
+      letter-spacing: 0.02em;
+      box-shadow: 0 8px 32px rgba(255,255,255,0.12);
+    }
+    .cta-btn:hover { opacity: 0.90; transform: translateY(-2px); box-shadow: 0 12px 40px rgba(255,255,255,0.16); }
+    .cta-reassure {
+      text-align: center; margin-top: 14px;
+      font-size: 0.72rem; color: rgba(255,255,255,0.22);
+    }
+
+    /* Killer close */
+    .cta-close {
+      margin-top: 36px; padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      text-align: center;
+    }
+    .cta-close p:first-child {
+      font-size: 0.88rem; color: rgba(255,255,255,0.60);
+      margin-bottom: 4px;
+    }
+    .cta-close p:last-child {
+      font-size: 0.82rem; color: rgba(255,255,255,0.30);
+      font-style: italic;
+    }
+  </style>
+
+  <section class="cta-section" id="cta">
+    <div class="cta-inner">
+
+      <!-- Accroche -->
+      <p style="font-size:clamp(0.95rem,2vw,1.1rem);color:rgba(255,255,255,0.42);margin-bottom:16px;line-height:1.6">Aujourd'hui, on donne son avis — sans savoir ce qu'il devient.</p>
+      <p style="font-size:clamp(1.3rem,3vw,1.9rem);font-weight:700;color:white;margin-bottom:20px;letter-spacing:-0.02em;line-height:1.2">Et si ça changeait&nbsp;?</p>
+      <p style="font-size:clamp(0.95rem,2vw,1.05rem);color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:6px">Avec vOxOl, transformez la lecture du débat —<br><strong style="color:white;font-weight:600">faites compter votre avis dans les décisions.</strong></p>
+      <p style="font-size:clamp(0.85rem,1.8vw,0.95rem);color:rgba(255,255,255,0.38);line-height:1.6;margin-bottom:32px">Et voyez où il se situe — et ce qu'il révèle.</p>
+
+      <!-- Formulaire principal -->
+      <div class="cta-box">
+        <div id="cta-form">
+
+          <!-- Email — obligatoire -->
+          <label style="display:block;font-size:0.75rem;color:rgba(255,255,255,0.50);margin-bottom:6px">Votre email <span style="color:rgba(251,146,60,0.80)">*</span></label>
+          <input type="email" id="email-input" placeholder="votre@email.com"
+            class="cta-field cta-field-email"
+            onfocus="this.style.borderColor='rgba(255,255,255,0.40)'"
+            onblur="this.style.borderColor='rgba(255,255,255,0.16)'" />
+          <p style="font-size:0.62rem;color:rgba(255,255,255,0.22);margin-bottom:6px;margin-top:-6px">* requis pour rejoindre l'expérience</p>
+          <button onclick="submitEmail()" class="cta-btn" style="margin-bottom:0">Rejoignez vOxOl</button>
+
+          <!-- Séparateur optionnel -->
+          <div style="display:flex;align-items:center;gap:10px;margin:24px 0 14px">
+            <div style="flex:1;height:1px;background:rgba(255,255,255,0.07)"></div>
+            <p style="font-size:0.68rem;color:rgba(255,255,255,0.28)">Et si vous le souhaitez, répondez déjà à une première question</p>
+            <div style="flex:1;height:1px;background:rgba(255,255,255,0.07)"></div>
+          </div>
+
+          <!-- Donner son avis — optionnel -->
+          <div style="margin-bottom:14px">
+            <p style="font-size:0.85rem;font-weight:500;color:rgba(255,255,255,0.60);line-height:1.5;margin-bottom:8px">Faut-il travailler moins ? <span style="font-size:0.60rem;color:rgba(255,255,255,0.22);font-weight:400">(optionnel)</span></p>
+            <textarea id="contrib-input"
+              placeholder="Votre avis en texte libre…"
+              rows="2"
+              class="cta-field cta-field-q"
+              style="resize:none;line-height:1.6"
+              onfocus="this.style.borderColor='rgba(255,255,255,0.20)'"
+              onblur="this.style.borderColor='rgba(255,255,255,0.09)'"></textarea>
+          </div>
+
+          <p style="text-align:center;font-size:0.72rem;font-style:italic;color:rgba(255,255,255,0.25);margin:4px 0 12px">ou proposez le prochain débat à cartographier</p>
+
+          <!-- Suggérer une question — optionnel -->
+          <div style="margin-bottom:16px">
+            <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.32);margin-bottom:5px">Votre suggestion <span style="font-size:0.60rem;color:rgba(255,255,255,0.20)">(optionnel)</span></label>
+            <input type="text" id="question-input"
+              placeholder="Ex : Faut-il interdire les smartphones à l'école ?"
+              class="cta-field cta-field-q"
+              style="line-height:1.6"
+              onfocus="this.style.borderColor='rgba(255,255,255,0.20)'"
+              onblur="this.style.borderColor='rgba(255,255,255,0.09)'" />
+          </div>
+
+        </div>
+
+        <div id="cta-success" style="display:none;text-align:center;padding:20px 0 4px">
+          <p style="font-size:1rem;color:#6ee7b7;font-weight:600;line-height:1.6">✓ Merci — vOxOl existera par ceux qui y participent.</p>
+        </div>
+
+        <p class="cta-reassure">Accès anticipé — en phase de test.</p>
+      </div>
+
+      <!-- Killer close -->
+      <div class="cta-close">
+        <p>On teste une autre manière de faire exister les opinions.</p>
+        <p>Vous pouvez en faire partie.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <script>
+    // Accordion ⑤
+    function vxAcc(n) {
+      [1,2,3].forEach(i => {
+        const t = document.getElementById('acc'+i);
+        const b = document.getElementById('acc'+i+'-body');
+        if (!t || !b) return;
+        if (i === n) {
+          const isOpen = b.classList.contains('open');
+          b.classList.toggle('open', !isOpen);
+          t.classList.toggle('open', !isOpen);
+        } else {
+          b.classList.remove('open');
+          t.classList.remove('open');
+        }
+      });
+      // Re-trigger tags animation if step 2 opened
+      if (n === 2) {
+        document.querySelectorAll('.otag').forEach(t => {
+          t.style.animation = 'none';
+          t.offsetHeight;
+          t.style.animation = '';
+        });
+      }
+    }
+
+    // Rotation placeholder champ question
+    const placeholders = [
+      "Ex : Faut-il limiter les loyers ?",
+      "Ex : Faut-il interdire les jets privés ?",
+      "Ex : Pourquoi la défiance envers les médias augmente-t-elle ?",
+      "Ex : Qu'est-ce qui bloque vraiment la transition écologique ?",
+      "Ex : Peut-on encore débattre sereinement aujourd'hui ?"
+    ];
+    let phIdx = 0;
+    const qInput = document.getElementById('question-input');
+    if (qInput) {
+      setInterval(() => {
+        if (document.activeElement !== qInput && !qInput.value) {
+          phIdx = (phIdx + 1) % placeholders.length;
+          qInput.placeholder = placeholders[phIdx];
+        }
+      }, 3000);
+    }
+  </script>
+  <script>
+    // STEP FLOW
+    const totalSteps = 5;
+    const stepProgress = ['20%', '40%', '60%', '80%', '100%'];
+
+    function showStep(i) {
+      document.querySelectorAll('.step-trigger').forEach((btn, idx) => {
+        btn.classList.toggle('active', idx === i);
+      });
+      for (let s = 0; s < totalSteps; s++) {
+        const el = document.getElementById('step-' + s);
+        if (el) el.classList.toggle('visible', s === i);
+      }
+      const bar = document.getElementById('progress-bar');
+      if (bar) bar.style.width = stepProgress[i];
+    }
+
+    function showDbTab(name) {
+      document.querySelectorAll('.db-tab').forEach(t => {
+        t.classList.remove('active');
+        t.style.color = 'rgba(255,255,255,0.40)';
+        t.style.borderColor = 'transparent';
+      });
+      document.querySelectorAll('.db-panel').forEach(p => p.classList.add('hidden'));
+      const active = event.currentTarget;
+      active.classList.add('active');
+      active.style.color = 'rgba(255,255,255,0.85)';
+      active.style.borderColor = 'rgba(255,255,255,0.3)';
+      document.getElementById('db-' + name).classList.remove('hidden');
+    }
+
+    // VX stepper
+    function showVxStep(i) {
+      document.querySelectorAll('.vx-step-panel').forEach((p, idx) => {
+        p.classList.toggle('hidden', idx !== i);
+      });
+      // Stepper dots styling
+      const dots = [document.getElementById('vxs-0'), document.getElementById('vxs-1'), document.getElementById('vxs-2')];
+      const activeStyles = [
+        'background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.25)',
+        'background:rgba(251,146,60,0.10);border:1px solid rgba(251,146,60,0.4)',
+        'background:rgba(110,231,183,0.08);border:1px solid rgba(110,231,183,0.3)'
+      ];
+      const inactiveStyle = 'background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06)';
+      dots.forEach((d, idx) => {
+        if (!d) return;
+        d.style.cssText = idx === i ? activeStyles[idx] : inactiveStyle;
+        const num = d.querySelector('p:first-child');
+        const title = d.querySelector('p:last-child');
+        if (num) num.style.color = idx === i ? (idx === 1 ? 'rgba(251,146,60,0.8)' : idx === 2 ? 'rgba(110,231,183,0.8)' : 'rgba(255,255,255,0.5)') : 'rgba(255,255,255,0.22)';
+        if (title) title.style.color = idx === i ? 'white' : 'rgba(255,255,255,0.40)';
+      });
+    }
+    // TABS
+    function showTab(name) {
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      document.getElementById('tab-' + name).classList.add('active');
+    }
+
+    // CARDS
+    function toggleCard(id) {
+      const body = document.getElementById(id);
+      const lbl = document.getElementById(id + '-lbl');
+      const isOpen = body.classList.contains('open');
+      body.classList.toggle('open', !isOpen);
+      if (lbl) lbl.textContent = isOpen ? 'voir un exemple ↓' : 'réduire ↑';
+    }
+
+    // CTA — Supabase
+    const SUPA_URL = 'https://xroahvbcaljnqiyomhml.supabase.co';
+    const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhyb2FodmJjYWxqbnFpeW9taG1sIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMzMTk3MTgsImV4cCI6MjA4ODg5NTcxOH0.O8VLdGgR6K831UV0Xoqzje_cwoAVDr_HIKyXlGZniLQ';
+
+    async function submitEmail() {
+      const email = document.getElementById('email-input').value.trim();
+      const question = document.getElementById('question-input').value.trim();
+      const reponse = document.getElementById('contrib-input').value.trim();
+      if (!email || !email.includes('@')) { document.getElementById('email-input').focus(); return; }
+
+      const btn = document.querySelector('.cta-btn');
+      btn.textContent = '...';
+      btn.disabled = true;
+
+      try {
+        const res = await fetch(`${SUPA_URL}/rest/v1/contacts`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPA_KEY,
+            'Authorization': `Bearer ${SUPA_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({ email, question: question || null, réponse: reponse || null, source: "longue" })
+        });
+
+        if (res.ok || res.status === 201) {
+          document.getElementById('cta-form').style.display = 'none';
+          document.getElementById('cta-success').style.display = 'block';
+          setTimeout(() => {
+            const contrib = document.getElementById('contrib-form');
+            if (contrib) contrib.closest('div[style*="margin-top:48px"]')?.scrollIntoView({behavior:'smooth', block:'center'});
+          }, 600);
+        } else {
+          btn.textContent = "Rejoignez vOxOl";
+          btn.disabled = false;
+          alert('Une erreur est survenue. Merci de réessayer.');
+        }
+      } catch(e) {
+        btn.textContent = "Rejoignez vOxOl";
+        btn.disabled = false;
+        alert('Une erreur est survenue. Merci de réessayer.');
+      }
+    }
+
+    // ── STEPPER TABS ──
+    function vxTab(i) {
+      for (let n = 0; n < 6; n++) {
+        const btn = document.getElementById('vxt'+n);
+        const pane = document.getElementById('vxp'+n);
+        if (btn) btn.classList.toggle('vx-on', n===i);
+        if (pane) pane.classList.toggle('vx-on', n===i);
+      }
+      // Re-trigger tag animations when entering panel 4
+      if (i === 4) {
+        const tags = document.getElementById('vx5tags');
+        if (tags) tags.querySelectorAll('.otag').forEach(t => {
+          t.style.animation = 'none'; t.offsetHeight; t.style.animation = '';
+        });
+      }
+      // Reset fracture when leaving panel 3
+      if (i !== 3) resetFracture();
+    }
+
+    // ── FRACTURE VISUALIZATION ──
+    let fractured = false;
+    function doFracture() {
+      if (fractured) return;
+      fractured = true;
+      const sa = document.getElementById('frac-state-a');
+      const sb = document.getElementById('frac-state-b');
+      sa.style.transition = 'opacity .3s ease';
+      sa.style.opacity = '0';
+      setTimeout(() => {
+        sa.style.display = 'none';
+        sb.style.display = 'block';
+        requestAnimationFrame(() => {
+          document.querySelectorAll('.blk-frag').forEach(f => f.classList.add('fin'));
+          setTimeout(() => {
+            document.getElementById('fragConn').classList.add('fin');
+            document.getElementById('fragDescs').classList.add('fin');
+            document.getElementById('fragMsg').classList.add('fin');
+          }, 280);
+        });
+      }, 300);
+    }
+    function resetFracture() {
+      fractured = false;
+      document.querySelectorAll('.blk-frag').forEach(f => f.classList.remove('fin'));
+      ['fragConn','fragDescs','fragMsg'].forEach(id => document.getElementById(id).classList.remove('fin'));
+      setTimeout(() => {
+        document.getElementById('frac-state-b').style.display = 'none';
+        const sa = document.getElementById('frac-state-a');
+        sa.style.display = 'block'; sa.style.opacity = '0';
+        requestAnimationFrame(() => { sa.style.opacity = '1'; });
+      }, 180);
+    }
+  </script>
+
+</body>
+</html>

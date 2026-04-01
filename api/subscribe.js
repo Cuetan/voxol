@@ -126,7 +126,7 @@ Fondateur de vOxOl`
           'Authorization': `Bearer ${RESEND_API_KEY}`,
         },
         body: JSON.stringify({
-          from: 'vOxOl <hello@voxol.org>',
+          from: 'vOxOl <noreply@voxol.org>',
           to: email.trim().toLowerCase(),
           subject: emailContent.subject,
           text: emailContent.text,

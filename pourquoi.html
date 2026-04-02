@@ -95,7 +95,10 @@
     .viz-msg { opacity: 0; transform: translateY(5px); transition: opacity .4s ease .55s, transform .4s ease .55s; margin-top: 14px; }
     .viz-msg.fin { opacity: 1; transform: none; }
   </style>
-<script defer src="/_vercel/insights/script.js"></script>
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body class="text-white min-h-screen overflow-x-hidden">
   <div class="pointer-events-none fixed inset-0" style="background:radial-gradient(ellipse 80% 50% at 10% -10%,rgba(255,100,60,0.11),transparent),radial-gradient(ellipse 60% 40% at 90% 110%,rgba(80,130,255,0.07),transparent);z-index:0"></div>

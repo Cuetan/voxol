@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vOxOl — Suivre</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+  <style>
+
+    body { background: #0e1628; font-family: inherit; }
+
+    /* NAVBAR */
+    .navbar { position: sticky; top: 0; z-index: 100; background: rgba(14,22,40,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .navbar-inner { max-width: 860px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-link { font-size: 0.78rem; color: rgba(255,255,255,0.42); text-decoration: none; padding: 6px 12px; border-radius: 8px; transition: color .2s, background .2s; font-weight: 500; letter-spacing: 0.01em; }
+    .nav-link:hover { color: rgba(255,255,255,0.80); background: rgba(255,255,255,0.05); }
+    .nav-link.active { color: rgba(255,255,255,0.75); }
+    .nav-link-cta { font-size: 0.78rem; font-weight: 700; background: rgba(251,146,60,0.12); color: #fdba74; border: 1px solid rgba(251,146,60,0.20); padding: 6px 14px; border-radius: 8px; text-decoration: none; transition: all .2s; }
+    .nav-link-cta:hover { background: rgba(251,146,60,0.20); border-color: rgba(251,146,60,0.35); color: #fff; }
+    .nav-mobile-toggle { display: none; cursor: pointer; color: rgba(255,255,255,0.45); background: none; border: none; font-size: 1.2rem; padding: 4px; }
+    .nav-mobile-menu { display: none; flex-direction: column; gap: 4px; padding: 12px 24px 16px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu .nav-link { font-size: 0.875rem; padding: 10px 12px; }
+    .nav-mobile-menu .nav-link-cta { font-size: 0.875rem; padding: 10px 14px; text-align: center; }
+
+    /* SHARED */
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.6)} }
+    .pulse { animation: pulse-dot 2s ease infinite; }
+    .cta-primary { background: white; color: #0c1324; padding: 13px 24px; border-radius: 12px; font-size: 0.875rem; font-weight: 700; text-decoration: none; transition: opacity .2s; letter-spacing: 0.01em; display: inline-block; }
+    .cta-primary:hover { opacity: 0.88; }
+    .cta-secondary { background: transparent; border: 1px solid rgba(255,255,255,0.16); color: rgba(255,255,255,0.55); padding: 13px 24px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; text-decoration: none; transition: all .2s; display: inline-block; }
+    .cta-secondary:hover { border-color: rgba(255,255,255,0.30); color: rgba(255,255,255,0.80); }
+    .section { position: relative; z-index: 1; border-top: 1px solid rgba(255,255,255,0.07); }
+    .si { max-width: 860px; margin: 0 auto; padding: 72px 24px; }
+    .si-alt { background: rgba(255,255,255,0.015); }
+    .sr { opacity: 0; transform: translateY(12px); transition: opacity .60s ease, transform .60s ease; }
+    .sr.vis { opacity: 1; transform: none; }
+    .rupture { border-top: 1px solid rgba(255,255,255,0.07); border-bottom: 1px solid rgba(255,255,255,0.07); background: rgba(251,146,60,0.03); }
+    .cta-section { position: relative; overflow: hidden; border-top: 1px solid rgba(255,255,255,0.08); }
+    .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(249,115,22,0.10), transparent), radial-gradient(ellipse 40% 40% at 80% 100%, rgba(80,120,255,0.06), transparent); pointer-events: none; }
+    .cta-inner { position: relative; z-index: 1; max-width: 540px; margin: 0 auto; padding: 80px 20px; text-align: center; }
+    .cta-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 28px 24px 24px; text-align: left; }
+    .cta-field { width: 100%; border-radius: 12px; padding: 13px 16px; font-size: 0.875rem; outline: none; transition: border-color .2s; display: block; box-sizing: border-box; font-family: inherit; margin-bottom: 10px; }
+    .cta-field-email { background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.16); color: white; }
+    .cta-field-email::placeholder { color: rgba(255,255,255,0.28); }
+    .cta-btn { width: 100%; padding: 17px; border-radius: 12px; border: none; background: white; color: #0e1628; font-size: 1rem; font-weight: 800; cursor: pointer; transition: opacity .2s, transform .15s; letter-spacing: 0.02em; box-shadow: 0 8px 32px rgba(255,255,255,0.12); font-family: inherit; }
+    .cta-btn:hover { opacity: 0.90; transform: translateY(-2px); }
+
+    /* MOBILE */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-mobile-toggle { display: block; }
+      body { overflow-x: hidden; }
+      .navbar-inner { padding-left: 14px; padding-right: 14px; }
+
+      /* ── Boost lisibilité mobile — textes dégradés ── */
+      p[style*="color:rgba(255,255,255,0.12)"],
+      span[style*="color:rgba(255,255,255,0.12)"] { color: rgba(255,255,255,0.55) !important; }
+      p[style*="color:rgba(255,255,255,0.14)"],
+      span[style*="color:rgba(255,255,255,0.14)"] { color: rgba(255,255,255,0.55) !important; }
+      p[style*="color:rgba(255,255,255,0.16)"],
+      span[style*="color:rgba(255,255,255,0.16)"] { color: rgba(255,255,255,0.55) !important; }
+      p[style*="color:rgba(255,255,255,0.18)"],
+      span[style*="color:rgba(255,255,255,0.18)"] { color: rgba(255,255,255,0.58) !important; }
+      p[style*="color:rgba(255,255,255,0.20)"],
+      span[style*="color:rgba(255,255,255,0.20)"] { color: rgba(255,255,255,0.60) !important; }
+      p[style*="color:rgba(255,255,255,0.22)"],
+      span[style*="color:rgba(255,255,255,0.22)"] { color: rgba(255,255,255,0.62) !important; }
+      p[style*="color:rgba(255,255,255,0.25)"],
+      span[style*="color:rgba(255,255,255,0.25)"] { color: rgba(255,255,255,0.64) !important; }
+      p[style*="color:rgba(255,255,255,0.28)"],
+      span[style*="color:rgba(255,255,255,0.28)"] { color: rgba(255,255,255,0.66) !important; }
+      p[style*="color:rgba(255,255,255,0.30)"],
+      span[style*="color:rgba(255,255,255,0.30)"] { color: rgba(255,255,255,0.68) !important; }
+      p[style*="color:rgba(255,255,255,0.32)"],
+      span[style*="color:rgba(255,255,255,0.32)"] { color: rgba(255,255,255,0.70) !important; }
+      p[style*="color:rgba(255,255,255,0.35)"],
+      span[style*="color:rgba(255,255,255,0.35)"] { color: rgba(255,255,255,0.72) !important; }
+      p[style*="color:rgba(255,255,255,0.38)"],
+      span[style*="color:rgba(255,255,255,0.38)"] { color: rgba(255,255,255,0.74) !important; }
+      p[style*="color:rgba(255,255,255,0.40)"],
+      span[style*="color:rgba(255,255,255,0.40)"] { color: rgba(255,255,255,0.76) !important; }
+      p[style*="color:rgba(255,255,255,0.42)"],
+      span[style*="color:rgba(255,255,255,0.42)"] { color: rgba(255,255,255,0.78) !important; }
+      p[style*="color:rgba(255,255,255,0.45)"],
+      span[style*="color:rgba(255,255,255,0.45)"] { color: rgba(255,255,255,0.80) !important; }
+    }
+
+    .tester-inner { max-width: 580px; margin: 0 auto; padding: 80px 24px; text-align: center; }
+    .tester-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(251,146,60,0.50); margin-bottom: 16px; }
+    .tester-title { font-size: clamp(1.5rem,4vw,2.4rem); font-weight: 700; color: white; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 20px; }
+    .tester-text { font-size: 0.92rem; color: rgba(255,255,255,0.42); line-height: 1.8; margin-bottom: 12px; }
+    .tester-question { margin: 28px auto; padding: 20px 24px; background: rgba(251,146,60,0.05); border: 1px solid rgba(251,146,60,0.15); border-radius: 16px; text-align: left; }
+    .tester-question-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.15em; color: rgba(251,146,60,0.50); margin-bottom: 10px; }
+    .tester-question-text { font-size: 1rem; color: white; font-weight: 600; line-height: 1.5; }
+    .tester-btn { display: inline-block; background: white; color: #0e1628; padding: 15px 32px; border-radius: 12px; font-size: 1rem; font-weight: 800; text-decoration: none; transition: opacity .2s, transform .15s; letter-spacing: 0.01em; box-shadow: 0 8px 32px rgba(255,255,255,0.12); }
+    .tester-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+    .suggest-wrap { max-width: 480px; margin: 48px auto 0; padding: 24px; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; background: rgba(255,255,255,0.02); text-align: left; }
+    .suggest-title { font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.60); margin-bottom: 6px; }
+    .suggest-text { font-size: 0.78rem; color: rgba(255,255,255,0.32); line-height: 1.65; margin-bottom: 14px; }
+    .suggest-who { display: flex; flex-direction: column; gap: 3px; margin-bottom: 16px; padding-left: 12px; border-left: 1px solid rgba(255,255,255,0.06); }
+    .suggest-who p { font-size: 0.75rem; color: rgba(255,255,255,0.26); line-height: 1.5; }
+    .suggest-field { width: 100%; border-radius: 10px; padding: 12px 14px; font-size: 0.875rem; outline: none; transition: border-color .2s; display: block; box-sizing: border-box; font-family: inherit; background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.10); color: white; resize: vertical; min-height: 80px; }
+    .suggest-field::placeholder { color: rgba(255,255,255,0.22); }
+    .suggest-field:focus { border-color: rgba(255,255,255,0.28); }
+    .suggest-btn { margin-top: 10px; padding: 10px 18px; border-radius: 10px; border: none; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.55); font-size: 0.80rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s; font-family: inherit; }
+    .suggest-btn:hover { background: rgba(255,255,255,0.12); color: white; }
+    @media (max-width: 640px) {
+      .tester-inner { padding: 40px 16px; }
+      .tester-btn { width: 100%; text-align: center; box-sizing: border-box; }
+      .suggest-wrap { max-width: 100%; border-radius: 0; border-left: none; border-right: none; margin-left: 0; margin-right: 0; }
+      /* tester mobile handled by global boost */
+    }
+  </style>
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="b38c3c66-563e-4f47-ab5b-bbbebae68f68"></script>
+</head>
+<body class="text-white min-h-screen overflow-x-hidden">
+  <div class="pointer-events-none fixed inset-0" style="background:radial-gradient(ellipse 80% 50% at 10% -10%,rgba(255,100,60,0.11),transparent),radial-gradient(ellipse 60% 40% at 90% 110%,rgba(80,130,255,0.07),transparent);z-index:0"></div>
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" style="display:inline-flex;align-items:center;gap:0;line-height:1;text-decoration:none">
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">v</span>
+        <svg width="18" height="18" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="#f97316"/><circle cx="7.5" cy="9" r="1.25" fill="white"/><circle cx="14.5" cy="9" r="1.25" fill="white"/><ellipse cx="11" cy="14.2" rx="3" ry="2.2" fill="white"/><ellipse cx="11" cy="13.4" rx="2.2" ry="1.2" fill="#f97316"/></svg>
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">x</span>
+        <svg width="18" height="18" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="1"/><line x1="11" y1="3.5" x2="11" y2="5.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="16.5" x2="11" y2="18.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="3.5" y1="11" x2="5.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="16.5" y1="11" x2="18.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><polygon points="11,5 9.5,11 12.5,11" fill="#f97316"/><polygon points="11,17 9.5,11 12.5,11" fill="rgba(255,255,255,0.25)"/><circle cx="11" cy="11" r="1.4" fill="white"/></svg>
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">l</span>
+      </a>
+      <div class="nav-links">
+        <a href="apropos.html" class="nav-link">L'origine</a>
+        <a href="pourquoi.html" class="nav-link">Le constat</a>
+        <a href="demo.html" class="nav-link">L'approche</a>
+        <a href="suivre.html" class="nav-link-cta">Suivre →</a>
+      </div>
+      <button class="nav-mobile-toggle" onclick="toggleMobileNav()">☰</button>
+    </div>
+    <div class="nav-mobile-menu" id="mobile-nav">
+      <a href="apropos.html" class="nav-link" onclick="toggleMobileNav()">L'origine</a>
+      <a href="pourquoi.html" class="nav-link" onclick="toggleMobileNav()">Le constat</a>
+      <a href="demo.html" class="nav-link" onclick="toggleMobileNav()">L'approche</a>
+      <a href="suivre.html" class="nav-link-cta" onclick="toggleMobileNav()">Suivre →</a>
+    </div>
+  </nav>
+  <main>
+
+  <!-- ══ BLOC 1 — EMAIL (priorité) ══ -->
+  <section class="cta-section" id="email" style="border-top:none">
+    <div class="cta-inner" style="padding-top:56px;padding-bottom:64px">
+
+      <h1 style="font-size:clamp(1.6rem,4vw,2.4rem);
+        font-weight:700;color:white;letter-spacing:-0.025em;
+        line-height:1.15;margin-bottom:16px;
+        max-width:420px;margin-left:auto;margin-right:auto">
+        Dites pourquoi.<br>Pas seulement quoi.
+      </h1>
+
+      <p style="font-size:0.90rem;color:rgba(255,255,255,0.45);
+        line-height:1.7;margin-bottom:24px;
+        max-width:480px;margin-left:auto;margin-right:auto">
+        vOxOl ne retient pas juste votre position — il retient ce qui la construit.
+      </p>
+
+      <div class="cta-box">
+        <div id="cta-form">
+          <label style="display:block;font-size:0.75rem;
+            color:rgba(255,255,255,0.42);margin-bottom:6px">
+            Votre email
+            <span style="color:rgba(251,146,60,0.75)">*</span>
+          </label>
+          <input type="email" id="email-input"
+            placeholder="vous@email.com"
+            class="cta-field cta-field-email"
+            onfocus="this.style.borderColor='rgba(255,255,255,0.40)'"
+            onblur="this.style.borderColor='rgba(255,255,255,0.16)'" />
+          <p style="font-size:0.62rem;color:rgba(255,255,255,0.22);
+            margin-bottom:16px;line-height:1.65">
+            Laissez votre email pour suivre l'évolution du projet et rester dans la boucle.
+          </p>
+          <button onclick="submitEmail()" class="cta-btn">
+            Contribuer à vOxOl →
+          </button>
+          <p id="cta-error" style="display:none;font-size:0.72rem;
+            color:rgba(251,146,60,0.75);margin-top:10px;text-align:center">
+            Une erreur est survenue — réessayez dans quelques instants.
+          </p>
+        </div>
+
+        <div id="cta-success"
+          style="display:none;text-align:center;padding:20px 0 4px">
+          <p style="font-size:1rem;color:#6ee7b7;
+            font-weight:700;line-height:1.4;margin-bottom:10px">
+            ✓ Inscrit.
+          </p>
+          <p style="font-size:0.90rem;color:rgba(255,255,255,0.60);
+            line-height:1.65;margin-bottom:10px">
+            Si vous le souhaitez, répondez à la question ci-dessous —<br>
+            ce sera votre première contribution.
+          </p>
+          <p style="font-size:0.72rem;color:rgba(255,255,255,0.26);
+            line-height:1.6;font-style:italic">
+            Une opinion isolée s'oublie.<br>
+            Des milliers de raisonnements structurés, non.
+          </p>
+        </div>
+      </div>
+
+      <p style="font-size:0.78rem;color:rgba(255,255,255,0.28);
+        margin-top:16px;text-align:center;font-style:italic;line-height:1.6">
+        Et si vous le souhaitez, une première question vous attend ci-dessous 👇
+      </p>
+
+      <p style="font-size:0.68rem;color:rgba(255,255,255,0.18);
+        margin-top:10px;text-align:center">
+        Une question ?
+        <span style="color:rgba(255,255,255,0.36);
+          border-bottom:1px solid rgba(255,255,255,0.14);
+          padding-bottom:1px;cursor:pointer"
+          onclick="window.location='mai'+'lto:'+'hello.voxol'+'@'+'proton.me'">
+          Écrivez-moi
+        </span>
+      </p>
+    </div>
+  </section>
+
+
+
+  <!-- ══ BLOC 3 — PREMIÈRE QUESTION ══ -->
+  <div class="tester-inner">
+    <p class="tester-label">Première question</p>
+    <h2 class="tester-title">Participez à la première question.</h2>
+    <p style="font-size:0.75rem;color:rgba(255,255,255,0.28);line-height:1.65;
+      max-width:360px;margin:0 auto 16px;font-style:italic">
+      Demain, la question pourra venir de vous, d'un média, d'un chercheur ou d'un élu.
+    </p>
+    <p class="tester-text">Répondez librement. Pour que votre opinion ne soit pas réduite à une case cochée, un témoignage isolé ou une réaction amplifiée.</p>
+    <div class="tester-question">
+      <p class="tester-question-label">Question débattue</p>
+      <p class="tester-question-text">Faut-il créer un droit aux pauses professionnelles ?</p>
+    </div>
+
+    <a href="https://tally.so/r/KY0g9X" target="_blank" class="tester-btn">Répondre à la question →</a>
+
+    <!-- BLOC 4 — SUGGESTION -->
+    <div class="suggest-wrap">
+      <p class="suggest-title">Proposer la prochaine question</p>
+      <p class="suggest-text">Et pour vous ? Quelle question mériterait d'être cartographiée ?</p>
+      <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.32);margin-bottom:5px">Votre suggestion</label>
+      <input type="text" id="question-input"
+        placeholder="Ex : Faut-il travailler moins ?"
+        class="suggest-field"
+        style="min-height:unset;resize:none;line-height:1.6;padding:12px 14px;"
+        onfocus="this.style.borderColor='rgba(255,255,255,0.28)'"
+        onblur="this.style.borderColor='rgba(255,255,255,0.10)'" />
+      <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.32);margin-bottom:5px;margin-top:10px">Votre email <span style="color:rgba(251,146,60,0.75)">*</span></label>
+      <input type="email" id="suggest-email-input"
+        placeholder="votre@email.com"
+        class="suggest-field"
+        style="min-height:unset;resize:none;line-height:1.6;padding:12px 14px;"
+        onfocus="this.style.borderColor='rgba(255,255,255,0.28)'"
+        onblur="this.style.borderColor='rgba(255,255,255,0.10)'" />
+      <button class="suggest-btn" onclick="submitSuggestion()">Envoyer ma suggestion →</button>
+      <p id="suggest-success" style="display:none;font-size:0.80rem;color:#6ee7b7;margin-top:10px;">✓ Merci pour votre suggestion !</p>
+    </div>
+
+  </div>
+
+</main>
+  <footer style="border-top:1px solid rgba(255,255,255,0.06);padding:32px 24px;text-align:center;position:relative;z-index:1">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:0;line-height:1;text-decoration:none;opacity:0.55;transition:opacity .2s" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='0.55'">
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">v</span>
+      <svg width="16" height="16" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="#f97316"/><circle cx="7.5" cy="9" r="1.25" fill="white"/><circle cx="14.5" cy="9" r="1.25" fill="white"/><ellipse cx="11" cy="14.2" rx="3" ry="2.2" fill="white"/><ellipse cx="11" cy="13.4" rx="2.2" ry="1.2" fill="#f97316"/></svg>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">x</span>
+      <svg width="16" height="16" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="1"/><line x1="11" y1="3.5" x2="11" y2="5.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="16.5" x2="11" y2="18.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="3.5" y1="11" x2="5.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="16.5" y1="11" x2="18.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><polygon points="11,5.5 9.7,11 11,10 12.3,11" fill="#f97316"/><polygon points="11,16.5 9.7,11 11,12 12.3,11" fill="rgba(255,255,255,0.25)"/><circle cx="11" cy="11" r="1.3" fill="white"/></svg>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">l</span>
+    </a>
+    <p style="font-size:0.65rem;color:rgba(255,255,255,0.16);margin-top:12px;letter-spacing:0.04em">© 2026 — Concept en exploration</p>
+    <p style="font-size:0.72rem;color:rgba(255,255,255,0.25);margin-top:8px">Une question ou une idée ? <span id="vx-email" style="color:rgba(255,255,255,0.40);border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:1px;cursor:pointer" onclick="window.location='mai'+'lto:'+this.dataset.u+'@'+this.dataset.d" data-u="hello.voxol" data-d="proton.me">hello.voxol&#64;proton.me</span></p>
+  </footer>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    async function submitEmail() {
+      const email = document.getElementById('email-input').value.trim();
+      if (!email || !email.includes('@')) { document.getElementById('email-input').focus(); return; }
+      const btn = document.querySelector('.cta-btn');
+      document.getElementById('cta-error').style.display = 'none';
+      btn.textContent = '...'; btn.disabled = true;
+      try {
+        const res = await fetch('/api/subscribe', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ email, source: 'suivre' }) });
+        if (!res.ok) throw new Error();
+      } catch(e) {
+        btn.textContent = 'Je veux suivre →'; btn.disabled = false;
+        document.getElementById('cta-error').style.display = 'block'; return;
+      }
+      document.getElementById('cta-form').style.display = 'none';
+      document.getElementById('cta-success').style.display = 'block';
+    }
+    function toggleMobileNav() { document.getElementById('mobile-nav').classList.toggle('open'); }
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); } });
+    }, { threshold: 0.05, rootMargin: "0px 0px -20px 0px" });
+    document.querySelectorAll('.sr').forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) { el.classList.add('vis'); }
+      else { obs.observe(el); }
+    });
+    async function submitSuggestion() {
+      const val = document.getElementById('question-input').value.trim();
+      if (!val) { document.getElementById('question-input').focus(); return; }
+      const suggestEmail = document.getElementById('suggest-email-input').value.trim();
+      if (!suggestEmail || !suggestEmail.includes('@')) { document.getElementById('suggest-email-input').focus(); return; }
+      const btn = document.querySelector('.suggest-btn');
+      btn.disabled = true;
+      try {
+        await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ email: suggestEmail, source: 'suggestion', question: val, reponse: null })
+        });
+      } catch(e) { /* silencieux — on affiche le succès quand même */ }
+      document.getElementById('suggest-success').style.display = 'block';
+      document.getElementById('question-input').value = '';
+      document.getElementById('suggest-email-input').value = '';
+    }
+    // Placeholders qui défilent
+    const placeholders = [
+      "Ex : Faut-il travailler moins ?",
+      "Ex : Faut-il limiter les loyers ?",
+      "Ex : Faut-il interdire les jets privés ?",
+      "Ex : Pourquoi la défiance envers les médias augmente-t-elle ?",
+      "Ex : Qu'est-ce qui bloque vraiment la transition écologique ?",
+      "Ex : Peut-on encore débattre sereinement ?"
+    ];
+    let pi = 0;
+    const inp = document.getElementById('question-input');
+    if (inp) {
+      function rotatePlaceholder() {
+        inp.setAttribute('placeholder', placeholders[pi % placeholders.length]);
+        pi++;
+      }
+      rotatePlaceholder();
+      setInterval(rotatePlaceholder, 3000);
+    }
+  </script>

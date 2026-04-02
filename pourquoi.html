@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vOxOl — Pourquoi vOxOl</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+  <style>
+
+    body { background: #0e1628; font-family: inherit; }
+
+    /* NAVBAR */
+    .navbar { position: sticky; top: 0; z-index: 100; background: rgba(14,22,40,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .navbar-inner { max-width: 860px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-link { font-size: 0.78rem; color: rgba(255,255,255,0.42); text-decoration: none; padding: 6px 12px; border-radius: 8px; transition: color .2s, background .2s; font-weight: 500; letter-spacing: 0.01em; }
+    .nav-link:hover { color: rgba(255,255,255,0.80); background: rgba(255,255,255,0.05); }
+    .nav-link.active { color: rgba(255,255,255,0.75); }
+    .nav-link-cta { font-size: 0.78rem; font-weight: 700; background: rgba(251,146,60,0.12); color: #fdba74; border: 1px solid rgba(251,146,60,0.20); padding: 6px 14px; border-radius: 8px; text-decoration: none; transition: all .2s; }
+    .nav-link-cta:hover { background: rgba(251,146,60,0.20); border-color: rgba(251,146,60,0.35); color: #fff; }
+    .nav-mobile-toggle { display: none; cursor: pointer; color: rgba(255,255,255,0.45); background: none; border: none; font-size: 1.2rem; padding: 4px; }
+    .nav-mobile-menu { display: none; flex-direction: column; gap: 4px; padding: 12px 24px 16px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu .nav-link { font-size: 0.875rem; padding: 10px 12px; }
+    .nav-mobile-menu .nav-link-cta { font-size: 0.875rem; padding: 10px 14px; text-align: center; }
+
+    /* SHARED */
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.6)} }
+    .pulse { animation: pulse-dot 2s ease infinite; }
+    .cta-primary { background: white; color: #0c1324; padding: 13px 24px; border-radius: 12px; font-size: 0.875rem; font-weight: 700; text-decoration: none; transition: opacity .2s; letter-spacing: 0.01em; display: inline-block; }
+    .cta-primary:hover { opacity: 0.88; }
+    .cta-secondary { background: transparent; border: 1px solid rgba(255,255,255,0.16); color: rgba(255,255,255,0.55); padding: 13px 24px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; text-decoration: none; transition: all .2s; display: inline-block; }
+    .cta-secondary:hover { border-color: rgba(255,255,255,0.30); color: rgba(255,255,255,0.80); }
+    .section { position: relative; z-index: 1; border-top: 1px solid rgba(255,255,255,0.07); }
+    .si { max-width: 860px; margin: 0 auto; padding: 72px 24px; }
+    .si-alt { background: rgba(255,255,255,0.015); }
+    .sr { opacity: 0; transform: translateY(12px); transition: opacity .60s ease, transform .60s ease; }
+    .sr.vis { opacity: 1; transform: none; }
+    .rupture { border-top: 1px solid rgba(255,255,255,0.07); border-bottom: 1px solid rgba(255,255,255,0.07); background: rgba(251,146,60,0.03); }
+    .cta-section { position: relative; overflow: hidden; border-top: 1px solid rgba(255,255,255,0.08); }
+    .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(249,115,22,0.10), transparent), radial-gradient(ellipse 40% 40% at 80% 100%, rgba(80,120,255,0.06), transparent); pointer-events: none; }
+    .cta-inner { position: relative; z-index: 1; max-width: 540px; margin: 0 auto; padding: 80px 20px; text-align: center; }
+    .cta-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 28px 24px 24px; text-align: left; }
+    .cta-field { width: 100%; border-radius: 12px; padding: 13px 16px; font-size: 0.875rem; outline: none; transition: border-color .2s; display: block; box-sizing: border-box; font-family: inherit; margin-bottom: 10px; }
+    .cta-field-email { background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.16); color: white; }
+    .cta-field-email::placeholder { color: rgba(255,255,255,0.28); }
+    .cta-btn { width: 100%; padding: 17px; border-radius: 12px; border: none; background: white; color: #0e1628; font-size: 1rem; font-weight: 800; cursor: pointer; transition: opacity .2s, transform .15s; letter-spacing: 0.02em; box-shadow: 0 8px 32px rgba(255,255,255,0.12); font-family: inherit; }
+    .cta-btn:hover { opacity: 0.90; transform: translateY(-2px); }
+
+    /* MOBILE */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-mobile-toggle { display: block; }
+
+      /* Full width */
+      body { overflow-x: hidden; }
+      .navbar-inner { padding-left: 14px; padding-right: 14px; }
+
+      /* ── Boost lisibilité mobile — textes dégradés ── */
+      p[style*="color:rgba(255,255,255,0.12)"],
+      span[style*="color:rgba(255,255,255,0.12)"] { color: rgba(255,255,255,0.55) !important; }
+      p[style*="color:rgba(255,255,255,0.14)"],
+      span[style*="color:rgba(255,255,255,0.14)"] { color: rgba(255,255,255,0.55) !important; }
+      p[style*="color:rgba(255,255,255,0.16)"],
+      span[style*="color:rgba(255,255,255,0.16)"] { color: rgba(255,255,255,0.55) !important; }
+      p[style*="color:rgba(255,255,255,0.18)"],
+      span[style*="color:rgba(255,255,255,0.18)"] { color: rgba(255,255,255,0.58) !important; }
+      p[style*="color:rgba(255,255,255,0.20)"],
+      span[style*="color:rgba(255,255,255,0.20)"] { color: rgba(255,255,255,0.60) !important; }
+      p[style*="color:rgba(255,255,255,0.22)"],
+      span[style*="color:rgba(255,255,255,0.22)"] { color: rgba(255,255,255,0.62) !important; }
+      p[style*="color:rgba(255,255,255,0.25)"],
+      span[style*="color:rgba(255,255,255,0.25)"] { color: rgba(255,255,255,0.64) !important; }
+      p[style*="color:rgba(255,255,255,0.28)"],
+      span[style*="color:rgba(255,255,255,0.28)"] { color: rgba(255,255,255,0.66) !important; }
+      p[style*="color:rgba(255,255,255,0.30)"],
+      span[style*="color:rgba(255,255,255,0.30)"] { color: rgba(255,255,255,0.68) !important; }
+      p[style*="color:rgba(255,255,255,0.32)"],
+      span[style*="color:rgba(255,255,255,0.32)"] { color: rgba(255,255,255,0.70) !important; }
+      p[style*="color:rgba(255,255,255,0.35)"],
+      span[style*="color:rgba(255,255,255,0.35)"] { color: rgba(255,255,255,0.72) !important; }
+      p[style*="color:rgba(255,255,255,0.38)"],
+      span[style*="color:rgba(255,255,255,0.38)"] { color: rgba(255,255,255,0.74) !important; }
+      p[style*="color:rgba(255,255,255,0.40)"],
+      span[style*="color:rgba(255,255,255,0.40)"] { color: rgba(255,255,255,0.76) !important; }
+      p[style*="color:rgba(255,255,255,0.42)"],
+      span[style*="color:rgba(255,255,255,0.42)"] { color: rgba(255,255,255,0.78) !important; }
+      p[style*="color:rgba(255,255,255,0.45)"],
+      span[style*="color:rgba(255,255,255,0.45)"] { color: rgba(255,255,255,0.80) !important; }
+    }
+
+    .viz-frag { transform: scaleX(0); transform-origin: left; transition: transform .5s cubic-bezier(.34,1.2,.64,1); }
+    .viz-msg { opacity: 0; transform: translateY(5px); transition: opacity .4s ease .55s, transform .4s ease .55s; margin-top: 14px; }
+    .viz-msg.fin { opacity: 1; transform: none; }
+  </style>
+<script defer src="/_vercel/insights/script.js"></script>
+</head>
+<body class="text-white min-h-screen overflow-x-hidden">
+  <div class="pointer-events-none fixed inset-0" style="background:radial-gradient(ellipse 80% 50% at 10% -10%,rgba(255,100,60,0.11),transparent),radial-gradient(ellipse 60% 40% at 90% 110%,rgba(80,130,255,0.07),transparent);z-index:0"></div>
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" style="display:inline-flex;align-items:center;gap:0;line-height:1;text-decoration:none">
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">v</span>
+        <svg width="18" height="18" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="#f97316"/><circle cx="7.5" cy="9" r="1.25" fill="white"/><circle cx="14.5" cy="9" r="1.25" fill="white"/><ellipse cx="11" cy="14.2" rx="3" ry="2.2" fill="white"/><ellipse cx="11" cy="13.4" rx="2.2" ry="1.2" fill="#f97316"/></svg>
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">x</span>
+        <svg width="18" height="18" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="1"/><line x1="11" y1="3.5" x2="11" y2="5.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="16.5" x2="11" y2="18.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="3.5" y1="11" x2="5.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="16.5" y1="11" x2="18.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><polygon points="11,5 9.5,11 12.5,11" fill="#f97316"/><polygon points="11,17 9.5,11 12.5,11" fill="rgba(255,255,255,0.25)"/><circle cx="11" cy="11" r="1.4" fill="white"/></svg>
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">l</span>
+      </a>
+      <div class="nav-links">
+        <a href="apropos.html" class="nav-link">L'origine</a>
+        <a href="pourquoi.html" class="nav-link active">Le constat</a>
+        <a href="demo.html" class="nav-link">L'approche</a>
+        <a href="suivre.html" class="nav-link-cta">Suivre →</a>
+      </div>
+      <button class="nav-mobile-toggle" onclick="toggleMobileNav()">☰</button>
+    </div>
+    <div class="nav-mobile-menu" id="mobile-nav">
+      <a href="apropos.html" class="nav-link" onclick="toggleMobileNav()">L'origine</a>
+      <a href="pourquoi.html" class="nav-link active" onclick="toggleMobileNav()">Le constat</a>
+      <a href="demo.html" class="nav-link" onclick="toggleMobileNav()">L'approche</a>
+      <a href="suivre.html" class="nav-link-cta" onclick="toggleMobileNav()">Suivre →</a>
+    </div>
+  </nav>
+
+  <!-- PROBLÈME -->
+  <section class="section sr">
+    <div class="si si-alt">
+      <p style="font-size:clamp(1rem,2.8vw,1.25rem);font-weight:600;color:white;line-height:1.4;margin-bottom:16px;max-width:560px">Aujourd'hui, votre avis est transformé.</p>
+      <p style="font-size:clamp(0.92rem,2.5vw,1.05rem);color:rgba(255,255,255,0.48);line-height:1.85;margin-bottom:32px;max-width:560px">Un sondage le réduit à un chiffre. Un média en extrait un témoignage. Un réseau amplifie une réaction. À chaque fois, il perd ce qui le compose.</p>
+      <div style="display:flex;flex-direction:column;gap:20px;padding-left:16px;border-left:2px solid rgba(255,255,255,0.07)">
+        <div>
+          <p style="font-size:clamp(1.1rem,3vw,1.5rem);font-weight:700;color:white;line-height:1.2">On voit une position.</p>
+          <p style="font-size:clamp(0.88rem,2.2vw,1rem);color:rgba(255,255,255,0.32);margin-top:4px;font-style:italic">Pas ce qui la construit.</p>
+        </div>
+        <div>
+          <p style="font-size:clamp(1.1rem,3vw,1.5rem);font-weight:700;color:rgba(255,255,255,0.50);line-height:1.2">On croit voir une majorité.</p>
+          <p style="font-size:clamp(0.88rem,2.2vw,1rem);color:rgba(255,255,255,0.22);margin-top:4px;font-style:italic">Pas ce qui la compose.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RUPTURE -->
+  <div class="rupture sr" style="padding:80px 24px;text-align:center;position:relative;z-index:1">
+    <p style="font-size:clamp(1.4rem,4.5vw,2.4rem);font-weight:700;color:white;line-height:1.2;max-width:500px;margin:0 auto;letter-spacing:-0.02em">Un même "oui" peut vouloir dire<br>des choses très différentes.</p>
+    <div id="viz-a" style="margin-top:28px">
+      <button onclick="doViz()"
+        style="font-size:0.85rem;font-weight:600;
+          color:rgba(255,255,255,0.78);
+          background:rgba(255,255,255,0.06);
+          border:1px solid rgba(255,255,255,0.16);
+          padding:11px 26px;border-radius:100px;
+          cursor:pointer;font-family:inherit;
+          transition:all .2s;letter-spacing:0.01em"
+        onmouseover="this.style.background='rgba(255,255,255,0.11)';
+          this.style.borderColor='rgba(255,255,255,0.28)';
+          this.style.color='white'"
+        onmouseout="this.style.background='rgba(255,255,255,0.06)';
+          this.style.borderColor='rgba(255,255,255,0.16)';
+          this.style.color='rgba(255,255,255,0.78)'">
+        Voir la démonstration →
+      </button>
+    </div>
+    <div id="viz-b" style="display:none;max-width:440px;margin:24px auto 0;text-align:left">
+      <div style="border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:18px 20px">
+        <p style="font-size:0.65rem;color:rgba(255,255,255,0.25);margin-bottom:14px">"Faut-il interdire les smartphones à l'école ?" — <span style="color:rgba(255,255,255,0.45);font-weight:600">80% "pour"</span> · <span style="font-style:italic">Ipsos Education Monitor 2024</span></p>
+        <p style="font-size:0.60rem;color:rgba(255,255,255,0.18);margin-bottom:10px">Parmi ces 80%, les raisons principales :</p>
+        <div style="display:grid;grid-template-columns:120px 1fr;gap:8px 12px;align-items:center">
+          <div style="height:26px;border-radius:6px;background:rgba(249,115,22,0.18);border:1px solid rgba(249,115,22,0.30)" class="viz-frag"></div>
+          <p style="font-size:0.72rem;color:rgba(249,115,22,0.80);font-weight:500;margin:0">~60% — Protéger attention &amp; santé</p>
+          <div style="height:26px;border-radius:6px;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.26);transition-delay:.1s;width:53%" class="viz-frag"></div>
+          <p style="font-size:0.72rem;color:rgba(139,92,246,0.75);font-weight:500;margin:0">~20% — Règles claires</p>
+          <div style="height:26px;border-radius:6px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.22);transition-delay:.2s;width:53%" class="viz-frag"></div>
+          <p style="font-size:0.72rem;color:rgba(59,130,246,0.65);font-weight:500;margin:0">~20% — Équité sociale</p>
+        </div>
+        <p style="font-size:0.60rem;color:rgba(255,255,255,0.16);font-style:italic;margin-top:12px">Répartition fictive · Ipsos Education Monitor 2024</p>
+      </div>
+      <div class="viz-msg" id="vizMsg">
+        <p style="font-size:0.78rem;color:rgba(255,255,255,0.30);line-height:1.65;margin-bottom:14px;font-style:italic">Derrière un même "oui", des raisons différentes. Ici, elles restent lisibles. Sur d'autres sujets, elles peuvent être diffuses.</p>
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <button onclick="resetViz()" style="font-size:0.63rem;color:rgba(255,255,255,0.22);background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:4px 11px;border-radius:100px;cursor:pointer;font-family:inherit">← revenir</button>
+          <a href="demo.html" class="cta-secondary" style="font-size:0.82rem;padding:10px 20px">Voir la démonstration complète →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BASCULE -->
+  <div class="sr" style="border-top:1px solid rgba(255,255,255,0.07);padding:48px 24px;position:relative;z-index:1;max-width:860px;margin:0 auto">
+    <p style="font-size:clamp(0.88rem,2.2vw,1.05rem);color:rgba(255,255,255,0.42);line-height:1.85;font-style:italic;margin-bottom:16px">Et pourtant, c'est tout ce qu'on voit.</p>
+    <div style="display:flex;flex-direction:column;gap:6px;padding-left:16px;border-left:2px solid rgba(255,255,255,0.08)">
+      <p style="font-size:clamp(1rem,2.5vw,1.25rem);font-weight:600;color:rgba(255,255,255,0.75);line-height:1.3">Un chiffre.</p>
+      <p style="font-size:clamp(1rem,2.5vw,1.25rem);font-weight:600;color:rgba(255,255,255,0.45);line-height:1.3">Une position.</p>
+      <p style="font-size:clamp(1rem,2.5vw,1.25rem);font-weight:600;color:rgba(255,255,255,0.22);line-height:1.3">Rien de ce qui les compose.</p>
+    </div>
+  </div>
+
+  <!-- PROJECTION -->
+  <section class="section sr" style="background:rgba(249,115,22,0.03);border-top:1px solid rgba(249,115,22,0.08);border-bottom:1px solid rgba(249,115,22,0.08)">
+    <div class="si">
+      <p style="font-size:0.68rem;text-transform:uppercase;letter-spacing:0.20em;color:rgba(251,146,60,0.50);margin-bottom:20px">Imaginez</p>
+      <p style="font-size:clamp(1.2rem,3.2vw,1.7rem);font-weight:700;color:white;line-height:1.3;max-width:540px;margin-bottom:12px;letter-spacing:-0.02em">Deux personnes disent "oui"…<br>pour des raisons totalement différentes.</p>
+      <p style="font-size:clamp(0.92rem,2.5vw,1.05rem);color:rgba(255,255,255,0.42);line-height:1.8;max-width:500px;margin-bottom:36px">Aujourd'hui, on les regroupe. On suppose qu'elles pensent pareil. vOxOl rend visibles les logiques qui les séparent.</p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:560px;margin-bottom:36px">
+        <div style="border-radius:14px;border:1px solid rgba(255,255,255,0.07);background:rgba(255,255,255,0.025);padding:18px 20px">
+          <p style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(255,255,255,0.22);margin-bottom:10px">Aujourd'hui</p>
+          <p style="font-size:0.88rem;color:rgba(255,255,255,0.45);line-height:1.65">Un bloc. Un chiffre.<br>Des logiques mélangées, non mesurées.</p>
+        </div>
+        <div style="border-radius:14px;border:1px solid rgba(251,146,60,0.30);background:rgba(251,146,60,0.07);padding:18px 20px">
+          <p style="font-size:0.62rem;text-transform:uppercase;letter-spacing:0.15em;color:#fdba74;margin-bottom:10px">Avec vOxOl</p>
+          <p style="font-size:0.88rem;color:rgba(255,255,255,0.72);line-height:1.65">Des logiques distinctes — <span style="color:white;font-weight:600">visibles, mesurées, comparables.</span></p>
+        </div>
+      </div>
+      <p style="font-size:0.70rem;text-transform:uppercase;letter-spacing:0.15em;color:rgba(251,146,60,0.40);margin-bottom:12px">Ce que ça change, concrètement.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:560px;margin-bottom:32px">
+        <div style="border-radius:14px;border:1px solid rgba(251,146,60,0.12);background:rgba(251,146,60,0.04);padding:16px">
+          <p style="font-size:1rem;margin-bottom:8px">🗳️</p>
+          <p style="font-size:0.78rem;font-weight:600;color:white;margin-bottom:4px">Citoyens</p>
+          <p style="font-size:0.75rem;color:rgba(255,255,255,0.42);line-height:1.55">Votre nuance cesse d'être perdue.</p>
+        </div>
+        <div style="border-radius:14px;border:1px solid rgba(251,146,60,0.12);background:rgba(251,146,60,0.04);padding:16px">
+          <p style="font-size:1rem;margin-bottom:8px">📰</p>
+          <p style="font-size:0.78rem;font-weight:600;color:white;margin-bottom:4px">Médias</p>
+          <p style="font-size:0.75rem;color:rgba(255,255,255,0.42);line-height:1.55">On ne raconte plus, on comprend.</p>
+        </div>
+        <div style="border-radius:14px;border:1px solid rgba(251,146,60,0.12);background:rgba(251,146,60,0.04);padding:16px">
+          <p style="font-size:1rem;margin-bottom:8px">🏛️</p>
+          <p style="font-size:0.78rem;font-weight:600;color:white;margin-bottom:4px">Décideurs</p>
+          <p style="font-size:0.75rem;color:rgba(255,255,255,0.42);line-height:1.55">Vous voyez la majorité autrement.</p>
+        </div>
+      </div>
+      <p style="font-size:0.88rem;color:rgba(255,255,255,0.35);line-height:1.75;max-width:480px;margin-bottom:32px">Les camps cèdent. Les raisons apparaissent.</p>
+      <div style="max-width:560px;padding-top:24px;border-top:1px solid rgba(249,115,22,0.12);text-align:center">
+        <p style="font-size:clamp(1rem,2.5vw,1.2rem);font-weight:700;color:#fdba74;line-height:1.4;letter-spacing:-0.01em">Le débat ne change pas. Il devient enfin lisible.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- POUR QUI -->
+  <section class="section sr">
+    <div class="si si-alt">
+      <p style="font-size:clamp(0.88rem,2.2vw,1rem);color:rgba(255,255,255,0.25);line-height:2;margin-bottom:6px">Ni un sondage. Ni un média. Ni un réseau.</p>
+      <p style="font-size:clamp(1.4rem,4vw,2.2rem);font-weight:700;color:#fdba74;line-height:1.15;margin-bottom:28px">Ce qui manquait pour lire le débat.</p>
+      <p style="font-size:0.70rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.22);margin-bottom:12px">Pour qui ?</p>
+      <div style="display:flex;flex-direction:column;gap:8px;max-width:480px">
+        <p style="font-size:0.88rem;color:rgba(255,255,255,0.32);line-height:1.5;padding-left:14px;border-left:1px solid rgba(255,255,255,0.07)">🗳️ Citoyens qui veulent dire pourquoi, pas seulement quoi.</p>
+        <p style="font-size:0.88rem;color:rgba(255,255,255,0.28);line-height:1.5;padding-left:14px;border-left:1px solid rgba(255,255,255,0.06)">📰 Journalistes qui cherchent à lire le débat autrement.</p>
+        <p style="font-size:0.88rem;color:rgba(255,255,255,0.28);line-height:1.5;padding-left:14px;border-left:1px solid rgba(255,255,255,0.05)">🏛️ Institutions qui veulent comprendre une opinion publique complexe.</p>
+        <p style="font-size:0.88rem;color:rgba(255,255,255,0.28);line-height:1.5;padding-left:14px;border-left:1px solid rgba(255,255,255,0.04)">🔬 Chercheurs qui analysent les dynamiques d'opinion.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROMESSE -->
+  <section class="section sr">
+    <div class="si">
+      <p style="font-size:0.70rem;text-transform:uppercase;letter-spacing:0.18em;color:rgba(255,255,255,0.20);margin-bottom:18px">Avec vOxOl, les opinions deviennent</p>
+      <div style="display:flex;flex-direction:column;gap:14px;max-width:380px">
+        <p style="font-size:clamp(1.5rem,4.5vw,2.6rem);font-weight:800;color:white;letter-spacing:-0.03em;line-height:1.1">Visibles.</p>
+        <p style="font-size:clamp(1.5rem,4.5vw,2.6rem);font-weight:800;color:rgba(255,255,255,0.32);letter-spacing:-0.03em;line-height:1.1">Mesurées.</p>
+        <p style="font-size:clamp(1.5rem,4.5vw,2.6rem);font-weight:800;color:rgba(255,255,255,0.14);letter-spacing:-0.03em;line-height:1.1">Comparables.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA FINAL -->
+  <section style="position:relative;overflow:hidden;
+    border-top:1px solid rgba(255,255,255,0.08);
+    background:radial-gradient(ellipse 60% 50% at 50% 0%,
+      rgba(249,115,22,0.07),transparent)">
+    <div style="position:relative;z-index:1;
+      max-width:480px;margin:0 auto;
+      padding:72px 24px;text-align:center">
+      <p style="font-size:0.70rem;text-transform:uppercase;
+        letter-spacing:0.16em;color:rgba(251,146,60,0.50);
+        margin-bottom:16px">Prochaine étape</p>
+      <p style="font-size:clamp(1.2rem,3vw,1.7rem);
+        font-weight:700;color:white;line-height:1.25;
+        margin-bottom:10px;letter-spacing:-0.02em">
+        vOxOl ne change pas le débat.<br>
+        Il révèle ce qui le compose.
+      </p>
+      <p style="font-size:0.85rem;color:rgba(255,255,255,0.32);
+        margin-bottom:28px;line-height:1.65">
+        Contribuer maintenant, c'est aider vOxOl
+        à rendre les logiques lisibles.
+      </p>
+      <a href="suivre.html#email"
+        style="display:inline-block;background:white;
+          color:#0e1628;padding:14px 32px;border-radius:12px;
+          font-size:0.95rem;font-weight:700;
+          text-decoration:none;letter-spacing:0.01em;
+          transition:opacity .2s"
+        onmouseover="this.style.opacity='0.88'"
+        onmouseout="this.style.opacity='1'">
+        Contribuer à vOxOl →
+      </a>
+
+      <p style="margin-top:16px;font-size:0.78rem;
+        color:rgba(255,255,255,0.28);line-height:1.6">
+        Ou <a href="demo.html"
+          style="color:rgba(255,255,255,0.48);
+            border-bottom:1px solid rgba(255,255,255,0.20);
+            padding-bottom:1px;text-decoration:none">
+          explorer l'approche en détail →
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <footer style="border-top:1px solid rgba(255,255,255,0.06);padding:32px 24px;text-align:center;position:relative;z-index:1">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:0;line-height:1;text-decoration:none;opacity:0.55;transition:opacity .2s" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='0.55'">
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">v</span>
+      <svg width="16" height="16" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="#f97316"/><circle cx="7.5" cy="9" r="1.25" fill="white"/><circle cx="14.5" cy="9" r="1.25" fill="white"/><ellipse cx="11" cy="14.2" rx="3" ry="2.2" fill="white"/><ellipse cx="11" cy="13.4" rx="2.2" ry="1.2" fill="#f97316"/></svg>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">x</span>
+      <svg width="16" height="16" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="1"/><line x1="11" y1="3.5" x2="11" y2="5.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="16.5" x2="11" y2="18.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="3.5" y1="11" x2="5.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="16.5" y1="11" x2="18.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><polygon points="11,5.5 9.7,11 11,10 12.3,11" fill="#f97316"/><polygon points="11,16.5 9.7,11 11,12 12.3,11" fill="rgba(255,255,255,0.25)"/><circle cx="11" cy="11" r="1.3" fill="white"/></svg>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">l</span>
+    </a>
+    <p style="font-size:0.65rem;color:rgba(255,255,255,0.16);margin-top:12px;letter-spacing:0.04em">© 2026 — Concept en exploration</p>
+    <p style="font-size:0.72rem;color:rgba(255,255,255,0.25);margin-top:8px">Une question ou une idée ? <span id="vx-email" style="color:rgba(255,255,255,0.40);border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:1px;cursor:pointer" onclick="window.location='mai'+'lto:'+this.dataset.u+'@'+this.dataset.d" data-u="hello.voxol" data-d="proton.me">hello.voxol&#64;proton.me</span></p>
+  </footer>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    function toggleMobileNav() { document.getElementById('mobile-nav').classList.toggle('open'); }
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); } });
+    }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+    document.querySelectorAll('.sr').forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) { el.classList.add('vis'); }
+      else { obs.observe(el); }
+    });
+    function doViz() {
+      document.getElementById('viz-a').style.display = 'none';
+      document.getElementById('viz-b').style.display = 'block';
+      setTimeout(() => {
+        document.querySelectorAll('#viz-b .viz-frag').forEach(f => f.style.transform = 'scaleX(1)');
+        setTimeout(() => document.getElementById('vizMsg').classList.add('fin'), 600);
+      }, 40);
+    }
+    function resetViz() {
+      document.querySelectorAll('#viz-b .viz-frag').forEach(f => f.style.transform = 'scaleX(0)');
+      document.getElementById('vizMsg').classList.remove('fin');
+      setTimeout(() => { document.getElementById('viz-b').style.display='none'; document.getElementById('viz-a').style.display='block'; }, 400);
+    }
+    async function submitEmail() {
+      const email = document.getElementById('email-input').value.trim();
+      if (!email || !email.includes('@')) { document.getElementById('email-input').focus(); return; }
+      const btn = document.querySelector('.cta-btn');
+      document.getElementById('cta-error').style.display = 'none';
+      btn.textContent = '...'; btn.disabled = true;
+      try {
+        const res = await fetch('/api/subscribe', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ email, source: 'constat' }) });
+        if (!res.ok) throw new Error('server_error');
+      } catch(e) {
+        btn.textContent = 'Je veux suivre →'; btn.disabled = false;
+        document.getElementById('cta-error').style.display = 'block'; return;
+      }
+      document.getElementById('cta-form').style.display = 'none';
+      document.getElementById('cta-success').style.display = 'block';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vOxOl — Donnez votre avis. Comprenez où il se situe. Faites-le compter.</title>
+  <meta name="description" content="Les sondages comptent les positions. vOxOl révèle les raisons derrière le débat — et où votre raisonnement se situe parmi les autres." />
+
+  <!-- Open Graph / Facebook / LinkedIn / WhatsApp -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://voxol.org/" />
+  <meta property="og:title" content="Donnez votre avis. Découvrez où votre raisonnement se situe dans le débat." />
+  <meta property="og:description" content="Les sondages comptent les positions. vOxOl révèle les raisons derrière le débat — et où votre raisonnement se situe parmi les autres." />
+  <meta property="og:site_name" content="vOxOl" />
+  <meta property="og:locale" content="fr_FR" />
+
+  <!-- Twitter / X -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Donnez votre avis. Découvrez où votre raisonnement se situe dans le débat." />
+  <meta name="twitter:description" content="Les sondages comptent les positions. vOxOl révèle les raisons derrière le débat — et où votre raisonnement se situe parmi les autres." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+  <style>
+    body { background: #0e1628; font-family: inherit; overflow-x: hidden; }
+    html { overflow-x: hidden; }
+
+    /* NAVBAR */
+    .navbar { position: sticky; top: 0; z-index: 100; background: rgba(14,22,40,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .navbar-inner { max-width: 860px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-link { font-size: 0.78rem; color: rgba(255,255,255,0.42); text-decoration: none; padding: 6px 12px; border-radius: 8px; transition: color .2s, background .2s; font-weight: 500; letter-spacing: 0.01em; }
+    .nav-link:hover { color: rgba(255,255,255,0.80); background: rgba(255,255,255,0.05); }
+    .nav-link.active { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.04); }
+    .nav-link-cta { font-size: 0.78rem; font-weight: 700; background: rgba(251,146,60,0.12); color: #fdba74; border: 1px solid rgba(251,146,60,0.20); padding: 6px 14px; border-radius: 8px; text-decoration: none; transition: all .2s; }
+    .nav-link-cta:hover { background: rgba(251,146,60,0.20); border-color: rgba(251,146,60,0.35); color: #fff; }
+    .nav-mobile-toggle { display: none; cursor: pointer; color: rgba(255,255,255,0.45); background: none; border: none; font-size: 1.2rem; padding: 4px; }
+    .nav-mobile-menu { display: none; flex-direction: column; gap: 4px; padding: 12px 24px 16px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu .nav-link { font-size: 0.875rem; padding: 10px 12px; }
+    .nav-mobile-menu .nav-link-cta { font-size: 0.875rem; padding: 10px 14px; text-align: center; }
+
+    /* SHARED */
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.6)} }
+    .pulse { animation: pulse-dot 2s ease infinite; }
+    .cta-primary { background: white; color: #0c1324; padding: 13px 24px; border-radius: 12px; font-size: 0.875rem; font-weight: 700; text-decoration: none; transition: opacity .2s; letter-spacing: 0.01em; display: inline-block; }
+    .cta-primary:hover { opacity: 0.88; }
+    .cta-secondary { background: transparent; border: 1px solid rgba(255,255,255,0.16); color: rgba(255,255,255,0.55); padding: 13px 24px; border-radius: 12px; font-size: 0.875rem; font-weight: 500; text-decoration: none; transition: all .2s; display: inline-block; }
+    .cta-secondary:hover { border-color: rgba(255,255,255,0.30); color: rgba(255,255,255,0.80); }
+    .section { position: relative; z-index: 1; border-top: 1px solid rgba(255,255,255,0.07); }
+    .si { max-width: 860px; margin: 0 auto; padding: 64px 24px; }
+    .si-alt { background: rgba(255,255,255,0.015); }
+    .sr { opacity: 0; transform: translateY(12px); transition: opacity .60s ease, transform .60s ease; }
+    .sr.vis { opacity: 1; transform: none; }
+    .section-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(255,255,255,0.32); margin-bottom: 12px; }
+    .section-label.coral { color: rgba(251,146,60,0.60); }
+    .section-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 700; color: white; line-height: 1.2; margin-bottom: 32px; letter-spacing: -0.02em; max-width: 580px; }
+
+    /* HERO */
+    .hero-section { position: relative; z-index: 10; max-width: 860px; margin: 0 auto; padding: 48px 24px 64px; }
+    .hero-glow { position: absolute; top: 0; left: 0; right: 0; height: 420px; background: radial-gradient(ellipse at 28% 50%, rgba(249,115,22,0.10), transparent 68%); pointer-events: none; z-index: 0; }
+    .hero-inner { position: relative; z-index: 1; max-width: 680px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 7px; border: 1px solid rgba(255,255,255,0.10); background: rgba(255,255,255,0.04); border-radius: 100px; padding: 4px 13px; font-size: 0.68rem; color: rgba(255,255,255,0.38); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 26px; }
+    .hero-verbs { font-size: clamp(2.2rem, 6.5vw, 4rem); font-weight: 800; letter-spacing: -0.035em; line-height: 1.05; color: white; margin-bottom: 22px; }
+    .hero-verbs .v1, .hero-verbs .v2 { display: block; color: white; }
+    .hero-verbs .v3 { display: block; color: #f97316; }
+    .hero-pave-block { margin-bottom: 26px; max-width: 580px; }
+    .hero-pave-lines { font-size: clamp(0.95rem, 2.1vw, 1.06rem); color: rgba(255,255,255,0.45); line-height: 1.8; margin-bottom: 16px; font-weight: 400; }
+    .hero-pave { font-size: clamp(0.98rem, 2.15vw, 1.08rem); color: rgba(255,255,255,0.78); line-height: 1.7; margin-bottom: 16px; font-weight: 400; }
+    .hero-pave strong { color: white; font-weight: 600; }
+    .hero-pave-2 { font-size: clamp(0.88rem, 1.9vw, 0.98rem); color: rgba(255,255,255,0.45); line-height: 1.7; max-width: 560px; margin-bottom: 0; }
+    .hero-pave-2 strong { color: rgba(255,255,255,0.78); font-weight: 600; }
+
+    /* § 2 PROBLÈME */
+    .pb-bloc { max-width: 620px; }
+    .pb-lead { font-size: clamp(1.05rem, 2.6vw, 1.25rem); font-weight: 600; color: white; line-height: 1.4; margin-bottom: 18px; letter-spacing: -0.005em; }
+    .pb-body { font-size: clamp(0.92rem, 2.3vw, 1.02rem); color: rgba(255,255,255,0.50); line-height: 1.85; margin-bottom: 28px; }
+    .pb-list { display: flex; flex-direction: column; gap: 16px; padding-left: 18px; border-left: 2px solid rgba(255,255,255,0.08); }
+    .pb-item-pos { font-size: clamp(1rem, 2.4vw, 1.18rem); font-weight: 700; color: white; line-height: 1.25; }
+    .pb-item-fade { font-size: clamp(0.98rem, 2.3vw, 1.15rem); font-weight: 700; color: rgba(255,255,255,0.48); line-height: 1.25; }
+    .pb-item-fade2 { font-size: clamp(0.95rem, 2.2vw, 1.10rem); font-weight: 700; color: rgba(255,255,255,0.24); line-height: 1.25; }
+    .pb-item-sub { font-size: 0.85rem; color: rgba(255,255,255,0.30); margin-top: 3px; font-style: italic; }
+
+    /* § 2 — Bloc "why now" en clôture du Constat */
+    .pb-whynow { margin-top: 28px; padding: 18px 22px; border-left: 2px solid rgba(251,146,60,0.45); background: rgba(251,146,60,0.04); border-radius: 0 10px 10px 0; }
+    .pb-whynow-lbl { font-size: 0.64rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(251,146,60,0.75); margin-bottom: 8px; }
+    .pb-whynow-text { font-size: clamp(0.95rem, 2.2vw, 1.04rem); color: rgba(255,255,255,0.72); line-height: 1.7; }
+    .pb-whynow-text strong { color: white; font-weight: 600; }
+
+    /* § 3 SOLUTION */
+    .steps { display: flex; flex-direction: column; gap: 10px; }
+    .step-row { display: flex; gap: 16px; padding: 18px 22px; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; align-items: flex-start; }
+    .step-num { width: 30px; height: 30px; border-radius: 50%; background: rgba(251,146,60,0.12); border: 1px solid rgba(251,146,60,0.35); color: #fdba74; font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .step-title { font-size: 0.95rem; font-weight: 700; color: white; margin-bottom: 5px; letter-spacing: -0.005em; }
+    .step-desc { font-size: 0.82rem; color: rgba(255,255,255,0.48); line-height: 1.7; }
+
+    /* § 4 EXEMPLE 80% (CLIQUABLE) */
+    .ex-intro { font-size: clamp(0.92rem, 2.2vw, 1rem); color: rgba(255,255,255,0.50); line-height: 1.75; margin-bottom: 28px; max-width: 560px; font-style: italic; }
+    .fracture-wrap { cursor: pointer; text-align: center; padding: 8px; border-radius: 20px; transition: background .3s; }
+    .fracture-wrap:hover .blk-unified { border-color: rgba(251,146,60,0.55); background: rgba(251,146,60,0.10); }
+    .blk-unified { display: inline-block; padding: 38px 60px; border-radius: 16px; background: rgba(251,146,60,0.06); border: 1px solid rgba(251,146,60,0.25); transition: all .3s; }
+    .blk-pct { font-size: clamp(3rem, 8vw, 5rem); font-weight: 800; color: white; letter-spacing: -0.04em; line-height: 1; }
+    .blk-sub { font-size: 0.88rem; color: rgba(255,255,255,0.50); margin-top: 6px; font-style: italic; }
+    .blk-hint { margin-top: 18px; font-size: 0.75rem; color: rgba(251,146,60,0.60); letter-spacing: 0.10em; text-transform: uppercase; font-weight: 600; animation: pulse-hint 2.5s ease infinite; }
+    @keyframes pulse-hint { 0%,100%{opacity:.6} 50%{opacity:1} }
+    .blk-frags { display: flex; flex-direction: column; gap: 10px; max-width: 520px; margin: 0 auto; }
+    .blk-frag { display: flex; align-items: center; gap: 14px; padding: 14px 18px; background: rgba(255,255,255,0.04); border-radius: 10px; border-left: 3px solid; text-align: left; opacity: 0; transform: translateX(-10px); transition: opacity .4s, transform .4s; }
+    .blk-frag.a { border-color: #fb923c; }
+    .blk-frag.b { border-color: #a78bfa; }
+    .blk-frag.c { border-color: #93c5fd; }
+    .blk-frag.show { opacity: 1; transform: none; }
+    .blk-frag-pct { font-size: 1rem; font-weight: 700; color: white; min-width: 50px; }
+    .blk-frag-body { flex: 1; }
+    .blk-frag-name { font-size: 0.88rem; font-weight: 600; color: white; margin-bottom: 2px; }
+    .blk-frag-desc { font-size: 0.75rem; color: rgba(255,255,255,0.42); font-style: italic; }
+    .blk-msg { margin-top: 22px; opacity: 0; transform: translateY(6px); transition: opacity .5s .4s, transform .5s .4s; }
+    .blk-msg.show { opacity: 1; transform: none; }
+    .blk-msg-title { font-size: 1.05rem; font-weight: 700; color: white; margin-bottom: 6px; letter-spacing: -0.005em; }
+    .blk-msg-sub { font-size: 0.85rem; color: rgba(255,255,255,0.55); font-style: italic; margin-bottom: 18px; }
+    .blk-reset { margin-top: 6px; font-size: 0.72rem; color: rgba(255,255,255,0.35); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.10); padding: 6px 14px; border-radius: 100px; cursor: pointer; font-family: inherit; }
+    .blk-reset:hover { color: rgba(255,255,255,0.70); border-color: rgba(255,255,255,0.22); }
+    .blk-source { font-size: 0.65rem; color: rgba(255,255,255,0.20); font-style: italic; margin-top: 14px; text-align: center; }
+    .ex-link { margin-top: 28px; font-size: 0.82rem; color: rgba(251,146,60,0.70); border-bottom: 1px solid rgba(251,146,60,0.28); padding-bottom: 1px; text-decoration: none; display: inline-block; }
+    .ex-link:hover { color: #fdba74; border-color: rgba(251,146,60,0.55); }
+
+    /* § 5 BÉNÉFICES */
+    .cibles-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .cible { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; padding: 24px 22px; transition: border-color .25s, background .25s; display: flex; flex-direction: column; }
+    .cible:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.14); }
+    .cible-icon { font-size: 1.35rem; margin-bottom: 12px; }
+    .cible-who { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(251,146,60,0.80); margin-bottom: 10px; }
+    .cible-title { font-size: 1rem; font-weight: 700; color: white; margin-bottom: 10px; line-height: 1.3; letter-spacing: -0.01em; }
+    .cible-body { font-size: 0.82rem; color: rgba(255,255,255,0.50); line-height: 1.65; margin-bottom: 16px; flex: 1; }
+    .cible-body em { color: rgba(255,255,255,0.42); font-style: italic; }
+    .cible-action { font-size: 0.78rem; color: rgba(251,146,60,0.75); font-weight: 600; font-style: italic; }
+
+    /* § 6 AUJOURD'HUI / DEMAIN */
+    .ad-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .ad-card { padding: 26px 24px; border-radius: 16px; border: 1px solid; }
+    .ad-today { background: rgba(255,255,255,0.02); border-color: rgba(255,255,255,0.08); }
+    .ad-tomorrow { background: rgba(251,146,60,0.05); border-color: rgba(251,146,60,0.20); }
+    .ad-label { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 14px; }
+    .ad-today .ad-label { color: rgba(255,255,255,0.32); }
+    .ad-tomorrow .ad-label { color: #fdba74; }
+    .ad-text { font-size: 0.9rem; line-height: 1.75; }
+    .ad-today .ad-text { color: rgba(255,255,255,0.55); }
+    .ad-tomorrow .ad-text { color: rgba(255,255,255,0.80); }
+    .ad-tomorrow .ad-text strong { color: white; font-weight: 600; }
+
+    /* § 7 FONDATEUR */
+    .origin-block { max-width: 640px; }
+    .origin-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(251,146,60,0.60); margin-bottom: 16px; }
+    .origin-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.35rem, 3.5vw, 1.85rem); font-weight: 700; color: white; line-height: 1.3; margin-bottom: 22px; letter-spacing: -0.01em; }
+    .origin-body { font-size: 0.95rem; color: rgba(255,255,255,0.58); line-height: 1.85; margin-bottom: 14px; }
+    .origin-body em { color: rgba(255,255,255,0.50); font-style: italic; }
+    .origin-body strong { color: white; font-weight: 600; }
+    .origin-sign { font-size: 0.88rem; color: rgba(255,255,255,0.50); font-style: italic; margin-top: 18px; margin-bottom: 14px; }
+    .origin-link { font-size: 0.82rem; color: rgba(251,146,60,0.75); border-bottom: 1px solid rgba(251,146,60,0.28); padding-bottom: 1px; text-decoration: none; font-weight: 500; }
+    .origin-link:hover { color: #fdba74; border-color: rgba(251,146,60,0.55); }
+
+    /* § 8 PARTICIPER */
+    .cta-section { position: relative; overflow: hidden; border-top: 1px solid rgba(255,255,255,0.08); }
+    .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(249,115,22,0.12), transparent), radial-gradient(ellipse 40% 40% at 80% 100%, rgba(80,120,255,0.06), transparent); pointer-events: none; }
+    .cta-inner-final { position: relative; z-index: 1; max-width: 540px; margin: 0 auto; padding: 84px 24px; text-align: center; }
+    .cta-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.35rem, 3.5vw, 1.9rem); font-weight: 700; color: white; line-height: 1.3; margin-bottom: 14px; letter-spacing: -0.01em; }
+    .cta-sub { font-size: 0.95rem; color: rgba(255,255,255,0.50); line-height: 1.7; margin-bottom: 28px; }
+    .cta-sub strong { color: white; font-weight: 600; }
+    .cta-btn-final { display: inline-block; background: white; color: #0e1628; padding: 15px 34px; border-radius: 12px; font-size: 0.95rem; font-weight: 700; text-decoration: none; letter-spacing: 0.01em; transition: opacity .2s, transform .15s; box-shadow: 0 8px 32px rgba(255,255,255,0.08); }
+    .cta-btn-final:hover { opacity: 0.90; transform: translateY(-2px); }
+    .cta-finale { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: rgba(255,255,255,0.50); line-height: 1.5; margin-top: 32px; max-width: 440px; margin-left: auto; margin-right: auto; }
+    .cta-finale strong { color: white; font-weight: 700; font-style: italic; }
+    .cta-secondary-link { display: inline-block; margin-top: 16px; font-size: 0.82rem; color: rgba(255,255,255,0.45); text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.14); padding-bottom: 2px; }
+    .cta-secondary-link:hover { color: rgba(255,255,255,0.78); border-color: rgba(255,255,255,0.30); }
+
+    /* § 4BIS VISION PRODUIT — MOCKUP PHONE INTERACTIF */
+    .mockup-disclaimer { display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px; border-radius: 100px; background: rgba(251,146,60,0.08); border: 1px solid rgba(251,146,60,0.22); font-size: 0.68rem; color: rgba(251,146,60,0.85); letter-spacing: 0.10em; text-transform: uppercase; font-weight: 600; margin-bottom: 18px; }
+    .mockup-disclaimer::before { content: '◌'; font-size: 0.9rem; color: #fdba74; }
+
+    /* Layout : phone à gauche, 3 captions empilées à droite */
+    .vp-wrap { display: grid; grid-template-columns: auto 1fr; gap: 56px; margin-top: 48px; align-items: center; }
+    .vp-phone-col { display: flex; justify-content: center; }
+    .vp-captions { display: flex; flex-direction: column; gap: 20px; max-width: 380px; }
+    .vp-cap { padding: 18px 20px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.02); cursor: pointer; transition: all .25s; }
+    .vp-cap.active { border-color: rgba(251,146,60,0.35); background: rgba(251,146,60,0.05); }
+    .vp-cap:hover:not(.active) { border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.035); }
+    .vp-cap-lbl { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.40); margin-bottom: 8px; transition: color .25s; }
+    .vp-cap.active .vp-cap-lbl { color: #fdba74; }
+    .vp-cap-title { font-size: 1rem; font-weight: 700; color: white; margin-bottom: 6px; letter-spacing: -0.005em; line-height: 1.25; }
+    .vp-cap-desc { font-size: 0.82rem; color: rgba(255,255,255,0.52); line-height: 1.6; }
+
+    /* Phone shell */
+    .vp-phone-outer { width: 280px; border-radius: 40px; background: #0c0c10; padding: 10px; box-shadow: 0 40px 100px rgba(0,0,0,.6), 0 0 0 1.5px rgba(255,255,255,.08); position: relative; }
+    .vp-phone-outer::before { content: ''; position: absolute; top: 18px; left: 50%; transform: translateX(-50%); width: 64px; height: 5px; background: rgba(255,255,255,.07); border-radius: 3px; z-index: 3; }
+    .vp-screen { width: 100%; height: 560px; border-radius: 30px; overflow: hidden; background: #FAF7F2; display: flex; flex-direction: column; font-family: 'DM Sans', 'Inter', sans-serif; color: #18140F; position: relative; }
+
+    /* Status bar */
+    .vp-sb { height: 28px; padding: 0 18px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; font-size: 10px; font-weight: 700; color: #18140F; }
+    .vp-sb.navy { background: #0B1C38; color: white; }
+    .vp-sb .dots { display: flex; gap: 2.5px; opacity: .4; }
+    .vp-sb .dots span { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+    /* App header */
+    .vp-hdr { padding: 3px 14px 8px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; border-bottom: 1px solid #E6DDD0; background: white; }
+    .vp-hdr-logo { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; font-style: italic; color: #18140F; letter-spacing: -.01em; }
+    .vp-hdr-logo .lo { color: #E04E2C; }
+    .vp-cert-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px 3px 7px; background: rgba(196,144,58,.13); border: 1px solid rgba(196,144,58,.28); border-radius: 100px; font-size: 8.5px; font-weight: 700; color: #A07628; letter-spacing: .03em; }
+    .vp-cert-pill::before { content: '✦'; color: #C4903A; font-size: 9px; }
+
+    /* Tab bar — CLIQUABLE */
+    .vp-tabs { display: flex; border-bottom: 1.5px solid #E6DDD0; flex-shrink: 0; background: white; }
+    .vp-tab { flex: 1; padding: 9px 4px 8px; display: flex; flex-direction: column; align-items: center; gap: 3px; cursor: pointer; border: none; border-bottom: 2px solid transparent; background: none; font-family: inherit; transition: border-color .18s; }
+    .vp-tab.on { border-bottom-color: #E04E2C; }
+    .vp-tab-ico { font-size: 13px; line-height: 1; }
+    .vp-tab-lbl { font-size: 7.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #8A7D70; transition: color .18s; }
+    .vp-tab.on .vp-tab-lbl { color: #E04E2C; }
+
+    /* Screens */
+    .vp-screen-wrap { flex: 1; overflow: hidden; position: relative; }
+    .vp-page { display: none; flex-direction: column; height: 100%; }
+    .vp-page.on { display: flex; }
+    .vp-scroll { flex: 1; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .vp-scroll::-webkit-scrollbar { display: none; }
+    .vp-scroll-inner { padding: 14px 15px 80px; }
+
+    /* === PAGE PROFIL === */
+    .vp-p-hdr { background: #0B1C38; padding: 14px 16px 14px; color: white; margin: 0 -15px 12px; display: flex; gap: 11px; align-items: flex-start; }
+    .vp-p-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #E04E2C, #C4903A); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; color: white; flex-shrink: 0; }
+    .vp-p-name { font-size: 12px; font-weight: 700; margin-bottom: 2px; }
+    .vp-p-sub { font-size: 9.5px; color: rgba(255,255,255,.58); line-height: 1.45; }
+    .vp-p-cert { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; background: rgba(196,144,58,.18); border: 1px solid rgba(196,144,58,.4); border-radius: 100px; font-size: 8.5px; font-weight: 700; color: #f5c674; letter-spacing: .04em; margin-top: 8px; }
+    .vp-p-cert::before { content: '✦'; }
+    .vp-p-lbl { font-size: 8px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #8A7D70; margin: 6px 0 8px; }
+    .vp-p-modes { display: flex; gap: 6px; margin-bottom: 12px; }
+    .vp-p-mode { flex: 1; padding: 7px 5px; border-radius: 10px; border: 1.5px solid #E6DDD0; background: #F4EFE6; font-family: inherit; font-size: 10px; font-weight: 700; color: #8A7D70; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; transition: all .18s; }
+    .vp-p-mode.on { border-color: #E04E2C; background: #E04E2C; color: white; }
+    .vp-p-tbox { background: white; border: 1.5px solid #E6DDD0; border-radius: 12px; padding: 11px 12px; font-size: 10.5px; color: #3A342A; line-height: 1.65; margin-bottom: 10px; box-shadow: 0 1px 3px rgba(0,0,0,.03); }
+    .vp-p-tbox em { color: #18140F; font-style: italic; }
+    .vp-p-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+    .vp-p-tag { font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 100px; background: #FEF0EB; color: #E04E2C; border: 1px solid rgba(224,78,44,.15); transition: opacity .3s, transform .3s; }
+    .vp-p-tag.amber { background: #FBF5E6; color: #A07628; border-color: rgba(196,144,58,.2); }
+    .vp-p-tag.green { background: #E8F4EE; color: #156038; border-color: rgba(21,96,56,.15); }
+    .vp-p-tag.navy { background: #EEF2F8; color: #0B1C38; border-color: rgba(11,28,56,.15); }
+    .vp-p-tag.hidden { opacity: 0; transform: scale(.7) translateY(4px); }
+    .vp-blink { display: inline-block; width: 1.5px; height: 11px; background: #E04E2C; margin-left: 1px; vertical-align: -1px; animation: vp-blink 1s step-end infinite; }
+    @keyframes vp-blink { 0%,50%{opacity:1} 51%,100%{opacity:0} }
+    .vp-p-mic-zone { display: flex; flex-direction: column; align-items: center; gap: 7px; margin: 8px 0 10px; }
+    .vp-p-mic-btn { width: 44px; height: 44px; border-radius: 50%; background: #E04E2C; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 16px rgba(224,78,44,.35); position: relative; }
+    .vp-p-mic-btn::before, .vp-p-mic-btn::after { content: ''; position: absolute; inset: 0; border-radius: 50%; border: 1.5px solid #E04E2C; opacity: 0; animation: vp-ring 2.2s ease-out infinite; }
+    .vp-p-mic-btn::after { animation-delay: .9s; }
+    @keyframes vp-ring { 0%{transform:scale(1);opacity:.55} 100%{transform:scale(1.7);opacity:0} }
+    .vp-p-mic-lbl { font-size: 8.5px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: #8A7D70; }
+    .vp-p-privacy { padding: 8px 11px; background: #EEF2F8; border-radius: 9px; font-size: 9px; color: #3A342A; line-height: 1.5; display: flex; gap: 6px; align-items: flex-start; }
+    .vp-p-privacy::before { content: '🔒'; font-size: 10px; flex-shrink: 0; }
+    .vp-p-txt-area { width: 100%; min-height: 88px; padding: 11px 12px; border: 1.5px solid #E6DDD0; border-radius: 12px; font-family: inherit; font-size: 10.5px; color: #3A342A; background: white; resize: none; outline: none; line-height: 1.65; box-shadow: 0 1px 3px rgba(0,0,0,.03); }
+    .vp-p-txt-area:focus { border-color: #E04E2C; }
+
+    /* === PAGE QUESTIONS === */
+    .vp-q-toggle { display: flex; gap: 7px; padding: 10px 6px 9px; background: white; border-bottom: 1px solid #E6DDD0; margin: 0 0 12px; justify-content: center; }
+    .vp-q-btn { padding: 8px 14px; border-radius: 11px; border: 1.5px solid #E6DDD0; background: #F4EFE6; font-family: inherit; font-size: 10px; font-weight: 700; color: #8A7D70; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 4px; transition: all .18s; letter-spacing: -.01em; }
+    .vp-q-btn.on { border-color: #0B1C38; background: #0B1C38; color: white; }
+    .vp-q-filters { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; padding: 0; }
+    .vp-q-card-tag.eco { background: #FBF5E6; color: #A07628; }
+    .vp-q-card-tag.env { background: #E8F4EE; color: #156038; }
+    .vp-q-lbl { font-size: 8px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #8A7D70; margin-bottom: 6px; }
+    .vp-q-lbl.first { margin-top: 0; }
+    .vp-q-tbox { background: white; border: 1.5px solid #E6DDD0; border-radius: 12px; padding: 10px 12px; font-size: 10.5px; color: #3A342A; line-height: 1.6; margin-bottom: 9px; box-shadow: 0 1px 3px rgba(0,0,0,.03); font-style: italic; }
+    .vp-q-mic-row { display: flex; align-items: center; gap: 9px; margin-bottom: 10px; }
+    .vp-q-mic-mini { width: 32px; height: 32px; border-radius: 50%; border: none; background: #0B1C38; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 3px 10px rgba(11,28,56,.25); }
+    .vp-q-mic-mini.coral { background: #E04E2C; box-shadow: 0 3px 10px rgba(224,78,44,.3); }
+    .vp-q-mic-mini svg { width: 13px; height: 13px; fill: white; }
+    .vp-q-mic-txt { font-size: 9.5px; color: #8A7D70; line-height: 1.5; }
+    .vp-q-reform { background: #EEF2F8; border: 1px solid rgba(11,28,56,.1); border-radius: 11px; padding: 9px 11px; margin-bottom: 11px; }
+    .vp-q-reform-lbl { font-size: 8px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #8A7D70; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+    .vp-q-reform-lbl::before { content: '✦'; color: #C4903A; }
+    .vp-q-reform-q { font-family: 'Playfair Display', serif; font-size: 11px; font-weight: 700; font-style: italic; color: #0B1C38; line-height: 1.5; }
+    .vp-q-cta { display: block; width: 100%; padding: 10px; background: #0B1C38; color: white; font-family: inherit; font-size: 10.5px; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; margin-bottom: 16px; }
+    .vp-q-cta.coral { background: #E04E2C; }
+    .vp-q-card { background: white; border: 1.5px solid #E6DDD0; border-radius: 12px; padding: 10px 12px; margin-bottom: 7px; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
+    .vp-q-card.feat { border-color: rgba(224,78,44,.22); background: linear-gradient(140deg, white 60%, #FEF0EB); }
+    .vp-q-card-tag { font-size: 7.5px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 2.5px 7px; border-radius: 100px; display: inline-block; margin-bottom: 5px; }
+    .vp-q-card-tag.med { background: #FEF0EB; color: #E04E2C; }
+    .vp-q-card-tag.lyon { background: #E8F4EE; color: #156038; }
+    .vp-q-card-tag.soc { background: #EEF2F8; color: #0B1C38; }
+    .vp-q-card-tag.form { background: #F3EEF9; color: #6B4B9E; }
+    .vp-q-card-tag.num { background: #EEF2F8; color: #0B1C38; }
+    .vp-q-card-tag.trav { background: #FEF6E8; color: #A07628; }
+    .vp-q-card-q { font-family: 'Playfair Display', serif; font-size: 10.5px; font-weight: 700; line-height: 1.4; color: #18140F; margin-bottom: 5px; }
+    .vp-q-card-meta { display: flex; align-items: center; gap: 7px; }
+    .vp-q-card-count { font-size: 8.5px; color: #8A7D70; }
+    .vp-q-card-bar { flex: 1; height: 2px; background: #E6DDD0; border-radius: 2px; overflow: hidden; }
+    .vp-q-card-fill { height: 100%; background: #E04E2C; border-radius: 2px; }
+    /* Section headers Explorer (Pour vous / En ce moment / Tous les débats) */
+    .vp-q-sect { margin-bottom: 11px; }
+    .vp-q-sect-hdr { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 7px; }
+    .vp-q-sect-lbl { font-size: 8.5px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #18140F; }
+    .vp-q-sect-lbl.coral { color: #E04E2C; }
+    .vp-q-sect-sub { font-size: 7.5px; color: #8A7D70; font-style: italic; }
+    /* Grille de badges (bloc Explorer tous les débats) */
+    .vp-q-badges { display: flex; flex-wrap: wrap; gap: 4px; padding: 2px 0 4px; }
+    .vp-q-badge { font-size: 9px; font-weight: 600; padding: 4px 9px; border-radius: 100px; border: 1px solid #E6DDD0; background: white; color: #3A342A; letter-spacing: -.005em; }
+    /* Curation ligne éditoriale au-dessus */
+    .vp-q-curation { font-size: 8.5px; color: #8A7D70; font-style: italic; line-height: 1.5; margin-bottom: 10px; padding: 7px 10px; background: rgba(224,78,44,.04); border-left: 2px solid rgba(224,78,44,.3); border-radius: 3px; }
+    .vp-q-pos-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 11px; }
+    .vp-q-pos { padding: 8px 9px; border: 1.5px solid #E6DDD0; border-radius: 10px; background: white; cursor: pointer; transition: all .18s; text-align: left; font-family: inherit; }
+    .vp-q-pos.on { border-color: #E04E2C; background: #FEF0EB; }
+    .vp-q-pos-ico { font-size: 14px; margin-bottom: 3px; }
+    .vp-q-pos-lbl { font-size: 9.5px; font-weight: 700; color: #18140F; line-height: 1.3; margin-bottom: 2px; }
+    .vp-q-pos-sub { font-size: 8px; color: #8A7D70; line-height: 1.3; }
+    .vp-q-sel { background: rgba(224,78,44,.05); border: 1.5px solid rgba(224,78,44,.16); border-radius: 11px; padding: 9px 11px; margin-bottom: 11px; }
+    .vp-q-sel-lbl { font-size: 8px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: #8A7D70; margin-bottom: 4px; }
+    .vp-q-sel-q { font-family: 'Playfair Display', serif; font-size: 10.5px; font-weight: 700; font-style: italic; color: #18140F; line-height: 1.5; margin-bottom: 4px; }
+    .vp-q-sel-meta { font-size: 8px; color: #8A7D70; }
+
+    /* === PAGE ANALYSE === sobre, 5 modules */
+    .vp-a-hdr { background: #0B1C38; padding: 13px 16px 12px; color: white; margin: 0 -15px 8px; }
+    .vp-a-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: 14px; font-weight: 700; letter-spacing: -.01em; margin-bottom: 7px; }
+    .vp-a-hdr-q { font-family: 'Playfair Display', serif; font-size: 10.5px; font-weight: 600; font-style: italic; color: rgba(255,255,255,.88); line-height: 1.45; padding: 7px 10px; background: rgba(255,255,255,.06); border-left: 2px solid #E04E2C; border-radius: 0 6px 6px 0; margin-bottom: 6px; }
+    .vp-a-hdr-meta { font-size: 8.5px; color: rgba(255,255,255,.48); font-weight: 500; letter-spacing: .02em; }
+
+    /* Stripe compacte : label au-dessus, timeline en dessous */
+    .vp-a-stripe { padding: 7px 11px 8px; background: white; border: 1px solid #E6DDD0; border-radius: 9px; margin-bottom: 10px; }
+    .vp-a-stripe-lbl { font-size: 7.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #8A7D70; margin-bottom: 6px; }
+    .vp-a-stripe .vp-a-tline-row { width: 100%; }
+
+    /* Pied de page Analyse : mention vision produit (discret) */
+    .vp-a-foot { display: flex; gap: 8px; align-items: flex-start; padding: 9px 11px; margin-top: 12px; background: rgba(251,146,60,.06); border: 1px solid rgba(251,146,60,.2); border-radius: 9px; }
+    .vp-a-foot-dot { width: 5px; height: 5px; border-radius: 50%; background: #f97316; flex-shrink: 0; margin-top: 5px; animation: pulse-dot 2.2s ease infinite; }
+    .vp-a-foot-txt { font-size: 8.5px; color: #8a6020; line-height: 1.55; font-style: italic; }
+    .vp-a-foot-txt strong { color: #6b4a0f; font-weight: 700; font-style: normal; }
+
+    /* Toggle Le débat / Vous */
+    .vp-a-tog { display: flex; gap: 4px; padding: 3px; background: #EBE4D7; border-radius: 10px; margin-bottom: 12px; }
+    .vp-a-tog-btn { flex: 1; padding: 8px 10px; font-size: 10.5px; font-weight: 700; color: #8A7D70; background: transparent; border: none; border-radius: 7px; cursor: pointer; transition: all .18s; display: flex; align-items: center; justify-content: center; gap: 5px; letter-spacing: -.005em; font-family: inherit; }
+    .vp-a-tog-btn:hover { color: #18140F; }
+    .vp-a-tog-btn.active { background: white; color: #18140F; box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 0 0 .5px rgba(0,0,0,.04); }
+    .vp-a-tog-btn.active[data-view="debat"] { color: #0B1C38; }
+    .vp-a-tog-btn.active[data-view="vous"] { color: #E04E2C; }
+    .vp-a-tog-ico { font-size: 10px; line-height: 1; }
+
+    .vp-a-view-sub { font-size: 9px; color: #8A7D70; margin: 0 0 10px; font-style: italic; line-height: 1.5; }
+
+    /* Timeline des contributions (utilisée dans .vp-a-stripe) */
+    .vp-a-tline-row { display: flex; align-items: flex-start; gap: 4px; }
+    .vp-a-tline-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative; padding: 0 1px; min-width: 0; }
+    .vp-a-tline-item::after { content: ''; position: absolute; top: 5.5px; right: calc(-50% + 5px); width: calc(100% - 10px); height: 1px; background: #E6DDD0; z-index: 0; }
+    .vp-a-tline-item:last-child::after { display: none; }
+    .vp-a-tline-dot { width: 11px; height: 11px; border-radius: 50%; border: 1.5px solid #8A7D70; background: white; position: relative; z-index: 1; flex-shrink: 0; }
+    .vp-a-tline-dot.done { background: #E04E2C; border-color: #E04E2C; box-shadow: 0 0 0 2.5px rgba(224,78,44,.15); }
+    .vp-a-tline-dot.current { background: linear-gradient(to right, #E04E2C 50%, white 50%); border-color: #E04E2C; }
+    .vp-a-tline-dot.pending { background: white; border-color: #C4BBAF; }
+    .vp-a-tline-txt { font-size: 7.5px; color: #3A342A; text-align: center; line-height: 1.25; font-weight: 600; white-space: nowrap; }
+    .vp-a-tline-txt.muted { color: #8A7D70; font-weight: 500; }
+
+    /* Vue "Vous" — version asymétrique : P01 hero + P02/P03/P04 compacts */
+    .vp-a-hero { position: relative; padding: 14px 14px 13px; background: linear-gradient(135deg, #FFF9F5 0%, #FEF0EB 100%); border: 1px solid #F3D8C7; border-radius: 13px; margin-bottom: 9px; overflow: hidden; box-shadow: 0 2px 6px rgba(224,78,44,.06); }
+    .vp-a-hero-code { font-size: 8.5px; font-weight: 800; letter-spacing: .1em; color: #E04E2C; margin-bottom: 6px; }
+    .vp-a-hero-name { font-family: 'Playfair Display', serif; font-size: 13px; font-weight: 700; color: #18140F; line-height: 1.3; margin-bottom: 4px; letter-spacing: -.01em; max-width: 70%; }
+    .vp-a-hero-desc { font-size: 9px; color: #6B5F52; line-height: 1.55; max-width: 70%; }
+    /* Micro-viz décorative (constellation abstraite, coin droit) */
+    .vp-a-hero-viz { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); width: 62px; height: 62px; opacity: .75; pointer-events: none; }
+    .vp-a-hero-viz svg { width: 100%; height: 100%; }
+
+    /* Vue "Le débat" — version matricielle navy : M01+M02 heros + M03/M04/M05 compactes */
+    .vp-a-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; margin-bottom: 7px; }
+    .vp-a-duo-card { padding: 12px 11px; background: rgba(11,28,56,.035); border: 1px solid rgba(11,28,56,.14); border-radius: 11px; box-shadow: 0 1px 3px rgba(11,28,56,.04); }
+    .vp-a-duo-code { font-size: 8px; font-weight: 800; letter-spacing: .1em; color: #0B1C38; margin-bottom: 5px; }
+    .vp-a-duo-name { font-family: 'Playfair Display', serif; font-size: 11.5px; font-weight: 700; color: #18140F; line-height: 1.25; margin-bottom: 4px; letter-spacing: -.005em; }
+    .vp-a-duo-desc { font-size: 8px; color: #6B5F52; line-height: 1.5; }
+    .vp-a-trio { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; }
+    .vp-a-trio-card { padding: 9px 8px; background: white; border: 1px solid #E6DDD0; border-radius: 9px; }
+    .vp-a-trio-code { font-size: 7px; font-weight: 800; letter-spacing: .08em; color: #0B1C38; margin-bottom: 3px; }
+    .vp-a-trio-name { font-size: 9px; font-weight: 700; color: #18140F; line-height: 1.25; margin-bottom: 2px; letter-spacing: -.005em; }
+    .vp-a-trio-desc { font-size: 7.5px; color: #8A7D70; line-height: 1.4; }
+
+    /* Grille compacte 2x2 pour P02/P03/P04 */
+    .vp-a-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+    .vp-a-mini { padding: 9px 10px; background: #FFF9F5; border: 1px solid #F3D8C7; border-radius: 10px; }
+    .vp-a-mini-code { font-size: 7.5px; font-weight: 800; letter-spacing: .08em; color: #E04E2C; margin-bottom: 4px; }
+    .vp-a-mini-name { font-size: 9.5px; font-weight: 700; color: #18140F; line-height: 1.3; margin-bottom: 3px; letter-spacing: -.005em; }
+    .vp-a-mini-desc { font-size: 8px; color: #8A7D70; line-height: 1.45; }
+    .vp-a-mini-full { grid-column: 1 / -1; }
+
+    /* MOBILE */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-mobile-toggle { display: block; }
+      body { overflow-x: hidden; }
+      .navbar-inner { padding-left: 14px; padding-right: 14px; }
+      .cibles-grid { grid-template-columns: 1fr; }
+      .ad-grid { grid-template-columns: 1fr; }
+      .vp-wrap { grid-template-columns: 1fr; gap: 32px; justify-items: center; }
+      .vp-captions { max-width: none; width: 100%; }
+      .vp-phone-col { width: 100%; display: flex; justify-content: center; }
+      .hero-section { padding: 32px 20px 48px; }
+      .si { padding: 48px 20px; }
+      .blk-unified { padding: 30px 40px; }
+      .pb-whynow { padding: 16px 18px; }
+
+      p[style*="color:rgba(255,255,255,0.12)"],
+      span[style*="color:rgba(255,255,255,0.12)"] { color: rgba(255,255,255,0.55) !important; }
+      p[style*="color:rgba(255,255,255,0.16)"],
+      span[style*="color:rgba(255,255,255,0.16)"] { color: rgba(255,255,255,0.55) !important; }
+      p[style*="color:rgba(255,255,255,0.20)"],
+      span[style*="color:rgba(255,255,255,0.20)"] { color: rgba(255,255,255,0.60) !important; }
+      p[style*="color:rgba(255,255,255,0.24)"],
+      span[style*="color:rgba(255,255,255,0.24)"] { color: rgba(255,255,255,0.62) !important; }
+      p[style*="color:rgba(255,255,255,0.25)"],
+      span[style*="color:rgba(255,255,255,0.25)"] { color: rgba(255,255,255,0.64) !important; }
+      p[style*="color:rgba(255,255,255,0.28)"],
+      span[style*="color:rgba(255,255,255,0.28)"] { color: rgba(255,255,255,0.66) !important; }
+      p[style*="color:rgba(255,255,255,0.30)"],
+      span[style*="color:rgba(255,255,255,0.30)"] { color: rgba(255,255,255,0.68) !important; }
+      p[style*="color:rgba(255,255,255,0.32)"],
+      span[style*="color:rgba(255,255,255,0.32)"] { color: rgba(255,255,255,0.70) !important; }
+      p[style*="color:rgba(255,255,255,0.35)"],
+      span[style*="color:rgba(255,255,255,0.35)"] { color: rgba(255,255,255,0.72) !important; }
+      p[style*="color:rgba(255,255,255,0.40)"],
+      span[style*="color:rgba(255,255,255,0.40)"] { color: rgba(255,255,255,0.76) !important; }
+      p[style*="color:rgba(255,255,255,0.42)"],
+      span[style*="color:rgba(255,255,255,0.42)"] { color: rgba(255,255,255,0.78) !important; }
+      p[style*="color:rgba(255,255,255,0.45)"],
+      span[style*="color:rgba(255,255,255,0.45)"] { color: rgba(255,255,255,0.80) !important; }
+      p[style*="color:rgba(255,255,255,0.48)"],
+      span[style*="color:rgba(255,255,255,0.48)"] { color: rgba(255,255,255,0.82) !important; }
+      p[style*="color:rgba(255,255,255,0.50)"],
+      span[style*="color:rgba(255,255,255,0.50)"] { color: rgba(255,255,255,0.84) !important; }
+    }
+
+    /* Très petits écrans (iPhone SE 375, Android compacts) */
+    @media (max-width: 380px) {
+      .si { padding: 40px 16px; }
+      .hero-section { padding: 26px 16px 40px; }
+      .vp-phone-outer { width: 260px; padding: 8px; }
+      .vp-screen { height: 540px; }
+      .cta-primary, .cta-secondary { padding: 12px 18px; font-size: 0.82rem; }
+      .step-row { padding: 14px 16px; }
+      .cible { padding: 20px 18px; }
+      .ad-card { padding: 22px 18px; }
+      .blk-unified { padding: 24px 24px; }
+    }
+  </style>
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="b38c3c66-563e-4f47-ab5b-bbbebae68f68"></script>
+</head>
+<body class="text-white min-h-screen overflow-x-hidden">
+  <div class="pointer-events-none fixed inset-0" style="background:radial-gradient(ellipse 80% 50% at 10% -10%,rgba(255,100,60,0.11),transparent),radial-gradient(ellipse 60% 40% at 90% 110%,rgba(80,130,255,0.07),transparent);z-index:0"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" style="display:inline-flex;align-items:center;gap:0;line-height:1;text-decoration:none">
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">v</span>
+        <svg width="18" height="18" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="#f97316"/><circle cx="7.5" cy="9" r="1.25" fill="white"/><circle cx="14.5" cy="9" r="1.25" fill="white"/><ellipse cx="11" cy="14.2" rx="3" ry="2.2" fill="white"/><ellipse cx="11" cy="13.4" rx="2.2" ry="1.2" fill="#f97316"/></svg>
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">x</span>
+        <svg width="18" height="18" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="1"/><line x1="11" y1="3.5" x2="11" y2="5.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="16.5" x2="11" y2="18.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="3.5" y1="11" x2="5.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="16.5" y1="11" x2="18.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><polygon points="11,5 9.5,11 12.5,11" fill="#f97316"/><polygon points="11,17 9.5,11 12.5,11" fill="rgba(255,255,255,0.25)"/><circle cx="11" cy="11" r="1.4" fill="white"/></svg>
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">l</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link active">Le projet</a>
+        <a href="approche.html" class="nav-link">Approfondir</a>
+        <a href="apropos.html" class="nav-link">Origine</a>
+        <a href="suivre.html" class="nav-link-cta">Participer →</a>
+      </div>
+      <button class="nav-mobile-toggle" onclick="toggleMobileNav()">☰</button>
+    </div>
+    <div class="nav-mobile-menu" id="mobile-nav">
+      <a href="index.html" class="nav-link active" onclick="toggleMobileNav()">Le projet</a>
+      <a href="approche.html" class="nav-link" onclick="toggleMobileNav()">Approfondir</a>
+      <a href="apropos.html" class="nav-link" onclick="toggleMobileNav()">Origine</a>
+      <a href="suivre.html" class="nav-link-cta" onclick="toggleMobileNav()">Participer →</a>
+    </div>
+  </nav>
+
+  <!-- § 1 HERO -->
+  <div class="hero-glow"></div>
+  <section class="hero-section">
+    <div class="hero-inner">
+      <div class="hero-badge">
+        <span class="pulse" style="width:5px;height:5px;border-radius:50%;background:rgba(251,146,60,0.70);display:inline-block"></span>
+        Expérimentation en cours · 2026
+      </div>
+
+      <h1 class="hero-verbs">
+        <span class="v1">Donnez votre avis.</span>
+        <span class="v2">Comprenez où il se situe.</span>
+        <span class="v3">Faites-le compter.</span>
+      </h1>
+
+      <div class="hero-pave-block">
+        <p class="hero-pave-lines">
+          Les sondages comptent les positions.<br>
+          Les médias montrent quelques témoignages.<br>
+          Sur les réseaux, chacun parle sans qu'on voie l'ensemble.
+        </p>
+        <p class="hero-pave">
+          <strong>vOxOl révèle ce qui manque</strong> : les raisons derrière le débat, et où se situe votre raisonnement parmi les autres.
+        </p>
+        <p class="hero-pave-2">
+          Pour les <strong>citoyens</strong> : comprendre leur place et donner du poids à leur pensée.<br>
+          Pour les <strong>médias et chercheurs</strong> : une matière nouvelle.<br>
+          Pour les <strong>décideurs</strong> : une lecture plus juste du pays.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap gap-3" style="margin-top:26px">
+        <a href="suivre.html#question" class="cta-primary">Donner mon avis →</a>
+        <a href="#probleme" class="cta-secondary">Découvrir le projet ↓</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- § 2 PROBLÈME -->
+  <section class="section sr" id="probleme">
+    <div class="si si-alt">
+      <p class="section-label">Le constat</p>
+      <h2 class="section-title">On voit des positions. Pas ce qui les construit.</h2>
+
+      <div class="pb-bloc">
+        <p class="pb-lead">Votre avis est sans cesse réduit.</p>
+        <p class="pb-body">
+          Un sondage le transforme en chiffre.<br>
+          Un média l'isole en témoignage.<br>
+          Un réseau l'amplifie ou le noie dans le bruit.<br>
+          À chaque fois, il perd ce qui le compose.
+        </p>
+
+        <div class="pb-whynow">
+          <p class="pb-whynow-lbl">Ce qui change aujourd'hui</p>
+          <p class="pb-whynow-text">Ce qui était hors de portée hier devient faisable : <strong>lire le sens de milliers de réponses libres, toutes ensemble</strong> — et rendre visible ce qui échappait jusque-là aux formats du débat.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- § 3 EXEMPLE CONCRET (CLIQUABLE — MOMENT DE CONVICTION) -->
+  <section class="section sr">
+    <div class="si">
+      <p class="section-label coral">Un exemple</p>
+      <h2 class="section-title">« Faut-il interdire les smartphones à l'école&nbsp;?&nbsp;»</h2>
+      <p class="ex-intro">Derrière un même pourcentage, trois logiques. Mais ce qui circule, c'est le chiffre.</p>
+
+      <div id="fracture-wrap" class="fracture-wrap" onclick="doFracture()">
+        <div id="frac-state-a">
+          <div class="blk-unified">
+            <div class="blk-pct">80%</div>
+            <div class="blk-sub">des Français répondent « oui » — un bloc uniforme</div>
+          </div>
+          <p class="blk-hint">↓ cliquer pour voir ce que ça cache</p>
+        </div>
+
+        <div id="frac-state-b" style="display:none">
+          <p style="font-size:0.70rem;color:rgba(255,255,255,0.32);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:20px">Parmi ces 80%, trois logiques distinctes</p>
+
+          <div class="blk-frags" id="fragRow">
+            <div class="blk-frag a">
+              <div class="blk-frag-pct">~60%</div>
+              <div class="blk-frag-body">
+                <div class="blk-frag-name">🧠 Protéger l'attention et la santé</div>
+                <div class="blk-frag-desc">Distraction, anxiété, cyberharcèlement.</div>
+              </div>
+            </div>
+            <div class="blk-frag b">
+              <div class="blk-frag-pct">~20%</div>
+              <div class="blk-frag-body">
+                <div class="blk-frag-name">📏 Avoir des règles claires</div>
+                <div class="blk-frag-desc">Discipline, clarté pour l'enseignant, cadre commun.</div>
+              </div>
+            </div>
+            <div class="blk-frag c">
+              <div class="blk-frag-pct">~20%</div>
+              <div class="blk-frag-body">
+                <div class="blk-frag-name">⚖️ Assurer l'équité</div>
+                <div class="blk-frag-desc">Pression sociale, normes, inégalités entre élèves.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="blk-msg" id="fragMsg">
+            <div class="blk-msg-title">Même réponse. Trois logiques distinctes.</div>
+            <div class="blk-msg-sub">Qui n'appellent pas les mêmes décisions publiques.</div>
+            <button onclick="event.stopPropagation();resetFracture()" class="blk-reset">← revenir</button>
+            <p class="blk-source">Répartition illustrative · Source du 80% : Ipsos Education Monitor 2024</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="text-align:center;margin-top:28px">
+        <a href="approche.html#lecture" class="ex-link">Voir l'analyse détaillée sur L'approche →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- § 4 SOLUTION -->
+  <section class="section sr">
+    <div class="si si-alt">
+      <p class="section-label">Comment ça marche</p>
+      <h2 class="section-title">Trois étapes, rien de plus.</h2>
+
+      <div class="steps">
+        <div class="step-row">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Vous vous présentez. Vous répondez librement.</div>
+            <div class="step-desc">Vous pouvez dire qui vous êtes ou ce qui vous relie au sujet, puis répondre avec vos mots. À l'écrit ou à l'oral si c'est plus simple.</div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">vOxOl structure. Vous validez.</div>
+            <div class="step-desc">Votre raisonnement est clarifié et organisé pour rester fidèle à votre pensée. Rien n'est intégré sans votre accord.</div>
+          </div>
+        </div>
+        <div class="step-row">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Le débat devient lisible.</div>
+            <div class="step-desc">Des milliers de raisonnements s'organisent. Les logiques émergent. Et vous découvrez où votre pensée se situe parmi les autres.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- § 5 BÉNÉFICES -->
+  <section class="section sr">
+    <div class="si">
+      <p class="section-label">Pour qui, pour quoi faire</p>
+      <h2 class="section-title">Trois façons d'utiliser vOxOl.</h2>
+
+      <div class="cibles-grid">
+        <div class="cible">
+          <div class="cible-icon">🗳️</div>
+          <div class="cible-who">Citoyens</div>
+          <div class="cible-title">Situez votre pensée et faites-la compter.</div>
+          <div class="cible-body">Exprimez-vous librement. Découvrez où se situe votre raisonnement parmi les autres. <em>Demain, vous pourrez aussi lancer vos propres questions là où le débat manque.</em></div>
+          <div class="cible-action">→ Situer ma pensée dans le débat</div>
+        </div>
+        <div class="cible">
+          <div class="cible-icon">🏛️</div>
+          <div class="cible-who">Élus · Institutions</div>
+          <div class="cible-title">Décidez avec ce qui compose vraiment l'opinion.</div>
+          <div class="cible-body">Au-delà des pourcentages : logiques, fractures, paradoxes. <em>Demain, consultez votre population à l'échelle d'un quartier, d'une ville ou d'une région.</em></div>
+          <div class="cible-action">→ Comprendre le terrain réel</div>
+        </div>
+        <div class="cible">
+          <div class="cible-icon">📰</div>
+          <div class="cible-who">Médias · Recherche</div>
+          <div class="cible-title">Un corpus structuré, pas un échantillon filtré.</div>
+          <div class="cible-body">Au-delà du témoignage isolé ou du chiffre brut : des raisonnements regroupés, nommés, citables. <em>Demain, lancez vos propres questions pour vos enquêtes et vos études.</em></div>
+          <div class="cible-action">→ Explorer une cartographie</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- § 6 AUJOURD'HUI / DEMAIN (fusion avec Vision produit) -->
+  <section class="section sr">
+    <div class="si si-alt">
+      <p class="section-label">Où ça en est · où ça va</p>
+      <h2 class="section-title">Aujourd'hui une première expérience. Demain le débat dans votre poche.</h2>
+
+      <div class="ad-grid">
+        <div class="ad-card ad-today">
+          <div class="ad-label">Aujourd'hui</div>
+          <p class="ad-text"><a href="suivre.html#question" style="color:#fdba74;border-bottom:1px solid rgba(251,146,60,0.30);padding-bottom:1px;text-decoration:none;font-weight:500">Une première question</a> est ouverte. Répondez, découvrez où se situe votre pensée, et contribuez à la première cartographie vOxOl.</p>
+        </div>
+        <div class="ad-card ad-tomorrow">
+          <div class="ad-label">Demain</div>
+          <p class="ad-text"><strong>Le débat dans votre poche.</strong> Répondre aux questions qui vous touchent, poser les vôtres, et comprendre ce qui compose vraiment l'opinion — du quartier à l'Europe.</p>
+        </div>
+      </div>
+
+      <!-- VISION PRODUIT — téléphone interactif comme illustration de "Demain" -->
+      <div style="margin-top:44px;padding-top:36px;border-top:1px solid rgba(255,255,255,0.08)">
+        <div style="max-width:720px;margin-bottom:12px">
+          <div class="mockup-disclaimer">Vision produit · En construction</div>
+          <p style="font-size:clamp(0.92rem,2.2vw,1rem);color:rgba(255,255,255,0.55);line-height:1.75;max-width:580px">Voici la direction visée.</p>
+        </div>
+
+      <div class="vp-wrap">
+        <!-- TÉLÉPHONE INTERACTIF -->
+        <div class="vp-phone-col">
+          <div class="vp-phone-outer">
+            <div class="vp-screen">
+
+              <!-- STATUS BAR (change selon la page) -->
+              <div class="vp-sb" id="vp-sb"><span>10:28</span><div class="dots"><span></span><span></span><span></span></div></div>
+
+              <!-- APP HEADER -->
+              <div class="vp-hdr">
+                <div class="vp-hdr-logo">v<span class="lo">Ox</span>l</div>
+                <div class="vp-cert-pill" id="vp-cert-pill" style="display:none">Profil certifié</div>
+              </div>
+
+              <!-- TAB BAR -->
+              <div class="vp-tabs">
+                <button class="vp-tab on" id="vp-tab-profil" onclick="vpGo('profil')">
+                  <div class="vp-tab-ico">👤</div><div class="vp-tab-lbl">Profil</div>
+                </button>
+                <button class="vp-tab" id="vp-tab-questions" onclick="vpGo('questions')">
+                  <div class="vp-tab-ico">💬</div><div class="vp-tab-lbl">Questions</div>
+                </button>
+                <button class="vp-tab" id="vp-tab-analyse" onclick="vpGo('analyse')">
+                  <div class="vp-tab-ico">◈</div><div class="vp-tab-lbl">Analyse</div>
+                </button>
+              </div>
+
+              <!-- SCREENS WRAPPER -->
+              <div class="vp-screen-wrap">
+
+                <!-- PAGE PROFIL -->
+                <div class="vp-page on" id="vp-page-profil">
+                  <div class="vp-scroll">
+                    <div class="vp-scroll-inner">
+                      <!-- Header profil navy -->
+                      <div class="vp-p-hdr">
+                        <div class="vp-p-avatar">T</div>
+                        <div>
+                          <div class="vp-p-name">Thomas</div>
+                          <div class="vp-p-sub">28 ans · Interne en médecine<br>CHU de Lyon</div>
+                          <div class="vp-p-cert">Profil certifié</div>
+                        </div>
+                      </div>
+
+                      <div class="vp-p-lbl">Présentez-vous librement</div>
+                      <div class="vp-p-modes">
+                        <button class="vp-p-mode on" id="vp-p-btn-mic" onclick="vpMode('mic')">🎙 À l'oral</button>
+                        <button class="vp-p-mode" id="vp-p-btn-txt" onclick="vpMode('txt')">⌨ À l'écrit</button>
+                      </div>
+
+                      <!-- MODE ORAL — avec animation typewriter -->
+                      <div id="vp-p-mic">
+                        <div class="vp-p-tbox">
+                          <span id="vp-p-tw"></span><span class="vp-blink"></span>
+                          <div class="vp-p-tags" style="margin-top:8px">
+                            <span class="vp-p-tag hidden" id="vp-pt0">● 28 ans</span>
+                            <span class="vp-p-tag hidden" id="vp-pt1">● Interne · médecine</span>
+                            <span class="vp-p-tag amber hidden" id="vp-pt2">● Lyon</span>
+                            <span class="vp-p-tag green hidden" id="vp-pt3">✓ Certifiable</span>
+                          </div>
+                        </div>
+                        <div class="vp-p-mic-zone">
+                          <button class="vp-p-mic-btn" type="button" onclick="event.stopPropagation();vpStartTW()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 15c1.66 0 3-1.34 3-3V6c0-1.66-1.34-3-3-3S9 4.34 9 6v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 15 6.7 12H5c0 3.41 2.72 6.23 6 6.72V22h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+                          </button>
+                          <div class="vp-p-mic-lbl">Appuyez pour parler</div>
+                        </div>
+                        <div class="vp-p-privacy">Anonymat total. L'idée compte — pas votre identité.</div>
+                      </div>
+
+                      <!-- MODE ÉCRIT -->
+                      <div id="vp-p-txt" style="display:none">
+                        <textarea class="vp-p-txt-area" placeholder="Je m'appelle Thomas, j'ai 28 ans, je suis interne en médecine à Lyon…">Je m'appelle Thomas, j'ai 28 ans, je suis interne en médecine à Lyon.</textarea>
+                        <div class="vp-p-tags" style="margin-top:10px">
+                          <span class="vp-p-tag">● 28 ans</span>
+                          <span class="vp-p-tag">● Interne · médecine</span>
+                          <span class="vp-p-tag amber">● Lyon</span>
+                          <span class="vp-p-tag green">✓ Certifiable</span>
+                        </div>
+                        <div class="vp-p-privacy" style="margin-top:11px">Anonymat total. L'idée compte — pas votre identité.</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PAGE QUESTIONS -->
+                <div class="vp-page" id="vp-page-questions">
+                  <div class="vp-q-toggle">
+                    <button class="vp-q-btn on" id="vp-q-btn-repondre" onclick="vpQGo('repondre')">✍ Répondre</button>
+                    <button class="vp-q-btn" id="vp-q-btn-explorer" onclick="vpQGo('explorer')">🔍 Explorer</button>
+                    <button class="vp-q-btn" id="vp-q-btn-poser" onclick="vpQGo('poser')">✏ Poser</button>
+                  </div>
+                  <div class="vp-scroll">
+                    <div class="vp-scroll-inner" style="padding-top:4px">
+
+                      <!-- PANE RÉPONDRE (par défaut) -->
+                      <div id="vp-q-repondre">
+                        <div class="vp-q-sel">
+                          <div class="vp-q-sel-lbl">Question du moment</div>
+                          <div class="vp-q-sel-q">« La durée des gardes médicales doit-elle être limitée par la loi ? »</div>
+                          <div class="vp-q-sel-meta">2 840 réponses · Médecine · Santé</div>
+                        </div>
+
+                        <div class="vp-q-lbl first">Votre position</div>
+                        <div class="vp-q-pos-grid">
+                          <button class="vp-q-pos" type="button" onclick="vpSelPos(this)">
+                            <div class="vp-q-pos-ico">⚖️</div>
+                            <div class="vp-q-pos-lbl">Oui, par la loi</div>
+                            <div class="vp-q-pos-sub">La loi fixe un cadre clair</div>
+                          </button>
+                          <button class="vp-q-pos on" type="button" onclick="vpSelPos(this)">
+                            <div class="vp-q-pos-ico">✦</div>
+                            <div class="vp-q-pos-lbl">Oui, mais séquencé</div>
+                            <div class="vp-q-pos-sub">Recruter d'abord</div>
+                          </button>
+                          <button class="vp-q-pos" type="button" onclick="vpSelPos(this)">
+                            <div class="vp-q-pos-ico">◈</div>
+                            <div class="vp-q-pos-lbl">Mitigé</div>
+                            <div class="vp-q-pos-sub">Selon les services</div>
+                          </button>
+                          <button class="vp-q-pos" type="button" onclick="vpSelPos(this)">
+                            <div class="vp-q-pos-ico">⊖</div>
+                            <div class="vp-q-pos-lbl">Pas comme ça</div>
+                            <div class="vp-q-pos-sub">Préserver la souplesse</div>
+                          </button>
+                        </div>
+
+                        <div class="vp-q-lbl">Développez à l'oral</div>
+                        <div class="vp-q-tbox" style="font-style:normal"><strong style="color:#18140F">Thomas, interne à Lyon :</strong> « Recruter d'abord pour tenir les services, puis cadrer la durée. L'inverse casse tout. »</div>
+                        <div class="vp-q-mic-row">
+                          <button class="vp-q-mic-mini coral" type="button" onclick="event.stopPropagation()">
+                            <svg viewBox="0 0 24 24"><path d="M12 15c1.66 0 3-1.34 3-3V6c0-1.66-1.34-3-3-3S9 4.34 9 6v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 15 6.7 12H5c0 3.41 2.72 6.23 6 6.72V22h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+                          </button>
+                          <div class="vp-q-mic-txt">Appuyez pour dicter votre raisonnement</div>
+                        </div>
+                        <button class="vp-q-cta coral">Soumettre ma réponse →</button>
+                      </div>
+
+                      <!-- PANE EXPLORER (3 étages : Pour vous / En ce moment / Tous les débats) -->
+                      <div id="vp-q-explorer" style="display:none">
+
+                        <div class="vp-q-curation">Des questions où les raisonnements comptent plus que les positions.</div>
+
+                        <!-- BLOC 1 — POUR VOUS, THOMAS (personnalisé) -->
+                        <div class="vp-q-sect">
+                          <div class="vp-q-sect-hdr">
+                            <div class="vp-q-sect-lbl coral">Pour vous, Thomas</div>
+                            <div class="vp-q-sect-sub">profil · Lyon · santé</div>
+                          </div>
+                          <div class="vp-q-card feat">
+                            <span class="vp-q-card-tag med">🏥 Santé</span>
+                            <div class="vp-q-card-q">« Faut-il réguler l'installation des médecins sur le territoire ? »</div>
+                            <div class="vp-q-card-meta">
+                              <span class="vp-q-card-count">4 210 contributions</span>
+                              <div class="vp-q-card-bar"><div class="vp-q-card-fill" style="width:88%"></div></div>
+                            </div>
+                          </div>
+                          <div class="vp-q-card">
+                            <span class="vp-q-card-tag lyon">📍 Lyon</span>
+                            <div class="vp-q-card-q">« À Lyon, faut-il limiter davantage les locations Airbnb en centre-ville ? »</div>
+                            <div class="vp-q-card-meta">
+                              <span class="vp-q-card-count">1 940 contributions</span>
+                              <div class="vp-q-card-bar"><div class="vp-q-card-fill" style="width:68%"></div></div>
+                            </div>
+                          </div>
+                          <div class="vp-q-card">
+                            <span class="vp-q-card-tag form">🎓 Formation</span>
+                            <div class="vp-q-card-q">« Les stages en zones rurales doivent-ils devenir obligatoires pour les internes ? »</div>
+                            <div class="vp-q-card-meta">
+                              <span class="vp-q-card-count">1 180 contributions</span>
+                              <div class="vp-q-card-bar"><div class="vp-q-card-fill" style="width:52%"></div></div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- BLOC 2 — EN CE MOMENT (actualité transverse) -->
+                        <div class="vp-q-sect">
+                          <div class="vp-q-sect-hdr">
+                            <div class="vp-q-sect-lbl">🔥 En ce moment</div>
+                          </div>
+                          <div class="vp-q-card">
+                            <span class="vp-q-card-tag soc">💶 Société</span>
+                            <div class="vp-q-card-q">« Le temps libéré doit-il arriver seulement à la fin de la vie professionnelle ? »</div>
+                            <div class="vp-q-card-meta">
+                              <span class="vp-q-card-count">3 105 contributions</span>
+                              <div class="vp-q-card-bar"><div class="vp-q-card-fill" style="width:78%"></div></div>
+                            </div>
+                          </div>
+                          <div class="vp-q-card">
+                            <span class="vp-q-card-tag num">🌐 Numérique</span>
+                            <div class="vp-q-card-q">« Faut-il interdire l'accès aux réseaux sociaux avant 15 ans ? »</div>
+                            <div class="vp-q-card-meta">
+                              <span class="vp-q-card-count">5 640 contributions</span>
+                              <div class="vp-q-card-bar"><div class="vp-q-card-fill" style="width:94%"></div></div>
+                            </div>
+                          </div>
+                          <div class="vp-q-card">
+                            <span class="vp-q-card-tag trav">💼 Travail</span>
+                            <div class="vp-q-card-q">« Faut-il expérimenter la semaine de 4 jours à l'hôpital ? »</div>
+                            <div class="vp-q-card-meta">
+                              <span class="vp-q-card-count">2 370 contributions</span>
+                              <div class="vp-q-card-bar"><div class="vp-q-card-fill" style="width:74%"></div></div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- BLOC 3 — TOUS LES DÉBATS (badges profondeur produit) -->
+                        <div class="vp-q-sect" style="margin-bottom:4px">
+                          <div class="vp-q-sect-hdr">
+                            <div class="vp-q-sect-lbl">Tous les débats</div>
+                            <div class="vp-q-sect-sub">12 thèmes</div>
+                          </div>
+                          <div class="vp-q-badges">
+                            <span class="vp-q-badge">🌐 Société</span>
+                            <span class="vp-q-badge">💼 Travail</span>
+                            <span class="vp-q-badge">🏥 Santé</span>
+                            <span class="vp-q-badge">🎓 Éducation</span>
+                            <span class="vp-q-badge">🌱 Écologie</span>
+                            <span class="vp-q-badge">📍 Lyon</span>
+                            <span class="vp-q-badge">🏛️ Europe</span>
+                            <span class="vp-q-badge">🏘️ Logement</span>
+                            <span class="vp-q-badge">🚗 Mobilité</span>
+                            <span class="vp-q-badge">💰 Économie</span>
+                            <span class="vp-q-badge">🤖 Tech &amp; IA</span>
+                            <span class="vp-q-badge">⚖️ Justice</span>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <!-- PANE POSER (épuré — juste la déposition) -->
+                      <div id="vp-q-poser" style="display:none">
+                        <div class="vp-q-lbl first">Déposer une question</div>
+                        <div class="vp-q-tbox">« Pourquoi on bosse autant pour galérer à la fin du mois ? »</div>
+                        <div class="vp-q-mic-row">
+                          <button class="vp-q-mic-mini" type="button" onclick="event.stopPropagation()">
+                            <svg viewBox="0 0 24 24"><path d="M12 15c1.66 0 3-1.34 3-3V6c0-1.66-1.34-3-3-3S9 4.34 9 6v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 15 6.7 12H5c0 3.41 2.72 6.23 6 6.72V22h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/></svg>
+                          </button>
+                          <div class="vp-q-mic-txt">Exprimez librement — vOxOl reformule et neutralise.</div>
+                        </div>
+                        <div class="vp-q-reform">
+                          <div class="vp-q-reform-lbl">Reformulée et neutralisée</div>
+                          <div class="vp-q-reform-q">« Le travail permet-il encore de maintenir un niveau de vie suffisant ? »</div>
+                        </div>
+                        <button class="vp-q-cta">Soumettre →</button>
+                        <p style="font-size:9px;color:#8A7D70;line-height:1.5;margin-top:8px;font-style:italic">Votre question rejoint la file des propositions.</p>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- PAGE ANALYSE (SOBRE) -->
+                <div class="vp-page" id="vp-page-analyse">
+                  <div class="vp-scroll">
+                    <div class="vp-scroll-inner">
+                      <!-- Header enrichi (titre + question analysée + volume) -->
+                      <div class="vp-a-hdr">
+                        <div class="vp-a-title">Le débat &amp; vous</div>
+                        <div class="vp-a-hdr-q">« La durée des gardes médicales doit-elle être limitée par la loi ? »</div>
+                        <div class="vp-a-hdr-meta">2 840 contributions analysées</div>
+                      </div>
+
+                      <!-- Timeline compacte des contributions de Thomas -->
+                      <div class="vp-a-stripe">
+                        <div class="vp-a-stripe-lbl">Vos contributions</div>
+                        <div class="vp-a-tline-row">
+                          <div class="vp-a-tline-item">
+                            <div class="vp-a-tline-dot done" title="Analyse disponible"></div>
+                            <div class="vp-a-tline-txt">Gardes</div>
+                          </div>
+                          <div class="vp-a-tline-item">
+                            <div class="vp-a-tline-dot current" title="En cours d'analyse"></div>
+                            <div class="vp-a-tline-txt">Airbnb</div>
+                          </div>
+                          <div class="vp-a-tline-item">
+                            <div class="vp-a-tline-dot pending" title="En attente de contributions"></div>
+                            <div class="vp-a-tline-txt muted">Tps libéré</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Toggle -->
+                      <div class="vp-a-tog" role="tablist">
+                        <button class="vp-a-tog-btn" data-view="debat" onclick="vpAnalyse('debat')">
+                          <span class="vp-a-tog-ico">◉</span> Le débat
+                        </button>
+                        <button class="vp-a-tog-btn active" data-view="vous" onclick="vpAnalyse('vous')">
+                          <span class="vp-a-tog-ico">◆</span> Vous
+                        </button>
+                      </div>
+
+                      <!-- Vue 1 — Le débat — version matricielle navy -->
+                      <div class="vp-a-view" id="vp-a-view-debat" style="display:none">
+                        <p class="vp-a-view-sub">Ce que révèle l'ensemble des réponses</p>
+
+                        <!-- M01 + M02 en 2 heros navy (lectures principales) -->
+                        <div class="vp-a-duo">
+                          <div class="vp-a-duo-card">
+                            <div class="vp-a-duo-code">M01</div>
+                            <div class="vp-a-duo-name">Spectre</div>
+                            <div class="vp-a-duo-desc">Du plus critique au plus favorable.</div>
+                          </div>
+                          <div class="vp-a-duo-card">
+                            <div class="vp-a-duo-code">M02</div>
+                            <div class="vp-a-duo-name">Clusters</div>
+                            <div class="vp-a-duo-desc">Les grandes logiques argumentaires.</div>
+                          </div>
+                        </div>
+
+                        <!-- M03/M04/M05 en 3 cartes compactes (lectures secondaires) -->
+                        <div class="vp-a-trio">
+                          <div class="vp-a-trio-card">
+                            <div class="vp-a-trio-code">M03</div>
+                            <div class="vp-a-trio-name">Fractures</div>
+                            <div class="vp-a-trio-desc">Lignes de désaccord.</div>
+                          </div>
+                          <div class="vp-a-trio-card">
+                            <div class="vp-a-trio-code">M04</div>
+                            <div class="vp-a-trio-name">Signaux faibles</div>
+                            <div class="vp-a-trio-desc">Thèmes émergents.</div>
+                          </div>
+                          <div class="vp-a-trio-card">
+                            <div class="vp-a-trio-code">M05</div>
+                            <div class="vp-a-trio-name">Paradoxes</div>
+                            <div class="vp-a-trio-desc">Tensions internes.</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Vue 2 — Vous (par défaut) — version asymétrique -->
+                      <div class="vp-a-view vp-a-view-perso" id="vp-a-view-vous">
+                        <p class="vp-a-view-sub">Où se situe votre raisonnement</p>
+
+                        <!-- P01 en hero avec micro-viz décorative -->
+                        <div class="vp-a-hero">
+                          <div class="vp-a-hero-code">P01</div>
+                          <div class="vp-a-hero-name">Votre logique dominante</div>
+                          <div class="vp-a-hero-desc">La famille de raisonnement la plus proche.</div>
+                          <div class="vp-a-hero-viz" aria-hidden="true">
+                            <svg viewBox="0 0 62 62" xmlns="http://www.w3.org/2000/svg">
+                              <!-- 3 cercles secondaires gris + traits de liaison -->
+                              <line x1="38" y1="20" x2="22" y2="34" stroke="#D4B8A8" stroke-width="1" opacity=".6"/>
+                              <line x1="38" y1="20" x2="50" y2="44" stroke="#D4B8A8" stroke-width="1" opacity=".6"/>
+                              <line x1="22" y1="34" x2="50" y2="44" stroke="#D4B8A8" stroke-width="1" opacity=".4"/>
+                              <circle cx="22" cy="34" r="4" fill="#E8D5C6" stroke="#D4B8A8" stroke-width="1"/>
+                              <circle cx="50" cy="44" r="3.5" fill="#E8D5C6" stroke="#D4B8A8" stroke-width="1"/>
+                              <!-- Cercle principal coral (vous) -->
+                              <circle cx="38" cy="20" r="7" fill="#E04E2C" opacity=".14"/>
+                              <circle cx="38" cy="20" r="4.5" fill="#E04E2C"/>
+                            </svg>
+                          </div>
+                        </div>
+
+                        <!-- P02 & P03 en 2 colonnes compactes -->
+                        <div class="vp-a-mini-grid">
+                          <div class="vp-a-mini">
+                            <div class="vp-a-mini-code">P02</div>
+                            <div class="vp-a-mini-name">Vos proximités</div>
+                            <div class="vp-a-mini-desc">Profils et raisonnements proches du vôtre.</div>
+                          </div>
+                          <div class="vp-a-mini">
+                            <div class="vp-a-mini-code">P03</div>
+                            <div class="vp-a-mini-name">Vos contrastes</div>
+                            <div class="vp-a-mini-desc">Les groupes qui pensent autrement — et pourquoi.</div>
+                          </div>
+                          <!-- P04 en pleine largeur sous la grille -->
+                          <div class="vp-a-mini vp-a-mini-full">
+                            <div class="vp-a-mini-code">P04</div>
+                            <div class="vp-a-mini-name">Votre apport</div>
+                            <div class="vp-a-mini-desc">Ce que votre voix ajoute au débat.</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Pied : mention vision produit en construction (discret) -->
+                      <div class="vp-a-foot">
+                        <div class="vp-a-foot-dot"></div>
+                        <div class="vp-a-foot-txt"><strong>Vision produit.</strong> Les formats d'analyse ci-dessus sont en construction — aperçu des deux lectures (collective et personnelle) que vOxOl fournira.</div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+              </div><!-- /vp-screen-wrap -->
+            </div><!-- /vp-screen -->
+          </div><!-- /vp-phone-outer -->
+        </div>
+
+        <!-- CAPTIONS À DROITE (cliquables, synchronisées) -->
+        <div class="vp-captions">
+          <div class="vp-cap active" id="vp-cap-profil" onclick="vpGo('profil')">
+            <div class="vp-cap-lbl">① Profil</div>
+            <div class="vp-cap-title">Vous situez votre parole.</div>
+            <div class="vp-cap-desc">Qui vous êtes, ce que vous avez vécu. Une parole située pèse plus qu'une opinion anonyme.</div>
+          </div>
+          <div class="vp-cap" id="vp-cap-questions" onclick="vpGo('questions')">
+            <div class="vp-cap-lbl">② Questions</div>
+            <div class="vp-cap-title">Vous répondez. Ou vous posez.</div>
+            <div class="vp-cap-desc">Des questions nationales, locales, ou que vous proposez vous-même — reformulées pour neutraliser le biais.</div>
+          </div>
+          <div class="vp-cap" id="vp-cap-analyse" onclick="vpGo('analyse')">
+            <div class="vp-cap-lbl">③ Analyse</div>
+            <div class="vp-cap-title">Le débat devient lisible. Vous aussi.</div>
+            <div class="vp-cap-desc">Deux lectures complémentaires : les logiques qui structurent le débat — et où se situe votre raisonnement parmi les autres.</div>
+          </div>
+        </div>
+      </div>
+
+        <div style="max-width:620px;margin:40px auto 0;text-align:center;padding:22px 24px;border-top:1px solid rgba(255,255,255,0.06)">
+          <p style="font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.7;font-style:italic">Ces écrans sont une projection. <a href="suivre.html#question" style="color:white;font-style:normal;font-weight:600;border-bottom:1px solid rgba(255,255,255,0.25);padding-bottom:1px;text-decoration:none">En participant aujourd'hui</a>, vous aidez à construire demain.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- § 7 FONDATEUR -->
+  <section class="section sr">
+    <div class="si">
+      <div class="origin-block">
+        <p class="origin-label">L'origine</p>
+        <h2 class="origin-title">« X% des Français pensent que… »</h2>
+        <p class="origin-body">
+          À chaque fois que j'entends ces chiffres, je me dis : <strong>ce n'est pas faux, mais ce n'est pas vraiment ça non plus.</strong>
+        </p>
+        <p class="origin-body">
+          Deux personnes peuvent donner la même réponse pour des raisons complètement opposées. Le chiffre les écrase dans le même camp.
+        </p>
+        <p class="origin-body">
+          Je suis actuaire. Mon métier consiste à structurer du complexe pour le rendre lisible. vOxOl applique cette rigueur au débat public.
+        </p>
+        <p class="origin-sign">— Grégoire</p>
+        <a href="apropos.html" class="origin-link">Lire l'histoire complète →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- § 8 PARTICIPER -->
+  <section class="cta-section sr">
+    <div class="cta-inner-final">
+      <p class="section-label coral" style="margin-bottom:16px">Première question</p>
+      <h2 class="cta-title">Et vous, où se situe votre pensée ?</h2>
+      <p class="cta-sub">Répondez à la première question et voyez où votre raisonnement se situe.</p>
+      <a href="suivre.html#question" class="cta-btn-final">Découvrir la première question →</a>
+      <p class="cta-finale">Une voix isolée s'oublie. <strong>Ensemble, elles deviennent lisibles.</strong></p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid rgba(255,255,255,0.06);padding:42px 24px 32px;text-align:center;position:relative;z-index:1">
+    <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:0.95rem;color:rgba(255,255,255,0.42);line-height:1.6;margin-bottom:28px;max-width:460px;margin-left:auto;margin-right:auto">« vOxOl ne change pas le débat.<br>Il révèle ce qui le compose — et votre place dedans. »</p>
+
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:0;line-height:1;text-decoration:none;opacity:0.55;transition:opacity .2s" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='0.55'">
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">v</span>
+      <svg width="16" height="16" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="#f97316"/><circle cx="7.5" cy="9" r="1.25" fill="white"/><circle cx="14.5" cy="9" r="1.25" fill="white"/><ellipse cx="11" cy="14.2" rx="3" ry="2.2" fill="white"/><ellipse cx="11" cy="13.4" rx="2.2" ry="1.2" fill="#f97316"/></svg>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">x</span>
+      <svg width="16" height="16" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="1"/><line x1="11" y1="3.5" x2="11" y2="5.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="16.5" x2="11" y2="18.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="3.5" y1="11" x2="5.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="16.5" y1="11" x2="18.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><polygon points="11,5.5 9.7,11 11,10 12.3,11" fill="#f97316"/><polygon points="11,16.5 9.7,11 11,12 12.3,11" fill="rgba(255,255,255,0.25)"/><circle cx="11" cy="11" r="1.3" fill="white"/></svg>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">l</span>
+    </a>
+    <p style="font-size:0.65rem;color:rgba(255,255,255,0.16);margin-top:12px;letter-spacing:0.04em">© 2026 — Concept en exploration</p>
+    <p style="font-size:0.72rem;color:rgba(255,255,255,0.25);margin-top:8px">Une question ou une idée ? <span id="vx-email" style="color:rgba(255,255,255,0.40);border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:1px;cursor:pointer" onclick="window.location='mai'+'lto:'+this.dataset.u+'@'+this.dataset.d" data-u="hello.voxol" data-d="proton.me">hello.voxol&#64;proton.me</span></p>
+  </footer>
+
+  <script>
+    function toggleMobileNav() { document.getElementById('mobile-nav').classList.toggle('open'); }
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target); } });
+    }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+    document.querySelectorAll('.sr').forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) { el.classList.add('vis'); }
+      else { obs.observe(el); }
+    });
+
+    // INTERACTION FRACTURE 80%
+    function doFracture() {
+      document.getElementById('frac-state-a').style.display = 'none';
+      document.getElementById('frac-state-b').style.display = 'block';
+      const frags = document.querySelectorAll('#fragRow .blk-frag');
+      frags.forEach((f, i) => setTimeout(() => f.classList.add('show'), 80 + i * 110));
+      setTimeout(() => document.getElementById('fragMsg').classList.add('show'), 80 + frags.length * 110 + 150);
+    }
+    function resetFracture() {
+      document.querySelectorAll('#fragRow .blk-frag').forEach(f => f.classList.remove('show'));
+      document.getElementById('fragMsg').classList.remove('show');
+      setTimeout(() => {
+        document.getElementById('frac-state-b').style.display = 'none';
+        document.getElementById('frac-state-a').style.display = 'block';
+      }, 300);
+    }
+
+    // === VISION PRODUIT — tab navigation + toggles ===
+    function vpGo(target) {
+      ['profil', 'questions', 'analyse'].forEach(name => {
+        const page = document.getElementById('vp-page-' + name);
+        const tab = document.getElementById('vp-tab-' + name);
+        const cap = document.getElementById('vp-cap-' + name);
+        const isActive = (name === target);
+        if (page) page.classList.toggle('on', isActive);
+        if (tab) tab.classList.toggle('on', isActive);
+        if (cap) cap.classList.toggle('active', isActive);
+      });
+      // Status bar : navy sur profil et analyse, blanc sur questions
+      const sb = document.getElementById('vp-sb');
+      if (sb) sb.classList.toggle('navy', target === 'profil' || target === 'analyse');
+      // Badge "Profil certifié" visible partout sauf sur Profil
+      const cert = document.getElementById('vp-cert-pill');
+      if (cert) cert.style.display = (target === 'profil') ? 'none' : 'inline-flex';
+      // Scroll top dans la page active
+      const scroller = document.querySelector('#vp-page-' + target + ' .vp-scroll');
+      if (scroller) scroller.scrollTop = 0;
+      // Lancer animation typewriter quand on arrive sur Profil
+      if (target === 'profil') vpStartTW();
+    }
+
+    // Toggle Analyse : Le débat / Vous
+    function vpAnalyse(view) {
+      var views = { debat: 'vp-a-view-debat', vous: 'vp-a-view-vous' };
+      Object.keys(views).forEach(function (k) {
+        var el = document.getElementById(views[k]);
+        if (el) el.style.display = (k === view) ? 'block' : 'none';
+      });
+      document.querySelectorAll('.vp-a-tog-btn').forEach(function (btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-view') === view);
+      });
+    }
+
+    // === TYPEWRITER Profil (repris du mockup original) ===
+    var vpTwTxt = "Je m'appelle Thomas, j'ai 28 ans, je suis interne en médecine à Lyon.";
+    var vpTwTagAt = [14, 28, 61, 67]; // positions où les tags apparaissent
+    var vpTwTimer = null;
+    function vpStartTW() {
+      var el = document.getElementById('vp-p-tw');
+      if (!el) return;
+      el.textContent = '';
+      var idx = 0;
+      [0, 1, 2, 3].forEach(function(i) {
+        var t = document.getElementById('vp-pt' + i);
+        if (t) t.classList.add('hidden');
+      });
+      clearInterval(vpTwTimer);
+      vpTwTimer = setInterval(function() {
+        if (idx >= vpTwTxt.length) { clearInterval(vpTwTimer); return; }
+        el.textContent += vpTwTxt[idx];
+        vpTwTagAt.forEach(function(pos, i) {
+          if (idx === pos) {
+            setTimeout(function() {
+              var t = document.getElementById('vp-pt' + i);
+              if (t) t.classList.remove('hidden');
+            }, 80);
+          }
+        });
+        idx++;
+      }, 44);
+    }
+
+    function vpMode(mode) {
+      const mic = document.getElementById('vp-p-mic');
+      const txt = document.getElementById('vp-p-txt');
+      const btnMic = document.getElementById('vp-p-btn-mic');
+      const btnTxt = document.getElementById('vp-p-btn-txt');
+      const isMic = (mode === 'mic');
+      if (mic) mic.style.display = isMic ? 'block' : 'none';
+      if (txt) txt.style.display = isMic ? 'none' : 'block';
+      if (btnMic) btnMic.classList.toggle('on', isMic);
+      if (btnTxt) btnTxt.classList.toggle('on', !isMic);
+      if (isMic) vpStartTW();
+    }
+    function vpQGo(pane) {
+      const panes = ['repondre', 'explorer', 'poser'];
+      panes.forEach(p => {
+        const el = document.getElementById('vp-q-' + p);
+        const btn = document.getElementById('vp-q-btn-' + p);
+        if (el) el.style.display = (p === pane) ? 'block' : 'none';
+        if (btn) btn.classList.toggle('on', p === pane);
+      });
+      // Scroll top dans le pane actif
+      const scroller = document.querySelector('#vp-page-questions .vp-scroll');
+      if (scroller) scroller.scrollTop = 0;
+    }
+    function vpSelPos(el) {
+      document.querySelectorAll('.vp-q-pos').forEach(b => b.classList.remove('on'));
+      el.classList.add('on');
+    }
+
+    // Démarrer le typewriter quand la section Vision produit devient visible
+    const vpSection = document.getElementById('vp-page-profil');
+    if (vpSection) {
+      let vpStarted = false;
+      const vpObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting && !vpStarted) { vpStarted = true; vpStartTW(); vpObs.disconnect(); }
+        });
+      }, { threshold: 0.25 });
+      vpObs.observe(vpSection);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vOxOl — Donnez votre avis et découvrez votre place dans le débat.</title>
+  <meta name="description" content="Répondez à la première question vOxOl et voyez où votre raisonnement se situe parmi les autres." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://voxol.org/suivre.html" />
+  <meta property="og:title" content="Donnez votre avis et découvrez votre place dans le débat." />
+  <meta property="og:description" content="Répondez à la première question vOxOl et voyez où votre raisonnement se situe parmi les autres." />
+  <meta property="og:site_name" content="vOxOl" />
+  <meta property="og:locale" content="fr_FR" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Donnez votre avis et découvrez votre place dans le débat." />
+  <meta name="twitter:description" content="Répondez à la première question vOxOl et voyez où votre raisonnement se situe parmi les autres." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+  <style>
+    body { background: #0e1628; font-family: inherit; overflow-x: hidden; }
+    html { overflow-x: hidden; }
+
+    /* NAVBAR */
+    .navbar { position: sticky; top: 0; z-index: 100; background: rgba(14,22,40,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .navbar-inner { max-width: 860px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-link { font-size: 0.78rem; color: rgba(255,255,255,0.42); text-decoration: none; padding: 6px 12px; border-radius: 8px; transition: color .2s, background .2s; font-weight: 500; letter-spacing: 0.01em; }
+    .nav-link:hover { color: rgba(255,255,255,0.80); background: rgba(255,255,255,0.05); }
+    .nav-link.active { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.04); }
+    .nav-link-cta { font-size: 0.78rem; font-weight: 700; background: rgba(251,146,60,0.18); color: #fdba74; border: 1px solid rgba(251,146,60,0.30); padding: 6px 14px; border-radius: 8px; text-decoration: none; transition: all .2s; }
+    .nav-link-cta:hover { background: rgba(251,146,60,0.25); border-color: rgba(251,146,60,0.45); color: #fff; }
+    .nav-mobile-toggle { display: none; cursor: pointer; color: rgba(255,255,255,0.45); background: none; border: none; font-size: 1.2rem; padding: 4px; }
+    .nav-mobile-menu { display: none; flex-direction: column; gap: 4px; padding: 12px 24px 16px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu .nav-link { font-size: 0.875rem; padding: 10px 12px; }
+    .nav-mobile-menu .nav-link-cta { font-size: 0.875rem; padding: 10px 14px; text-align: center; }
+
+    .sr { opacity: 0; transform: translateY(12px); transition: opacity .60s ease, transform .60s ease; }
+    .sr.vis { opacity: 1; transform: none; }
+
+    /* CTA BLOC EMAIL */
+    .cta-section { position: relative; overflow: hidden; border-top: 1px solid rgba(255,255,255,0.08); }
+    .cta-section::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(249,115,22,0.10), transparent), radial-gradient(ellipse 40% 40% at 80% 100%, rgba(80,120,255,0.06), transparent); pointer-events: none; }
+    .cta-inner { position: relative; z-index: 1; max-width: 560px; margin: 0 auto; padding: 72px 20px 56px; text-align: center; }
+    .page-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(251,146,60,0.60); margin-bottom: 16px; }
+    .page-title { font-size: clamp(1.8rem, 4.5vw, 2.6rem); font-weight: 800; color: white; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 14px; }
+    .page-subtitle { font-size: clamp(0.95rem, 2.2vw, 1.08rem); color: rgba(255,255,255,0.50); line-height: 1.7; margin-bottom: 36px; max-width: 480px; margin-left: auto; margin-right: auto; font-style: italic; }
+    .page-subtitle strong { color: rgba(255,255,255,0.80); font-weight: 600; font-style: normal; }
+
+    .cta-box { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10); border-radius: 20px; padding: 28px 24px 24px; text-align: left; max-width: 440px; margin: 0 auto; }
+    .cta-box-intro { font-size: 0.82rem; color: rgba(255,255,255,0.52); line-height: 1.7; margin-bottom: 18px; font-style: italic; text-align: center; }
+    .cta-box-intro strong { color: white; font-style: normal; font-weight: 600; }
+    .cta-field { width: 100%; border-radius: 12px; padding: 13px 16px; font-size: 16px; outline: none; transition: border-color .2s; display: block; box-sizing: border-box; font-family: inherit; margin-bottom: 10px; }
+    .cta-field-email { background: rgba(255,255,255,0.07); border: 1.5px solid rgba(255,255,255,0.16); color: white; }
+    .cta-field-email::placeholder { color: rgba(255,255,255,0.28); }
+    .cta-btn { width: 100%; padding: 17px; border-radius: 12px; border: none; background: white; color: #0e1628; font-size: 1rem; font-weight: 800; cursor: pointer; transition: opacity .2s, transform .15s; letter-spacing: 0.02em; box-shadow: 0 8px 32px rgba(255,255,255,0.12); font-family: inherit; }
+    .cta-btn:hover { opacity: 0.90; transform: translateY(-2px); }
+
+    /* BLOC CE QUE VOUS RECEVREZ (NOUVEAU) */
+    .recev-block { max-width: 440px; margin: 20px auto 0; padding: 22px 24px; background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; text-align: left; }
+    .recev-label { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(251,146,60,0.55); margin-bottom: 12px; }
+    .recev-list { display: flex; flex-direction: column; gap: 8px; }
+    .recev-item { font-size: 0.85rem; color: rgba(255,255,255,0.60); line-height: 1.6; padding-left: 14px; position: relative; }
+    .recev-item::before { content: '—'; position: absolute; left: 0; color: rgba(251,146,60,0.45); }
+    .recev-footer { margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 0.72rem; color: rgba(255,255,255,0.32); font-style: italic; text-align: center; }
+
+    /* BLOC QUESTION TALLY */
+    .tester-section { border-top: 1px solid rgba(255,255,255,0.06); position: relative; z-index: 1; }
+    .tester-inner { max-width: 580px; margin: 0 auto; padding: 64px 24px; text-align: center; }
+    .tester-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(251,146,60,0.60); margin-bottom: 12px; }
+    .tester-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.4rem, 3.6vw, 1.9rem); font-weight: 700; color: white; line-height: 1.25; margin-bottom: 10px; letter-spacing: -0.015em; }
+    .tester-text { font-size: 0.92rem; color: rgba(255,255,255,0.50); line-height: 1.75; margin-bottom: 28px; max-width: 460px; margin-left: auto; margin-right: auto; }
+    .tester-question-intro { font-size: 0.78rem; color: rgba(255,255,255,0.42); font-style: italic; line-height: 1.65; margin: 0 0 14px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .tester-future { font-size: 0.72rem; color: rgba(255,255,255,0.28); font-style: italic; line-height: 1.65; margin: 0 auto 24px; max-width: 420px; }
+
+    /* Réassurance vie privée sous les champs email */
+    .email-reassure { font-size: 0.72rem; color: rgba(255,255,255,0.42); line-height: 1.6; margin: 0 0 16px; padding: 8px 12px; background: rgba(255,255,255,0.025); border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
+    .email-reassure strong { color: rgba(255,255,255,0.72); font-weight: 600; }
+    .email-reassure-sm { font-size: 0.68rem; padding: 6px 10px; margin-bottom: 12px; color: rgba(255,255,255,0.36); }
+    .tester-question { padding: 22px 24px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; margin-bottom: 14px; text-align: left; }
+    .tester-question-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 10px; }
+    .tester-question-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: white; line-height: 1.4; font-weight: 400; }
+    .tester-btn { display: inline-block; background: #f97316; color: #0e1628; padding: 14px 30px; border-radius: 12px; font-size: 0.95rem; font-weight: 800; text-decoration: none; letter-spacing: 0.01em; transition: opacity .2s, transform .15s; box-shadow: 0 8px 32px rgba(249,115,22,0.25); }
+    .tester-btn:hover { opacity: 0.90; transform: translateY(-2px); }
+
+    /* BLOC SUGGESTION */
+    .suggest-wrap { max-width: 480px; margin: 40px auto 0; padding: 24px; border: 1px solid rgba(255,255,255,0.07); border-radius: 16px; background: rgba(255,255,255,0.02); text-align: left; }
+    .suggest-title { font-size: 0.88rem; font-weight: 700; color: rgba(255,255,255,0.70); margin-bottom: 6px; }
+    .suggest-text { font-size: 0.82rem; color: rgba(255,255,255,0.40); line-height: 1.65; margin-bottom: 14px; font-style: italic; }
+    .suggest-field { width: 100%; border-radius: 10px; padding: 12px 14px; font-size: 16px; outline: none; transition: border-color .2s; display: block; box-sizing: border-box; font-family: inherit; background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.10); color: white; }
+    .suggest-field::placeholder { color: rgba(255,255,255,0.26); }
+    .suggest-field:focus { border-color: rgba(255,255,255,0.28); }
+    .suggest-btn { margin-top: 12px; padding: 10px 18px; border-radius: 10px; border: none; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.60); font-size: 0.80rem; font-weight: 600; cursor: pointer; transition: background .2s, color .2s; font-family: inherit; }
+    .suggest-btn:hover { background: rgba(255,255,255,0.14); color: white; }
+
+    /* MOBILE */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-mobile-toggle { display: block; }
+      body { overflow-x: hidden; }
+      .navbar-inner { padding-left: 14px; padding-right: 14px; }
+      .cta-inner { padding: 48px 16px 40px; }
+      .tester-inner { padding: 48px 20px; }
+      .tester-btn { width: 100%; text-align: center; box-sizing: border-box; }
+      .suggest-wrap { max-width: 100%; border-radius: 0; border-left: none; border-right: none; margin-left: 0; margin-right: 0; }
+
+      p[style*="color:rgba(255,255,255,0.16)"],
+      span[style*="color:rgba(255,255,255,0.16)"] { color: rgba(255,255,255,0.55) !important; }
+      p[style*="color:rgba(255,255,255,0.25)"],
+      span[style*="color:rgba(255,255,255,0.25)"] { color: rgba(255,255,255,0.64) !important; }
+      p[style*="color:rgba(255,255,255,0.32)"],
+      span[style*="color:rgba(255,255,255,0.32)"] { color: rgba(255,255,255,0.70) !important; }
+      p[style*="color:rgba(255,255,255,0.40)"],
+      span[style*="color:rgba(255,255,255,0.40)"] { color: rgba(255,255,255,0.76) !important; }
+      p[style*="color:rgba(255,255,255,0.50)"],
+      span[style*="color:rgba(255,255,255,0.50)"] { color: rgba(255,255,255,0.82) !important; }
+    }
+
+    /* Très petits écrans (iPhone SE, Android compacts) */
+    @media (max-width: 380px) {
+      .cta-inner { padding: 40px 14px 32px; }
+      .tester-inner { padding: 40px 16px; }
+      .tester-question { padding: 18px 18px; }
+      .tester-question-text { font-size: 1rem; }
+      .suggest-wrap { padding: 20px 16px; }
+      .recev-block { padding: 18px 18px; }
+    }
+  </style>
+<script defer src="/_vercel/insights/script.js"></script>
+<script defer src="https://cloud.umami.is/script.js" data-website-id="b38c3c66-563e-4f47-ab5b-bbbebae68f68"></script>
+</head>
+<body class="text-white min-h-screen overflow-x-hidden">
+  <div class="pointer-events-none fixed inset-0" style="background:radial-gradient(ellipse 80% 50% at 10% -10%,rgba(255,100,60,0.11),transparent),radial-gradient(ellipse 60% 40% at 90% 110%,rgba(80,130,255,0.07),transparent);z-index:0"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" style="display:inline-flex;align-items:center;gap:0;line-height:1;text-decoration:none">
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">v</span>
+        <svg width="18" height="18" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="#f97316"/><circle cx="7.5" cy="9" r="1.25" fill="white"/><circle cx="14.5" cy="9" r="1.25" fill="white"/><ellipse cx="11" cy="14.2" rx="3" ry="2.2" fill="white"/><ellipse cx="11" cy="13.4" rx="2.2" ry="1.2" fill="#f97316"/></svg>
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">x</span>
+        <svg width="18" height="18" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="1"/><line x1="11" y1="3.5" x2="11" y2="5.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="16.5" x2="11" y2="18.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="3.5" y1="11" x2="5.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="16.5" y1="11" x2="18.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><polygon points="11,5 9.5,11 12.5,11" fill="#f97316"/><polygon points="11,17 9.5,11 12.5,11" fill="rgba(255,255,255,0.25)"/><circle cx="11" cy="11" r="1.4" fill="white"/></svg>
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">l</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Le projet</a>
+        <a href="approche.html" class="nav-link">Approfondir</a>
+        <a href="apropos.html" class="nav-link">Origine</a>
+        <a href="suivre.html" class="nav-link-cta">Participer →</a>
+      </div>
+      <button class="nav-mobile-toggle" onclick="toggleMobileNav()">☰</button>
+    </div>
+    <div class="nav-mobile-menu" id="mobile-nav">
+      <a href="index.html" class="nav-link" onclick="toggleMobileNav()">Le projet</a>
+      <a href="approche.html" class="nav-link" onclick="toggleMobileNav()">Approfondir</a>
+      <a href="apropos.html" class="nav-link" onclick="toggleMobileNav()">Origine</a>
+      <a href="suivre.html" class="nav-link-cta" onclick="toggleMobileNav()">Participer →</a>
+    </div>
+  </nav>
+
+  <main>
+    <!-- BLOC 1 — EMAIL (priorité) -->
+    <section class="cta-section" id="email">
+      <div class="cta-inner">
+        <p class="page-label">Participer</p>
+        <h1 class="page-title">Découvrez où se situe votre pensée.</h1>
+        <p class="page-subtitle">Donnez votre avis. Comparez-le à celui des autres. <strong>Et, demain, portez une voix dans le débat public.</strong></p>
+
+        <div class="cta-box">
+          <div id="cta-form">
+            <p class="cta-box-intro">Dites pourquoi. <strong>Pas seulement quoi.</strong></p>
+            <label style="display:block;font-size:0.75rem;color:rgba(255,255,255,0.42);margin-bottom:6px">
+              Votre email
+              <span style="color:rgba(251,146,60,0.75)">*</span>
+            </label>
+            <input type="email" id="email-input"
+              placeholder="vous@email.com"
+              class="cta-field cta-field-email"
+              onfocus="this.style.borderColor='rgba(255,255,255,0.40)'"
+              onblur="this.style.borderColor='rgba(255,255,255,0.16)'" />
+            <p class="email-reassure">🔒 <strong>Jamais de spam, ni de revente.</strong> Vos réponses restent anonymes dans l'analyse collective.</p>
+            <button onclick="submitEmail()" class="cta-btn">
+              Recevoir la première question →
+            </button>
+            <p id="cta-error" style="display:none;font-size:0.72rem;color:rgba(251,146,60,0.75);margin-top:10px;text-align:center">
+              Une erreur est survenue — réessayez dans quelques instants.
+            </p>
+          </div>
+
+          <div id="cta-success" style="display:none;text-align:center;padding:20px 0 4px">
+            <p style="font-size:1rem;color:#6ee7b7;font-weight:700;line-height:1.4;margin-bottom:10px">✓ Inscrit.</p>
+            <p style="font-size:0.90rem;color:rgba(255,255,255,0.60);line-height:1.65;margin-bottom:10px">
+              Si vous le souhaitez, répondez à la question ci-dessous —<br>
+              ce sera votre première contribution.
+            </p>
+            <p style="font-size:0.72rem;color:rgba(255,255,255,0.26);line-height:1.6;font-style:italic">
+              Une voix isolée s'oublie.<br>
+              Des milliers de raisonnements structurés, non.
+            </p>
+          </div>
+        </div>
+
+        <!-- NOUVEAU BLOC "CE QUE VOUS RECEVREZ" -->
+        <div class="recev-block">
+          <p class="recev-label">Ce que vous recevrez</p>
+          <div class="recev-list">
+            <p class="recev-item">Une première question à laquelle répondre (ou pas — vous décidez).</p>
+            <p class="recev-item"><strong style="color:rgba(255,255,255,0.78);font-weight:600">Votre place dans le débat</strong> — où se situe votre raisonnement parmi les autres.</p>
+            <p class="recev-item">L'analyse collective de la question, une fois les raisonnements traités.</p>
+            <p class="recev-item">Les prochaines questions, au rythme où elles sortent.</p>
+          </div>
+          <p class="recev-footer">Pas de spam. Pas d'algorithme. Juste les cartes quand elles existent.</p>
+        </div>
+
+        <p style="font-size:0.68rem;color:rgba(255,255,255,0.20);margin-top:20px;text-align:center">
+          Une question ?
+          <span style="color:rgba(255,255,255,0.36);border-bottom:1px solid rgba(255,255,255,0.14);padding-bottom:1px;cursor:pointer"
+            onclick="window.location='mai'+'lto:'+'hello.voxol'+'@'+'proton.me'">Écrivez-moi</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- BLOC 2 — PREMIÈRE QUESTION -->
+    <section class="tester-section" id="question">
+      <div class="tester-inner">
+        <p class="tester-label">Première question</p>
+        <h2 class="tester-title">Répondez à la première question.</h2>
+        <p class="tester-text">Répondez librement. Pour que votre opinion ne soit pas réduite à une case cochée, un témoignage isolé ou un commentaire perdu sans audience.</p>
+        <div class="tester-question">
+          <p class="tester-question-label">Question débattue</p>
+          <p class="tester-question-intro">Réforme des retraites, semaine de 4 jours, congés sabbatiques... Notre rapport au temps de travail change.</p>
+          <p class="tester-question-text">Le temps libéré doit-il arriver seulement à la fin de la vie professionnelle ?</p>
+        </div>
+        <p class="tester-future">Demain, les questions pourront venir de vous, d'un média, d'un chercheur ou d'un élu.</p>
+
+        <a href="https://tally.so/r/KY0g9X?utm_source=landing" target="_blank" class="tester-btn" data-umami-event="clic-tally">Répondre à la question →</a>
+
+        <!-- BLOC 3 — SUGGESTION -->
+        <div class="suggest-wrap">
+          <p class="suggest-title">Proposer une prochaine question</p>
+          <p class="suggest-text">Et pour vous ? Quelle question mériterait d'être cartographiée ?</p>
+          <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.32);margin-bottom:5px">Votre suggestion</label>
+          <input type="text" id="question-input"
+            placeholder="Ex : Faut-il travailler moins ?"
+            class="suggest-field"
+            onfocus="this.style.borderColor='rgba(255,255,255,0.28)'"
+            onblur="this.style.borderColor='rgba(255,255,255,0.10)'" />
+          <label style="display:block;font-size:0.72rem;color:rgba(255,255,255,0.32);margin-bottom:5px;margin-top:10px">Votre email <span style="color:rgba(251,146,60,0.75)">*</span></label>
+          <input type="email" id="suggest-email-input"
+            placeholder="votre@email.com"
+            class="suggest-field"
+            onfocus="this.style.borderColor='rgba(255,255,255,0.28)'"
+            onblur="this.style.borderColor='rgba(255,255,255,0.10)'" />
+          <p class="email-reassure email-reassure-sm">🔒 Utilisé uniquement pour vous répondre sur votre suggestion.</p>
+          <button onclick="submitSuggestion()" class="suggest-btn">Envoyer la suggestion</button>
+          <p id="suggest-status" style="display:none;font-size:0.72rem;color:#6ee7b7;margin-top:10px;line-height:1.55">✓ Merci — votre suggestion est enregistrée.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid rgba(255,255,255,0.06);padding:32px 24px;text-align:center;position:relative;z-index:1">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:0;line-height:1;text-decoration:none;opacity:0.55;transition:opacity .2s" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='0.55'">
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">v</span>
+      <svg width="16" height="16" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="#f97316"/><circle cx="7.5" cy="9" r="1.25" fill="white"/><circle cx="14.5" cy="9" r="1.25" fill="white"/><ellipse cx="11" cy="14.2" rx="3" ry="2.2" fill="white"/><ellipse cx="11" cy="13.4" rx="2.2" ry="1.2" fill="#f97316"/></svg>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">x</span>
+      <svg width="16" height="16" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="1"/><line x1="11" y1="3.5" x2="11" y2="5.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="16.5" x2="11" y2="18.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="3.5" y1="11" x2="5.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="16.5" y1="11" x2="18.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><polygon points="11,5.5 9.7,11 11,10 12.3,11" fill="#f97316"/><polygon points="11,16.5 9.7,11 11,12 12.3,11" fill="rgba(255,255,255,0.25)"/><circle cx="11" cy="11" r="1.3" fill="white"/></svg>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">l</span>
+    </a>
+    <p style="font-size:0.65rem;color:rgba(255,255,255,0.16);margin-top:12px;letter-spacing:0.04em">© 2026 — Concept en exploration</p>
+    <p style="font-size:0.72rem;color:rgba(255,255,255,0.25);margin-top:8px">Une question ou une idée ? <span id="vx-email" style="color:rgba(255,255,255,0.40);border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:1px;cursor:pointer" onclick="window.location='mai'+'lto:'+this.dataset.u+'@'+this.dataset.d" data-u="hello.voxol" data-d="proton.me">hello.voxol&#64;proton.me</span></p>
+  </footer>
+
+  <script>
+    function toggleMobileNav() { document.getElementById('mobile-nav').classList.toggle('open'); }
+
+    async function submitEmail() {
+      const email = document.getElementById('email-input').value.trim();
+      if (!email || !email.includes('@')) { document.getElementById('email-input').focus(); return; }
+      const btn = document.querySelector('.cta-btn');
+      document.getElementById('cta-error').style.display = 'none';
+      btn.textContent = '...'; btn.disabled = true;
+      try {
+        const res = await fetch('/api/subscribe', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ email, source: 'suivre' }) });
+        if (!res.ok) throw new Error('server_error');
+      } catch(e) {
+        btn.textContent = 'Recevoir la première question →'; btn.disabled = false;
+        document.getElementById('cta-error').style.display = 'block'; return;
+      }
+      document.getElementById('cta-form').style.display = 'none';
+      document.getElementById('cta-success').style.display = 'block';
+    }
+
+    async function submitSuggestion() {
+      const question = document.getElementById('question-input').value.trim();
+      const email = document.getElementById('suggest-email-input').value.trim();
+      if (!question || !email || !email.includes('@')) { return; }
+      const btn = document.querySelector('.suggest-btn');
+      btn.textContent = '...'; btn.disabled = true;
+      try {
+        const res = await fetch('/api/subscribe', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ email, question, source: 'suggestion' }) });
+        if (!res.ok) throw new Error('server_error');
+        document.getElementById('suggest-status').style.display = 'block';
+        document.getElementById('question-input').value = '';
+        document.getElementById('suggest-email-input').value = '';
+        btn.textContent = 'Envoyer la suggestion'; btn.disabled = false;
+      } catch(e) {
+        btn.textContent = 'Réessayer'; btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

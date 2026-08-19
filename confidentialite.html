@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vOxOl — Confidentialité &amp; données personnelles.</title>
+  <meta name="description" content="Ce que vOxOl collecte, pourquoi, avec qui, combien de temps, et vos droits. Le minimum, expliqué simplement. Rien n'est vendu." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://voxol.org/confidentialite.html" />
+  <meta property="og:title" content="Confidentialité & données personnelles." />
+  <meta property="og:description" content="Ce que vOxOl collecte, pourquoi, avec qui, combien de temps, et vos droits." />
+  <meta property="og:site_name" content="vOxOl" />
+  <meta property="og:locale" content="fr_FR" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Confidentialité & données personnelles." />
+  <meta name="twitter:description" content="Ce que vOxOl collecte, pourquoi, avec qui, combien de temps, et vos droits." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,700&display=swap" rel="stylesheet">
+  <style>
+    body { background: #0e1628; font-family: inherit; overflow-x: hidden; }
+    html { overflow-x: hidden; scroll-behavior: smooth; }
+
+    /* NAVBAR — identique aux autres pages */
+    .navbar { position: sticky; top: 0; z-index: 100; background: rgba(14,22,40,0.88); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .navbar-inner { max-width: 860px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+    .nav-links { display: flex; align-items: center; gap: 4px; }
+    .nav-link { font-size: 0.78rem; color: rgba(255,255,255,0.42); text-decoration: none; padding: 6px 12px; border-radius: 8px; transition: color .2s, background .2s; font-weight: 500; letter-spacing: 0.01em; }
+    .nav-link:hover { color: rgba(255,255,255,0.80); background: rgba(255,255,255,0.05); }
+    .nav-link.active { color: rgba(255,255,255,0.85); background: rgba(255,255,255,0.04); }
+    .nav-link-cta { font-size: 0.78rem; font-weight: 700; background: rgba(251,146,60,0.12); color: #fdba74; border: 1px solid rgba(251,146,60,0.20); padding: 6px 14px; border-radius: 8px; text-decoration: none; transition: all .2s; }
+    .nav-link-cta:hover { background: rgba(251,146,60,0.20); border-color: rgba(251,146,60,0.35); color: #fff; }
+    .nav-mobile-toggle { display: none; cursor: pointer; color: rgba(255,255,255,0.45); background: none; border: none; font-size: 1.2rem; padding: 4px; }
+    .nav-mobile-menu { display: none; flex-direction: column; gap: 4px; padding: 12px 24px 16px; border-top: 1px solid rgba(255,255,255,0.06); }
+    .nav-mobile-menu.open { display: flex; }
+    .nav-mobile-menu .nav-link { font-size: 0.875rem; padding: 10px 12px; }
+    .nav-mobile-menu .nav-link-cta { font-size: 0.875rem; padding: 10px 14px; text-align: center; }
+
+    /* HERO */
+    .hero-wrap { position: relative; overflow: hidden; border-top: 1px solid rgba(255,255,255,0.08); }
+    .hero-wrap::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(249,115,22,0.10), transparent); pointer-events: none; }
+    .hero-inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 60px 24px 26px; text-align: center; }
+    .page-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.18em; color: rgba(251,146,60,0.60); margin-bottom: 16px; }
+    .page-title { font-size: clamp(1.8rem, 4.5vw, 2.5rem); font-weight: 800; color: white; letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 16px; }
+    .page-subtitle { font-size: clamp(0.95rem, 2.2vw, 1.05rem); color: rgba(255,255,255,0.58); line-height: 1.7; margin: 0 auto; max-width: 540px; }
+    .page-subtitle strong { color: rgba(255,255,255,0.88); font-weight: 600; }
+    .page-updated { font-size: 0.72rem; color: rgba(255,255,255,0.28); margin-top: 20px; letter-spacing: 0.02em; }
+
+    /* CORPS LÉGAL */
+    .legal-wrap { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; padding: 16px 24px 40px; }
+
+    .lb { border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.025); border-radius: 18px; padding: 26px 26px 24px; margin-bottom: 16px; }
+    .lb-num { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.55); font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem; font-weight: 700; margin-bottom: 14px; }
+    .lb-title { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.15rem, 3vw, 1.4rem); font-weight: 700; color: white; line-height: 1.3; margin-bottom: 12px; letter-spacing: -0.01em; }
+    .lb p { font-size: 0.95rem; color: rgba(255,255,255,0.62); line-height: 1.8; margin-bottom: 12px; }
+    .lb p:last-child { margin-bottom: 0; }
+    .lb strong { color: rgba(255,255,255,0.90); font-weight: 600; }
+    .lb a { color: #fdba74; border-bottom: 1px solid rgba(251,146,60,0.35); padding-bottom: 1px; text-decoration: none; transition: color .2s, border-color .2s; }
+    .lb a:hover { color: #fff; border-color: rgba(251,146,60,0.65); }
+
+    .llist { list-style: none; margin: 4px 0 12px; padding: 0; }
+    .llist li { position: relative; padding-left: 20px; font-size: 0.95rem; color: rgba(255,255,255,0.62); line-height: 1.7; margin-bottom: 9px; }
+    .llist li::before { content: ''; position: absolute; left: 2px; top: 11px; width: 6px; height: 6px; border-radius: 50%; background: rgba(251,146,60,0.55); }
+    .llist li strong { color: rgba(255,255,255,0.90); font-weight: 600; }
+    .llist li .muted { color: rgba(255,255,255,0.40); }
+
+    /* Callouts */
+    .callout { border-radius: 14px; padding: 16px 18px; margin: 14px 0 2px; display: flex; gap: 12px; align-items: flex-start; }
+    .callout.pine { background: rgba(110,231,183,0.06); border: 1px solid rgba(110,231,183,0.22); }
+    .callout.coral { background: rgba(249,115,22,0.06); border: 1px solid rgba(251,146,60,0.25); }
+    .callout-ico { flex-shrink: 0; margin-top: 1px; }
+    .callout p { margin: 0; font-size: 0.92rem; line-height: 1.65; color: rgba(255,255,255,0.72); }
+    .callout p strong { color: white; }
+
+    /* Contact final */
+    .contact-note { text-align: center; font-size: 0.85rem; color: rgba(255,255,255,0.45); line-height: 1.7; margin-top: 26px; }
+    .contact-note .mail { color: #fdba74; border-bottom: 1px solid rgba(251,146,60,0.35); padding-bottom: 1px; cursor: pointer; }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .nav-mobile-toggle { display: block; }
+      .lb { padding: 22px 20px; }
+    }
+  </style>
+  <script defer src="/_vercel/insights/script.js"></script>
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="b38c3c66-563e-4f47-ab5b-bbbebae68f68"></script>
+</head>
+<body class="text-white min-h-screen overflow-x-hidden">
+  <div class="pointer-events-none fixed inset-0" style="background:radial-gradient(ellipse 80% 50% at 10% -10%,rgba(255,100,60,0.11),transparent),radial-gradient(ellipse 60% 40% at 90% 110%,rgba(80,130,255,0.07),transparent);z-index:0"></div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="navbar-inner">
+      <a href="index.html" style="display:inline-flex;align-items:center;gap:0;line-height:1;text-decoration:none">
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">v</span>
+        <svg width="18" height="18" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="#f97316"/><circle cx="7.5" cy="9" r="1.25" fill="white"/><circle cx="14.5" cy="9" r="1.25" fill="white"/><ellipse cx="11" cy="14.2" rx="3" ry="2.2" fill="white"/><ellipse cx="11" cy="13.4" rx="2.2" ry="1.2" fill="#f97316"/></svg>
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">x</span>
+        <svg width="18" height="18" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="1"/><line x1="11" y1="3.5" x2="11" y2="5.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="16.5" x2="11" y2="18.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="3.5" y1="11" x2="5.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="16.5" y1="11" x2="18.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><polygon points="11,5 9.5,11 12.5,11" fill="#f97316"/><polygon points="11,17 9.5,11 12.5,11" fill="rgba(255,255,255,0.25)"/><circle cx="11" cy="11" r="1.4" fill="white"/></svg>
+        <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:20px;color:white;letter-spacing:-0.01em">l</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Accueil</a>
+        <a href="approche.html" class="nav-link">Comprendre</a>
+        <a href="apropos.html" class="nav-link">Origine</a>
+        <a href="suivre.html" class="nav-link-cta">Participer →</a>
+      </div>
+      <button class="nav-mobile-toggle" onclick="toggleMobileNav()">☰</button>
+    </div>
+    <div class="nav-mobile-menu" id="mobile-nav">
+      <a href="index.html" class="nav-link" onclick="toggleMobileNav()">Accueil</a>
+      <a href="approche.html" class="nav-link" onclick="toggleMobileNav()">Comprendre</a>
+      <a href="apropos.html" class="nav-link" onclick="toggleMobileNav()">Origine</a>
+      <a href="suivre.html" class="nav-link-cta" onclick="toggleMobileNav()">Participer →</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero-wrap">
+    <div class="hero-inner">
+      <p class="page-label">Vos données</p>
+      <h1 class="page-title">Confidentialité &amp;<br>données personnelles.</h1>
+      <p class="page-subtitle">
+        vOxOl collecte le <strong>minimum</strong>, l'explique simplement, et ne revend rien.
+        Voici l'essentiel — et vos droits.
+      </p>
+      <p class="page-updated">Dernière mise à jour : août 2026</p>
+    </div>
+  </div>
+
+  <!-- CORPS -->
+  <main class="legal-wrap">
+
+    <!-- 1. QUI + QUOI + POURQUOI -->
+    <section class="lb">
+      <div class="lb-num">1</div>
+      <h2 class="lb-title">Qui collecte quoi, et pourquoi</h2>
+      <p>
+        vOxOl est un <strong>projet indépendant et non commercial</strong>, en phase d'expérimentation,
+        porté par Grégoire, responsable du traitement de vos données. Pour toute question relative à vos
+        données — ou pour obtenir l'identité complète du responsable —
+        <span class="contact-mail" data-u="hello.voxol" data-d="proton.me"></span>. Il collecte le strict
+        nécessaire :
+      </p>
+      <ul class="llist">
+        <li><strong>Votre e-mail</strong> — pour vous envoyer votre restitution (et, si vous vous y inscrivez, pour suivre les prochaines questions).</li>
+        <li><strong>Vos réponses au questionnaire</strong> — votre position, le contexte que vous décrivez librement, et votre raisonnement.</li>
+      </ul>
+      <p>Ces données servent uniquement à :</p>
+      <ul class="llist">
+        <li>analyser les réponses pour <strong>cartographier les logiques du débat</strong> ;</li>
+        <li>vous renvoyer <strong>une reformulation de votre raisonnement</strong> (que vous validez) ;</li>
+        <li>vous envoyer <strong>votre restitution</strong>, une fois l'analyse collective réalisée.</li>
+      </ul>
+      <p>
+        La base légale est votre <strong>consentement</strong> : vous participez volontairement et pouvez
+        le retirer à tout moment. Si vous choisissez <em>en plus</em> de vous inscrire pour suivre les
+        prochaines questions, votre e-mail sert alors uniquement à cela — un choix distinct, que vous
+        pouvez retirer séparément.
+      </p>
+    </section>
+
+    <!-- 2. AVEC QUI + TRANSFERTS + JAMAIS VENDU -->
+    <section class="lb">
+      <div class="lb-num">2</div>
+      <h2 class="lb-title">Avec qui, et ce qu'on ne fait jamais</h2>
+      <p>
+        Pour fonctionner, vOxOl s'appuie sur plusieurs prestataires techniques qui traitent certaines
+        données <strong>pour son compte</strong> : <strong>Tally</strong> (formulaire),
+        <strong>Supabase</strong> (base de données), <strong>Make</strong> (automatisation),
+        <strong>Anthropic / Claude</strong> (reformulation), <strong>Resend</strong> (envoi des e-mails)
+        et <strong>Vercel</strong> (hébergement du site).
+      </p>
+      <p>
+        Certains prestataires peuvent traiter des données hors de l'Espace économique européen. Lorsque
+        c'est le cas, ces transferts sont encadrés par les mécanismes prévus par le RGPD.
+      </p>
+      <div class="callout coral">
+        <svg class="callout-ico" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fdba74" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 5v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V5l-8-3Z"/><path d="m9 12 2 2 4-4"/></svg>
+        <p><strong>Vos données ne sont jamais vendues, louées ni cédées à des tiers</strong> à des fins commerciales ou publicitaires. Votre e-mail ne sert jamais à de la publicité.</p>
+      </div>
+    </section>
+
+    <!-- 3. PUBLICATION + CONSERVATION -->
+    <section class="lb">
+      <div class="lb-num">3</div>
+      <h2 class="lb-title">Ce qui est publié, et pour combien de temps</h2>
+      <p>
+        Les restitutions collectives peuvent être partagées publiquement, mais elles sont conçues pour
+        rendre visibles des <strong>logiques de raisonnement, pas pour identifier les répondants</strong> :
+        elles ne publient ni votre adresse e-mail, ni d'identifiant direct associé à votre réponse, et les
+        autres répondants n'y sont pas nommés.
+      </p>
+      <ul class="llist">
+        <li><strong>E-mail lié à une participation</strong> — conservé avec les données de cette participation, pour la durée indiquée ci-dessous.</li>
+        <li><strong>E-mail d'inscription aux prochaines questions</strong> — conservé jusqu'à votre désinscription ou la fin du projet.</li>
+        <li><strong>Réponses et restitution</strong> — conservées le temps de l'expérimentation, puis supprimées ou anonymisées (au plus tard 24 mois après leur collecte).</li>
+      </ul>
+      <p>Vous pouvez demander leur suppression à tout moment, sans attendre ces échéances.</p>
+    </section>
+
+    <!-- 4. DROITS + CNIL + COOKIES -->
+    <section class="lb">
+      <div class="lb-num">4</div>
+      <h2 class="lb-title">Vos droits</h2>
+      <p>
+        À tout moment, vous pouvez demander à <strong>accéder</strong> à vos données, les
+        <strong>rectifier</strong>, les <strong>supprimer</strong>, en <strong>limiter le
+        traitement</strong>, <strong>retirer votre consentement</strong> ou, lorsque cela s'applique,
+        les <strong>récupérer</strong> (portabilité). Il suffit d'écrire à
+        <span class="contact-mail" data-u="hello.voxol" data-d="proton.me"></span>.
+      </p>
+      <p>
+        Vous pouvez également introduire une réclamation auprès de l'autorité de contrôle compétente en
+        matière de protection des données — par exemple la
+        <a href="https://www.cnil.fr/fr/plaintes" target="_blank" rel="noopener">CNIL</a> en France.
+      </p>
+      <p>
+        Enfin, le site utilise <strong>Vercel Web Analytics</strong> et <strong>Umami</strong> pour
+        mesurer son audience, <strong>sans finalité publicitaire</strong>. Ces outils n'utilisent pas de
+        cookies publicitaires.
+      </p>
+    </section>
+
+    <p class="contact-note">
+      Une question sur vos données ?
+      <span class="mail contact-mail" data-u="hello.voxol" data-d="proton.me"></span>
+    </p>
+  </main>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid rgba(255,255,255,0.06);padding:42px 24px 32px;text-align:center;position:relative;z-index:1">
+    <a href="index.html" style="display:inline-flex;align-items:center;gap:0;line-height:1;text-decoration:none;opacity:0.55;transition:opacity .2s" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='0.55'">
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">v</span>
+      <svg width="16" height="16" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="#f97316"/><circle cx="7.5" cy="9" r="1.25" fill="white"/><circle cx="14.5" cy="9" r="1.25" fill="white"/><ellipse cx="11" cy="14.2" rx="3" ry="2.2" fill="white"/><ellipse cx="11" cy="13.4" rx="2.2" ry="1.2" fill="#f97316"/></svg>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">x</span>
+      <svg width="16" height="16" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><circle cx="11" cy="11" r="10" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.22)" stroke-width="1"/><line x1="11" y1="3.5" x2="11" y2="5.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="16.5" x2="11" y2="18.5" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="3.5" y1="11" x2="5.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><line x1="16.5" y1="11" x2="18.5" y2="11" stroke="rgba(255,255,255,0.35)" stroke-width="1.2" stroke-linecap="round"/><polygon points="11,5.5 9.7,11 11,10 12.3,11" fill="#f97316"/><polygon points="11,16.5 9.7,11 11,12 12.3,11" fill="rgba(255,255,255,0.25)"/><circle cx="11" cy="11" r="1.3" fill="white"/></svg>
+      <span style="font-family:'Playfair Display',serif;font-style:italic;font-weight:700;font-size:18px;color:white;letter-spacing:-0.01em">l</span>
+    </a>
+    <p style="font-size:0.72rem;color:rgba(255,255,255,0.28);margin-top:14px">
+      <a href="confidentialite.html" style="color:rgba(255,255,255,0.40);text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:1px">Confidentialité &amp; données</a>
+    </p>
+    <p style="font-size:0.65rem;color:rgba(255,255,255,0.16);margin-top:12px;letter-spacing:0.04em">© 2026 — Concept en exploration</p>
+    <p style="font-size:0.72rem;color:rgba(255,255,255,0.25);margin-top:8px">Une question ou une idée ? <span id="vx-email" style="color:rgba(255,255,255,0.40);border-bottom:1px solid rgba(255,255,255,0.15);padding-bottom:1px;cursor:pointer" onclick="window.location='mai'+'lto:'+this.dataset.u+'@'+this.dataset.d" data-u="hello.voxol" data-d="proton.me">hello.voxol&#64;proton.me</span></p>
+  </footer>
+
+  <script>
+    function toggleMobileNav() { document.getElementById('mobile-nav').classList.toggle('open'); }
+    document.querySelectorAll('.contact-mail').forEach(function(el){
+      var u = el.dataset.u, d = el.dataset.d;
+      el.textContent = u + '@' + d;
+      el.style.cursor = 'pointer';
+      if (!el.classList.contains('mail')) {
+        el.style.color = '#fdba74';
+        el.style.borderBottom = '1px solid rgba(251,146,60,0.35)';
+        el.style.paddingBottom = '1px';
+      }
+      el.addEventListener('click', function(){ window.location = 'mai' + 'lto:' + u + '@' + d; });
+    });
+  </script>
+</body>
+</html>
